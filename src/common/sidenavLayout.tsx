@@ -2,34 +2,33 @@ import { Children } from "../models/children";
 import TodayIcon from "@mui/icons-material/Today";
 import WidgetsIcon from "@mui/icons-material/Widgets";
 import CategoryIcon from "@mui/icons-material/Category";
-import { RefObject, useState } from "react";
+import { useState } from "react";
 import { NavBarItem } from "../models/navbarItem";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import useHover from "../hooks/useHover";
-// import React from "react";
+import { NavLink } from "react-router-dom";
 
 const menuItems = [
-  { name: "Schedule", icon: TodayIcon },
-  { name: "Categories", icon: CategoryIcon },
-  { name: "Products", icon: WidgetsIcon },
+  { name: "Schedule", icon: TodayIcon, path: "/schedule" },
+  { name: "Categories", icon: CategoryIcon, path: "/categories" },
+  { name: "Products", icon: WidgetsIcon, path: "/products" },
 ];
 
-function NavItem(ele: NavBarItem, isOpen: boolean) {
-  const [hovered, hoverRef] = useHover();
+function NavItem(ele: NavBarItem, isOpen: boolean, isActive: boolean) {
   const className = isOpen ? "options-visible" : "options-invisible";
   const Icon = ele.icon;
   return (
     <div
-      ref={hoverRef as RefObject<HTMLDivElement>}
-      className={`flex items-center gap-3 mt-5 hover:bg-navitemBg px-3 py-1 hover:shadow-xl rounded-full hover:text-white hover:cursor-pointer`}
+      className={`flex items-center gap-3 mt-5   px-3 py-[6px] hover:scale-110 rounded-full  hover:cursor-pointer ${
+        isActive ? "bg-navitemBg shadow-xl text-white" : "hover:bg-gray-200"
+      }`}
     >
       <div>
         <Icon
-          sx={{ fontSize: "25px", color: `${hovered ? "white" : "gray"}` }}
+          sx={{ fontSize: "25px", color: `${isActive ? "white" : "gray"}` }}
         />
       </div>
-      { <div className={`${className} overflow-hidden`}>{ele.name}</div>}
+      {<div className={`${className} overflow-hidden`}>{ele.name}</div>}
     </div>
   );
 }
@@ -57,7 +56,13 @@ function SidenavLayout({ children }: Children) {
         </div>
 
         {menuItems.map((ele: NavBarItem) => {
-          return NavItem(ele, isOpen);
+          return (
+            <NavLink to={`${ele.path}`}>
+              {({ isActive }) => {
+                return NavItem(ele, isOpen, isActive);
+              }}
+            </NavLink>
+          );
         })}
       </div>
       {/* Side Nav Ends */}

@@ -1,5 +1,5 @@
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./common/layout";
 import Schedule from "./screens/schedule";
 import SidenavLayout from "./common/sidenavLayout";
@@ -11,7 +11,8 @@ function App() {
     <Layout>
       <SidenavLayout>
         <Routes>
-          <Route path="" element={<Schedule />} />
+          <Route path="/" element={<Navigate to="/schedule" replace />} />
+          <Route path="/schedule" element={<Schedule />} />
           <Route path="categories" element={<Categories />} />
           <Route path="products" element={<Products />} />
         </Routes>
