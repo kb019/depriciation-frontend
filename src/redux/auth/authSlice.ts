@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "./authActions";
-import { initialAuthState } from "../../models/authSlice";
+// import { initialAuthState } from "../../models/authSlice";
 
 const userTokens = localStorage.getItem("userTokens")
   ? JSON.parse(localStorage.getItem("userTokens")!)
@@ -10,7 +10,7 @@ const userInfo = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo")!)
   : null;
 
-const initialState: initialAuthState = {
+const initialState: any = {
   loading: false,
   userInfo, // for user object
   userTokens, // for storing the JWT
