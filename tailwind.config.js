@@ -6,6 +6,7 @@ export default {
       colors: {
         background: "#302650",
         navitemBg: "#6A00F4",
+        gradientNavBg: "linear-gradient(to right, #6a3093, #a044ff);",
       },
     },
   },

@@ -54,6 +54,17 @@
   #root {
     @apply h-full;
   }
+
+  input[type="text"]{
+    background-color: rgb(243 244 246);
+    }
+  /* tr {
+    height: 10px;
+  }
+  
+  tr td {
+     height: auto !important;
+  } */
 }
 
 @layer components {
@@ -71,7 +82,7 @@
 
   .options-visible{
     opacity:1;
-    transition:opacity 1s;
+    transition:opacity 1.5s;
   }
 
   .options-invisible{
