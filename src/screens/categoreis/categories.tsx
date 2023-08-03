@@ -7,18 +7,19 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
-import { useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
 import { Box, Button, LinearProgress, Modal, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import { useLazyGetAllCategoriesQuery } from "../redux/api/categoryApiSlice";
-import { AllCategoryResponse } from "../models/category";
+import { useLazyGetAllCategoriesQuery } from "../../redux/api/categoryApiSlice";
+import { AllCategoryResponse } from "../../models/category";
 import AddIcon from "@mui/icons-material/Add";
-import Search from "../common/searchComponent";
-import Mask from "../common/mask";
+import Search from "../../common/searchComponent";
+import Mask from "../../common/mask";
 import { useNavigate, useNavigation } from "react-router-dom";
-import CustomModal from "../common/customModal";
-import CategoriesModal from "../components/categoriesModal";
+import CustomModal from "../../common/customModal";
+import CategoriesModal from "../../components/categoriesModal";
+import ModalHoc from "../../common/customModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -56,18 +57,16 @@ function createData(
   return { name, created_at };
 }
 
-
-
 function Categories() {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rows, setRows] = useState<Partial<AllCategoryResponse>[] | []>([]);
   const [search, setSearch] = useState<string>("");
+  const [modelOpen, setModalOpen] = useState<boolean>(false);
+  const HOCModal = ModalHoc(CategoriesModal);
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-
- 
 
   const [
     getAllCategories,
@@ -118,7 +117,7 @@ function Categories() {
         categoriesLoading || categoriesFetching ? "pointer-events-none " : ""
       }`}
     >
-       <CustomModal component={<CategoriesModal/>}/>
+      <HOCModal open={modelOpen} setOpen={setModalOpen} />
       <div className="flex items-center justify-between gap-4">
         {/* //search */}
         <div className="w-full lg:w-[60%]">
@@ -133,7 +132,7 @@ function Categories() {
         <div
           className="bg-navitemBg p-2 rounded-full w-10 h-10 flex justify-center items-center shadow-md cursor-pointer hover:scale-90"
           onClick={() => {
-          
+            setModalOpen(true);
             // navigate("/addProducts");
           }}
         >

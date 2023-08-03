@@ -1,12 +1,15 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import React from "react";
+import { WrappedComponentProps } from "../common/customModal";
 
-function CategoriesModal() {
+function CategoriesModal(props:WrappedComponentProps) {
+  console.log("props is modal",props);
+
   return (
     <div className="lg:w-[500px] md:w-[400px] w-64">
       <TextField
-       error={false}
+        error={false}
         id="outlined-basic"
         label="Category Name"
         variant="outlined"
@@ -20,6 +23,9 @@ function CategoriesModal() {
         className="mt-5"
       >
         <Button
+          onClick={() => {
+             props.close!();
+          }}
           variant="outlined"
           sx={{
             border: "1px solid #6A00F4",
@@ -32,13 +38,14 @@ function CategoriesModal() {
             },
             boxShadow: 1,
           }}
+          
         >
           Cancel
         </Button>
         <Button
           variant="contained"
           sx={{
-            backgroundColor:"#6A00F4",
+            backgroundColor: "#6A00F4",
             ":hover": {
               bgcolor: "#6A00F4", // theme.palette.primary.main
               boxShadow: 1,
