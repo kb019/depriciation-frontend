@@ -2,7 +2,7 @@ import React from 'react'
 
 function AddProducts() {
   return (
-    <div>AddProducts</div>
+    <div className={`font-semibold`}>Add Products</div>
   )
 }
 

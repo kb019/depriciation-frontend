@@ -7,19 +7,18 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
-import { Component, useEffect, useState } from "react";
-import { Box, Button, LinearProgress, Modal, Typography } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
+import { useEffect, useState } from "react";
+import { Button, LinearProgress } from "@mui/material";
 import { useLazyGetAllCategoriesQuery } from "../../redux/api/categoryApiSlice";
 import { AllCategoryResponse } from "../../models/category";
-import AddIcon from "@mui/icons-material/Add";
 import Search from "../../common/searchComponent";
 import Mask from "../../common/mask";
-import { useNavigate, useNavigation } from "react-router-dom";
-import CustomModal from "../../common/customModal";
-import CategoriesModal from "../../components/categoriesModal";
-import ModalHoc from "../../common/customModal";
+import AddcategoryButnModal from "../../components/categories/addCategoryBtnModal";
+import EditBtnModal from "../../components/categories/editbtnModal";
+import DeleteBtnModal from "../../components/categories/deleteBtnModal";
+import AddIcon from "@mui/icons-material/Add";
+import EmptyTableMessage from "../../components/categories/emptyTableMessage";
+import { useNavigate } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -51,10 +50,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function createData(
   name: string,
-
-  created_at: string
+  id: string,
+  created_at: string,
+  updated_at: string
 ) {
-  return { name, created_at };
+  return { name, created_at, updated_at, id };
 }
 
 function Categories() {
@@ -62,12 +62,10 @@ function Categories() {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rows, setRows] = useState<Partial<AllCategoryResponse>[] | []>([]);
   const [search, setSearch] = useState<string>("");
-  const [modelOpen, setModalOpen] = useState<boolean>(false);
-  const HOCModal = ModalHoc(CategoriesModal);
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-
+  const navigate = useNavigate();
   const [
     getAllCategories,
     {
@@ -78,12 +76,19 @@ function Categories() {
     },
   ] = useLazyGetAllCategoriesQuery();
 
+  const getCategories = () => {
+    getAllCategories({
+      page: page + 1,
+      take: rowsPerPage,
+      search: search.trim(),
+    });
+  };
   useEffect(() => {
     if (page == -1) {
       setPage(0);
       return;
     }
-    getAllCategories({ page: page + 1, take: rowsPerPage, search: search });
+    getCategories();
   }, [page]);
 
   useEffect(() => {
@@ -94,7 +99,7 @@ function Categories() {
     if (categoriesData?.data) {
       setRows(
         categoriesData!.data.map((data) =>
-          createData(data.name, data.created_at)
+          createData(data.name, data.id, data.created_at, data.updated_at)
         )
       );
     }
@@ -117,7 +122,6 @@ function Categories() {
         categoriesLoading || categoriesFetching ? "pointer-events-none " : ""
       }`}
     >
-      <HOCModal open={modelOpen} setOpen={setModalOpen} />
       <div className="flex items-center justify-between gap-4">
         {/* //search */}
         <div className="w-full lg:w-[60%]">
@@ -129,20 +133,16 @@ function Categories() {
         </div>
 
         {/* //Add product */}
-        <div
-          className="bg-navitemBg p-2 rounded-full w-10 h-10 flex justify-center items-center shadow-md cursor-pointer hover:scale-90"
-          onClick={() => {
-            setModalOpen(true);
-            // navigate("/addProducts");
+        <AddcategoryButnModal
+          triggerAction={() => {
+            setPage(-1);
           }}
-        >
-          <AddIcon sx={{ color: "#fffefe" }} />
-        </div>
+        />
       </div>
 
       {/* //datatable */}
       <div className="h-[85%] overflow-y-auto  mt-2 relative">
-        <Paper className="relative">
+        <Paper className="relative shadow-xl">
           {(categoriesFetching || categoriesLoading) && <Mask />}
           <div
             className={`w-fll ${
@@ -157,22 +157,39 @@ function Categories() {
             <Table
               sx={{ minWidth: 400 }}
               aria-label="customized table"
-              stickyHeader
+              stickyHeader 
             >
               <TableHead>
                 <TableRow>
-                  <StyledTableCell align="left" style={{ width: "30%" }}>
+                  <StyledTableCell align="left" style={{ width: "40%" }}>
                     Name
                   </StyledTableCell>
-                  <StyledTableCell align="center" style={{ width: "50%" }}>
+                  <StyledTableCell align="center" style={{ width: "20%" }}>
                     Created At
                   </StyledTableCell>
                   <StyledTableCell align="center" style={{ width: "20%" }}>
-                    Actions
+                    Add
+                  </StyledTableCell>
+                  <StyledTableCell align="center" style={{ width: "20%" }}>
+                    Modify
                   </StyledTableCell>
                 </TableRow>
               </TableHead>
+
               <TableBody>
+                {rows.length == 0 && (
+                  <StyledTableRow >
+                    <StyledTableCell colSpan={4}>
+                      <EmptyTableMessage
+                        msg={
+                          search.length == 0
+                            ? "Please add Categories"
+                            : "No categories in this name"
+                        }
+                      />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                )}
                 {rows.map((row) => (
                   <StyledTableRow key={row.name}>
                     {/* sx={{ minWidth: 700 }} */}
@@ -180,45 +197,46 @@ function Categories() {
                     <StyledTableCell align="center">
                       {new Date(row.created_at!).toDateString()}
                     </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button
+                        startIcon={<AddIcon sx={{ color: "#9a0afa" }} />}
+                        variant="outlined"
+                        sx={{
+                          border: "1px solid #9a0afa",
+                          color: "#9a0afa",
+                          padding: 0,
+                          paddingX: 1,
+                          fontSize: 14,
+                          ":hover": {
+                            bgcolor: "white", // theme.palette.primary.main
+                            boxShadow: 1,
+                            transform: "scale(0.95)",
+                            border: "1px solid #9a0afa",
+                          },
+                          boxShadow: 1,
+                        }}
+                        onClick={() => {
+                          navigate("/addProducts");
+                        }}
+                      >
+                        Add Products
+                      </Button>
+                    </StyledTableCell>
 
                     <StyledTableCell align="center">
                       <div className="flex gap-2 items-center justify-center">
-                        <Button
-                          variant="contained"
-                          disableElevation={true}
-                          sx={{
-                            backgroundColor: "#fbfbfa33",
-                            minWidth: "40px",
-                            maxWidth: "40px",
-                            ":hover": {
-                              bgcolor: "white", // theme.palette.primary.main
-                              color: "white",
-                              boxShadow: 1,
-                              transform: "scale(0.88)",
-                            },
-                            boxShadow: 1,
+                        <DeleteBtnModal
+                          triggerAction={() => {
+                            getCategories();
                           }}
-                        >
-                          <DeleteIcon sx={{ color: "#ea3b3b" }} />
-                        </Button>
-                        <Button
-                          variant="contained"
-                          disableElevation={true}
-                          sx={{
-                            backgroundColor: "#fbfbfa33",
-                            minWidth: "40px",
-                            maxWidth: "40px",
-                            ":hover": {
-                              bgcolor: "white", // theme.palette.primary.main
-                              color: "white",
-                              boxShadow: 1,
-                              transform: "scale(0.88)",
-                            },
-                            boxShadow: 1,
+                          data={{ name: row.name!, categoryId: row.id! }}
+                        />
+                        <EditBtnModal
+                          data={{ name: row.name!, categoryId: row.id! }}
+                          triggerAction={() => {
+                            getCategories();
                           }}
-                        >
-                          <EditIcon sx={{ color: "#918d8d" }} />
-                        </Button>
+                        />
                       </div>
                     </StyledTableCell>
                   </StyledTableRow>
@@ -229,7 +247,7 @@ function Categories() {
           <TablePagination
             rowsPerPageOptions={[5, 10]}
             component="div"
-            count={categoriesData?.meta.itemCount!}
+            count={categoriesData?.meta.itemCount! || 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
