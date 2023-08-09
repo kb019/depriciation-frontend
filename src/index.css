@@ -47,6 +47,7 @@
 
   html {
     font-family: Nato, system-ui, sans-serif;
+    box-sizing:border-box;
   }
 
   html,

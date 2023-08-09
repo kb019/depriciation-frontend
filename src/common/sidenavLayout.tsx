@@ -43,7 +43,7 @@ function SidenavLayout({ children }: Children) {
     <div className="flex h-full w-full">
       {/* Side nav Starts */}
       <div
-        className={`h-full bg-white relative pt-20 p-4 shadow-xl  ${className}`}
+        className={`h-full bg-white relative pt-20 p-4 shadow-xl  ${className} sm:block hidden`}
       >
         <div
           className=" w-max p-2 z-50 flex justify-center items-center rounded-full absolute right-0 top-5 translate-x-[50%] hover:cursor-pointer bg-white shadow-md"
@@ -71,7 +71,7 @@ function SidenavLayout({ children }: Children) {
       {/* Side Nav Ends */}
       {/* content starts */}
       <div
-        className="flex-1 h-full bg-slate-100 p-9 relative"
+        className="flex-1 h-full bg-slate-100 relative  overflow-y-auto"
         style={{ boxShadow: "inset 10px 0 10px 0 #ececec" }}
       >
         

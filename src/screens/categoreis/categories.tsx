@@ -19,6 +19,7 @@ import DeleteBtnModal from "../../components/categories/deleteBtnModal";
 import AddIcon from "@mui/icons-material/Add";
 import EmptyTableMessage from "../../components/categories/emptyTableMessage";
 import { useNavigate } from "react-router-dom";
+import ComponentWithHeader from "../../common/componentWithHeader";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -117,145 +118,147 @@ function Categories() {
     // setPage(0);
   };
   return (
-    <div
-      className={`w-full h-full ${
-        categoriesLoading || categoriesFetching ? "pointer-events-none " : ""
-      }`}
-    >
-      <div className="flex items-center justify-between gap-4">
-        {/* //search */}
-        <div className="w-full lg:w-[60%]">
-          <Search
-            triggerFunction={(searchVal: string) => {
-              setSearch(searchVal);
+    <ComponentWithHeader title="Added Categories">
+      <div
+        className={`w-full h-full  ${
+          categoriesLoading || categoriesFetching ? "pointer-events-none " : ""
+        }`}
+      >
+        <div className="flex items-center justify-between gap-4">
+          {/* //search */}
+          <div className="w-full lg:w-[60%]">
+            <Search
+              triggerFunction={(searchVal: string) => {
+                setSearch(searchVal);
+              }}
+            />
+          </div>
+
+          {/* //Add product */}
+          <AddcategoryButnModal
+            triggerAction={() => {
+              setPage(-1);
             }}
           />
         </div>
 
-        {/* //Add product */}
-        <AddcategoryButnModal
-          triggerAction={() => {
-            setPage(-1);
-          }}
-        />
-      </div>
-
-      {/* //datatable */}
-      <div className="h-[85%] overflow-y-auto  mt-2 relative">
-        <Paper className="relative shadow-xl">
-          {(categoriesFetching || categoriesLoading) && <Mask />}
-          <div
-            className={`w-fll ${
-              categoriesLoading || categoriesFetching
-                ? "opacity-100"
-                : "opacity-0"
-            }`}
-          >
-            <LinearProgress />
-          </div>
-          <TableContainer>
-            <Table
-              sx={{ minWidth: 400 }}
-              aria-label="customized table"
-              stickyHeader 
+        {/* //datatable */}
+        <div className="h-[85%] overflow-y-auto  mt-2 relative">
+          <Paper className="relative shadow-xl">
+            {(categoriesFetching || categoriesLoading) && <Mask />}
+            <div
+              className={`w-fll ${
+                categoriesLoading || categoriesFetching
+                  ? "opacity-100"
+                  : "opacity-0"
+              }`}
             >
-              <TableHead>
-                <TableRow>
-                  <StyledTableCell align="left" style={{ width: "40%" }}>
-                    Name
-                  </StyledTableCell>
-                  <StyledTableCell align="center" style={{ width: "20%" }}>
-                    Created At
-                  </StyledTableCell>
-                  <StyledTableCell align="center" style={{ width: "20%" }}>
-                    Add
-                  </StyledTableCell>
-                  <StyledTableCell align="center" style={{ width: "20%" }}>
-                    Modify
-                  </StyledTableCell>
-                </TableRow>
-              </TableHead>
+              <LinearProgress />
+            </div>
+            <TableContainer>
+              <Table
+                sx={{ minWidth: 400 }}
+                aria-label="customized table"
+                stickyHeader
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell align="left" style={{ width: "40%" }}>
+                      Name
+                    </StyledTableCell>
+                    <StyledTableCell align="center" style={{ width: "20%" }}>
+                      Created At
+                    </StyledTableCell>
+                    <StyledTableCell align="center" style={{ width: "20%" }}>
+                      Add
+                    </StyledTableCell>
+                    <StyledTableCell align="center" style={{ width: "20%" }}>
+                      Modify
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
 
-              <TableBody>
-                {rows.length == 0 && (
-                  <StyledTableRow >
-                    <StyledTableCell colSpan={4}>
-                      <EmptyTableMessage
-                        msg={
-                          search.length == 0
-                            ? "Please add Categories"
-                            : "No categories in this name"
-                        }
-                      />
-                    </StyledTableCell>
-                  </StyledTableRow>
-                )}
-                {rows.map((row) => (
-                  <StyledTableRow key={row.name}>
-                    {/* sx={{ minWidth: 700 }} */}
-                    <StyledTableCell align="left">{row.name}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      {new Date(row.created_at!).toDateString()}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Button
-                        startIcon={<AddIcon sx={{ color: "#9a0afa" }} />}
-                        variant="outlined"
-                        sx={{
-                          border: "1px solid #9a0afa",
-                          color: "#9a0afa",
-                          padding: 0,
-                          paddingX: 1,
-                          fontSize: 14,
-                          ":hover": {
-                            bgcolor: "white", // theme.palette.primary.main
-                            boxShadow: 1,
-                            transform: "scale(0.95)",
+                <TableBody>
+                  {rows.length == 0 && (
+                    <StyledTableRow>
+                      <StyledTableCell colSpan={4}>
+                        <EmptyTableMessage
+                          msg={
+                            search.length == 0
+                              ? "Please add Categories"
+                              : "No categories in this name"
+                          }
+                        />
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  )}
+                  {rows.map((row) => (
+                    <StyledTableRow key={row.name}>
+                      {/* sx={{ minWidth: 700 }} */}
+                      <StyledTableCell align="left">{row.name}</StyledTableCell>
+                      <StyledTableCell align="center">
+                        {new Date(row.created_at!).toDateString()}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
+                        <Button
+                          startIcon={<AddIcon sx={{ color: "#9a0afa" }} />}
+                          variant="outlined"
+                          sx={{
                             border: "1px solid #9a0afa",
-                          },
-                          boxShadow: 1,
-                        }}
-                        onClick={() => {
-                          navigate("/addProducts");
-                        }}
-                      >
-                        Add Products
-                      </Button>
-                    </StyledTableCell>
+                            color: "#9a0afa",
+                            padding: 0,
+                            paddingX: 1,
+                            fontSize: 14,
+                            ":hover": {
+                              bgcolor: "white", // theme.palette.primary.main
+                              boxShadow: 1,
+                              transform: "scale(0.95)",
+                              border: "1px solid #9a0afa",
+                            },
+                            boxShadow: 1,
+                          }}
+                          onClick={() => {
+                            navigate("/addProducts");
+                          }}
+                        >
+                          Add Products
+                        </Button>
+                      </StyledTableCell>
 
-                    <StyledTableCell align="center">
-                      <div className="flex gap-2 items-center justify-center">
-                        <DeleteBtnModal
-                          triggerAction={() => {
-                            getCategories();
-                          }}
-                          data={{ name: row.name!, categoryId: row.id! }}
-                        />
-                        <EditBtnModal
-                          data={{ name: row.name!, categoryId: row.id! }}
-                          triggerAction={() => {
-                            getCategories();
-                          }}
-                        />
-                      </div>
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10]}
-            component="div"
-            count={categoriesData?.meta.itemCount! || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Paper>
+                      <StyledTableCell align="center">
+                        <div className="flex gap-2 items-center justify-center">
+                          <DeleteBtnModal
+                            triggerAction={() => {
+                              getCategories();
+                            }}
+                            data={{ name: row.name!, categoryId: row.id! }}
+                          />
+                          <EditBtnModal
+                            data={{ name: row.name!, categoryId: row.id! }}
+                            triggerAction={() => {
+                              getCategories();
+                            }}
+                          />
+                        </div>
+                      </StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10]}
+              component="div"
+              count={categoriesData?.meta.itemCount! || 0}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Paper>
+        </div>
       </div>
-    </div>
+    </ComponentWithHeader>
   );
 }
 

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import { SearchProps } from "../models/searchProps";
 
-function Search({ triggerFunction }: { triggerFunction: (searchVal:string) => void }) {
+
+function Search(props: SearchProps) {
+  const { triggerFunction, ...restProps } = props;
   const [searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
@@ -26,14 +29,17 @@ function Search({ triggerFunction }: { triggerFunction: (searchVal:string) => vo
             onChange={(e) => {
               setSearchValue(e.target.value);
             }}
+            {...restProps}
             style={{ width: "100%", outline: "none", border: "none" }}
           />
         </div>
       </div>
-      <div onClick={()=>{
-        setSearchValue("");
-      }}>
-        <CloseIcon sx={{ color: "#838080" }} className="cursor-pointer"/>
+      <div
+        onClick={() => {
+          setSearchValue("");
+        }}
+      >
+        <CloseIcon sx={{ color: "#838080" }} className="cursor-pointer" />
       </div>
     </div>
   );
