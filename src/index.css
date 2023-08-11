@@ -49,6 +49,10 @@
     font-family: Nato, system-ui, sans-serif;
     box-sizing:border-box;
   }
+  input, select {
+    -webkit-background-clip: text !important;
+    background-clip:  text !important;
+  }
 
   html,
   body,

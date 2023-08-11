@@ -5,12 +5,12 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikProps } from "formik";
 import React from "react";
-import { AddProductValues } from "../../models/addProcductValues";
+import { ProductDetails as ProductDetailsType } from "../../models/product";
 
 function ProductDetails({
   formikProps,
 }: {
-  formikProps: FormikProps<AddProductValues>;
+  formikProps: FormikProps<ProductDetailsType>;
 }) {
   const {
     values,
@@ -35,16 +35,16 @@ function ProductDetails({
               marginTop: "7px",
             }}
             disabled={isSubmitting}
-            name="productDetails.name"
-            value={values.productDetails.name}
+            name="productDetails.productName"
+            value={values.productDetails.productName}
             onChange={handleChange}
             onBlur={handleBlur}
             error={
-              touched.productDetails?.name &&
-              Boolean(errors.productDetails?.name)
+              touched.productDetails?.productName &&
+              Boolean(errors.productDetails?.productName)
             }
             helperText={
-              touched.productDetails?.name && errors.productDetails?.name
+              touched.productDetails?.productName && errors.productDetails?.productName
             }
           />
         </div>
@@ -60,20 +60,20 @@ function ProductDetails({
                       fullWidth: true,
                       onBlur: handleBlur,
                       error: Boolean(
-                        touched.productDetails?.date &&
-                          errors.productDetails?.date
+                        touched.productDetails?.purchaseDate &&
+                          errors.productDetails?.purchaseDate
                       ),
                       helperText:
-                        touched.productDetails?.date &&
-                        errors.productDetails?.date,
+                        touched.productDetails?.purchaseDate &&
+                        errors.productDetails?.purchaseDate,
                       disabled: isSubmitting,
-                      name: "productDetails.date",
+                      name: "productDetails.purchaseDate",
                     },
                   }}
-                  value={values.productDetails.date?dayjs(values.productDetails.date):null}
+                  value={values.productDetails.purchaseDate?dayjs(values.productDetails.purchaseDate):null}
                   onChange={(value) => {
                     setFieldValue(
-                      "productDetails.date",
+                      "productDetails.purchaseDate",
                       new Date(value?.toString()!)
                     );
                   }}
@@ -95,7 +95,7 @@ function ProductDetails({
                 marginTop: "7px",
               }}
               name="productDetails.quantity"
-              value={values.productDetails.quantity}
+              value={values.productDetails.quantity||""}
               onChange={handleChange}
               onBlur={handleBlur}
               error={
@@ -122,7 +122,7 @@ function ProductDetails({
               marginTop: "7px",
             }}
             name="productDetails.price"
-            value={values.productDetails.price}
+            value={values.productDetails.price||""}
             onChange={handleChange}
             onBlur={handleBlur}
             error={
@@ -148,7 +148,7 @@ function ProductDetails({
                 marginTop: "7px",
               }}
               name="productDetails.cgst"
-              value={values.productDetails.cgst}
+              value={values.productDetails.cgst||""}
               onChange={handleChange}
               onBlur={handleBlur}
               error={
@@ -173,7 +173,7 @@ function ProductDetails({
                 marginTop: "7px",
               }}
               name="productDetails.sgst"
-              value={values.productDetails.sgst}
+              value={values.productDetails.sgst||""}
               onChange={handleChange}
               onBlur={handleBlur}
               error={

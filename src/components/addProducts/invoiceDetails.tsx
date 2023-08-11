@@ -5,12 +5,12 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 import { FormikHelpers, FormikProps } from "formik";
 import React from "react";
-import { AddProductValues } from "../../models/addProcductValues";
+import { ProductDetails } from "../../models/product";
 
 function InvoiceDetails({
   formikProps,
 }: {
-  formikProps: FormikProps<AddProductValues>;
+  formikProps: FormikProps<ProductDetails>;
 }) {
   const {
     values,
@@ -31,8 +31,8 @@ function InvoiceDetails({
             size="small"
             id="outlined-controlled"
             label="Invoice Number"
-            name="invoiceDetails.number"
-            value={values.invoiceDetails.number}
+            name="invoiceDetails.invoiceNumber"
+            value={values.invoiceDetails.invoiceNumber}
             onBlur={handleBlur}
             fullWidth
             disabled={isSubmitting}
@@ -42,11 +42,11 @@ function InvoiceDetails({
             className="bg-white`"
             onChange={handleChange}
             error={
-              touched.invoiceDetails?.number &&
-              Boolean(errors.invoiceDetails?.number)
+              touched.invoiceDetails?.invoiceNumber &&
+              Boolean(errors.invoiceDetails?.invoiceNumber)
             }
             helperText={
-              touched.invoiceDetails?.number && errors.invoiceDetails?.number
+              touched.invoiceDetails?.invoiceNumber && errors.invoiceDetails?.invoiceNumber
             }
           />
         </div>
@@ -61,24 +61,24 @@ function InvoiceDetails({
                     fullWidth: true,
                     onBlur: handleBlur,
                     error: Boolean(
-                      touched.invoiceDetails?.date &&
-                        errors.invoiceDetails?.date
+                      touched.invoiceDetails?.invoiceDate &&
+                        errors.invoiceDetails?.invoiceDate
                     ),
                     helperText:
-                      touched.invoiceDetails?.date &&
-                      errors.invoiceDetails?.date,
+                      touched.invoiceDetails?.invoiceDate &&
+                      errors.invoiceDetails?.invoiceDate,
                     disabled: isSubmitting,
-                    name: "invoiceDetails.date",
+                    name: "invoiceDetails.invoiceDate",
                   },
                 }}
                 value={
-                  values.invoiceDetails.date
-                    ? dayjs(values.invoiceDetails.date)
+                  values.invoiceDetails.invoiceDate
+                    ? dayjs(values.invoiceDetails.invoiceDate)
                     : null
                 }
                 onChange={(value) => {
                   setFieldValue(
-                    "invoiceDetails.date",
+                    "invoiceDetails.invoiceDate",
                     new Date(value?.toString()!)
                   );
                 }}

@@ -1,12 +1,12 @@
 import { TextField } from "@mui/material";
 import { FormikProps } from "formik";
 import React from "react";
-import { AddProductValues } from "../../models/addProcductValues";
+import { ProductDetails } from "../../models/product";
 
 function CompanyDetails({
   formikProps,
 }: {
-  formikProps: FormikProps<AddProductValues>;
+  formikProps: FormikProps<ProductDetails>;
 }) {
   const {
     values,
@@ -30,16 +30,16 @@ function CompanyDetails({
               marginTop: "7px",
             }}
             disabled={isSubmitting}
-            name="supplierDetails.name"
-            value={values.supplierDetails.name}
+            name="supplierDetails.supplierName"
+            value={values.supplierDetails.supplierName}
             onChange={handleChange}
             onBlur={handleBlur}
             error={
-              touched.supplierDetails?.name &&
-              Boolean(errors.supplierDetails?.name)
+              touched.supplierDetails?.supplierName &&
+              Boolean(errors.supplierDetails?.supplierName)
             }
             helperText={
-              touched.supplierDetails?.name && errors.supplierDetails?.name
+              touched.supplierDetails?.supplierName && errors.supplierDetails?.supplierName
             }
           />
         </div>
@@ -52,17 +52,17 @@ function CompanyDetails({
             rows={5}
             // maxRows={4}
             disabled={isSubmitting}
-name="supplierDetails.address"
-            value={values.supplierDetails.address}
+name="supplierDetails.supplierAddress"
+            value={values.supplierDetails.supplierAddress}
             onChange={handleChange}
             onBlur={handleBlur}
             error={
-              touched.supplierDetails?.address &&
-              Boolean(errors.supplierDetails?.address)
+              touched.supplierDetails?.supplierAddress &&
+              Boolean(errors.supplierDetails?.supplierAddress)
             }
             helperText={
-              touched.supplierDetails?.address &&
-              errors.supplierDetails?.address
+              touched.supplierDetails?.supplierAddress &&
+              errors.supplierDetails?.supplierAddress
             }
           />
         </div>
