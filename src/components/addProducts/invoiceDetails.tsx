@@ -21,9 +21,8 @@ function InvoiceDetails({
     setFieldValue,
     isSubmitting,
   } = formikProps;
-  console.log("inside");
   return (
-    <div className=" h-max">
+    <div className=" h-max md:col-start-2 col-start-1 col-span-1 ">
       <h2 className="font-medium">Invoice Details</h2>
       <div className="flex  gap-2 w-full md:flex-row flex-wrap  flex-col border-2 border-gray-300 rounded-md p-4 mt-2 ">
         <div className="basis-2/5 w-full flex-1">

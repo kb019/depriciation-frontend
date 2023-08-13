@@ -22,7 +22,7 @@ function ProductDetails({
     isSubmitting,
   } = formikProps;
   return (
-    <div className="md:col-start-2 col-start-1 col-span-1 row-start-1 row-span-full  self-stretch h-max">
+    <div className="md:col-start-2 col-start-1 col-span-1     self-stretch h-max">
       <h2 className="font-medium">Product Details</h2>
       <div className="border-2 border-gray-300 rounded-md p-4 mt-2">
         <div>

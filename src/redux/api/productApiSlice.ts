@@ -1,5 +1,7 @@
+import { AllProductResponse } from './../../models/product';
 
-import { AddProductResponse, ProductDetails } from "../../models/product";
+import { PaginatedResponse } from "../../models/paginatedResponse";
+import { AddProductResponse, AllProductUrlSearchParams, ProductDetails } from "../../models/product";
   import { apiSlice } from "../auth/authApi";
   
   export const categoryApiSlice = apiSlice.injectEndpoints({
@@ -13,11 +15,24 @@ import { AddProductResponse, ProductDetails } from "../../models/product";
           body: productDetails
         }),
       }),
+      getAllProducts: builder.query<
+      PaginatedResponse<AllProductResponse>,
+      AllProductUrlSearchParams
+    >({
+      query: ({ page, take, search }) => ({
+        url: "/api/v1/product",
+        params: {
+          page,
+          take,
+          search,
+        },
+      }),
+    }),
      
       
     }),
   });
   
-  export const { useAddNewProductMutation} =
+  export const { useAddNewProductMutation,useLazyGetAllProductsQuery} =
     categoryApiSlice;
   

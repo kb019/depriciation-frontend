@@ -7,6 +7,7 @@ import Categories from "./screens/categoreis/categories";
 import Products from "./screens/products/products";
 import AddProducts from "./screens/addProducts/addProducts";
 
+
 function App() {
   return (
     <Layout>

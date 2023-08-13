@@ -30,6 +30,16 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getAllCategoriesWithoutPagination: builder.query<
+      AllCategoryResponse[],
+      void
+    >({
+      query: (arg) => ({
+        url: "api/v1/category/plain",
+      }),
+     
+     
+    }),
     addNewCategory: builder.mutation<AddCategoryResponse, Category>({
       query: ({ name }) => ({
         url: "/api/v1/category",
@@ -51,14 +61,22 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    deleteCategoryById:builder.mutation<{message:string},{categoryId:string}>({
-       query:({categoryId})=>({
-        url:`/api/v1/category/${categoryId}`,
-        method:"DELETE"
-       })
-    })
+    deleteCategoryById: builder.mutation<
+      { message: string },
+      { categoryId: string }
+    >({
+      query: ({ categoryId }) => ({
+        url: `/api/v1/category/${categoryId}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
-export const { useLazyGetAllCategoriesQuery, useAddNewCategoryMutation ,useUpdateCategoryMutation,useDeleteCategoryByIdMutation} =
-  categoryApiSlice;
+export const {
+  useLazyGetAllCategoriesQuery,
+  useAddNewCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryByIdMutation,
+  useGetAllCategoriesWithoutPaginationQuery,
+} = categoryApiSlice;

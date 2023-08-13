@@ -218,7 +218,12 @@ function Categories() {
                             boxShadow: 1,
                           }}
                           onClick={() => {
-                            navigate("/addProducts");
+                            navigate("/addProducts", {
+                              state: {
+                                categoryId: row.id,
+                                categoryName: row.name,
+                              },
+                            });
                           }}
                         >
                           Add Products
