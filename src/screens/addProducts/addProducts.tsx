@@ -6,7 +6,10 @@ import ProductDetails from "../../components/addProducts/productDetails";
 import ComponentWithHeader from "../../common/componentWithHeader";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { ProductDetails as ProductDetailsType } from "../../models/product";
+import {
+  AddUpdateProductDetail,
+  ProductDetails as ProductDetailsType,
+} from "../../models/product";
 import {
   useAddNewProductMutation,
   useLazyGetProductByIdQuery,
@@ -67,37 +70,48 @@ function AddProducts() {
   const navigate = useNavigate();
   const initialValues: ProductDetailsType = {
     categoryDetails: {
-      categoryName: state?.categoryName || itemData?.category.name || "",
-      categoryId: state?.categoryId || itemData?.category.id || "",
+      categoryName: state?.categoryName || (state?.productId && itemData?.category.name) || "",
+      categoryId: state?.categoryId || (state?.productId && itemData?.category.id) || "",
     },
     invoiceDetails: {
-      invoiceNumber: itemData?.invoiceNumber || "",
-      invoiceDate: itemData?.invoiceDate || null,
+      invoiceNumber: (state?.productId && itemData?.invoiceNumber) || "",
+      invoiceDate: (state?.productId &&itemData?.invoiceDate) || null,
     },
     supplierDetails: {
-      supplierName: itemData?.supplierName || "",
-      supplierAddress: itemData?.supplierAddress || "",
+      supplierName: (state?.productId && itemData?.supplierName) || "",
+      supplierAddress: (state?.productId && itemData?.supplierAddress) || "",
     },
     productDetails: {
-      productName: itemData?.productName || "",
-      purchaseDate: itemData?.purchaseDate || null,
-      quantity: itemData?.quantity ? Number(itemData?.quantity) : null,
-      price: itemData?.price ? Number(itemData?.price) : null,
-      cgst: itemData?.cgst ? Number(itemData.cgst) : null,
-      sgst: itemData?.sgst ? Number(itemData?.sgst) : null,
+      productName: (state?.productId && itemData?.productName) || "",
+      purchaseDate: (state?.productId && itemData?.purchaseDate) || null,
+      quantity: (state?.productId && itemData?.quantity) ? Number(itemData?.quantity) : null,
+      price:(state?.productId && itemData?.price) ? Number(itemData?.price) : null,
+      cgst:  (state?.productId && itemData?.cgst) ? Number(itemData.cgst) : null,
+      sgst: (state?.productId && itemData?.sgst) ? Number(itemData?.sgst) : null,
     },
   };
+
+  console.log(state,initialValues);
+
 
   async function updateProduct(
     productId: string,
     itemDetails: ProductDetailsType
   ) {
     try {
-      const body = {
-        ...itemDetails,
+      const body: AddUpdateProductDetail = {
+        supplierDetails: {
+          ...itemDetails.supplierDetails,
+        },
+        invoiceDetails: {
+          ...itemDetails.invoiceDetails,
+        },
+        productDetails: {
+          ...itemDetails.productDetails,
+        },
         categoryId: itemDetails.categoryDetails?.categoryId,
       };
-      delete body.categoryDetails;
+
       await updateProductById({ productId, itemDetails: body }).unwrap();
       notifySuccess("Product updated successfully");
       await getProductDetail();
@@ -130,6 +144,7 @@ function AddProducts() {
   return (
     <ComponentWithHeader
       title={`${state?.productId ? "Edit Product" : "Add Product"}`}
+      key={`${state?.productId ? "Edit Product" : "Add Product"}`}
     >
       <Formik
         initialValues={initialValues}
@@ -137,11 +152,18 @@ function AddProducts() {
         onSubmit={async (values, { setSubmitting, resetForm }) => {
           try {
             setLoading(true);
-            const body = {
-              ...values,
+            const body: AddUpdateProductDetail = {
+              supplierDetails: {
+                ...values.supplierDetails,
+              },
+              invoiceDetails: {
+                ...values.invoiceDetails,
+              },
+              productDetails: {
+                ...values.productDetails,
+              },
               categoryId: values.categoryDetails?.categoryId,
             };
-            delete body.categoryDetails;
             await addNewProduct(body).unwrap();
             notifySuccess("Product added successfully");
             setSubmitting(false);

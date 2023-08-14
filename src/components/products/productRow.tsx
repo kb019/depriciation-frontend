@@ -9,6 +9,7 @@ import {
 import DeleteBtnModal from "../categories/deleteBtnModal";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
+import DeleteProductModal from "../addProducts/deleteProductModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,8 +43,12 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function ProductRow(props: { row: AllProductResponse; index: number }) {
-  const { row, index } = props;
+function ProductRow(props: {
+  row: AllProductResponse;
+  index: number;
+  triggerFetch: () => void;
+}) {
+  const { row, index, triggerFetch } = props;
   const navigate = useNavigate();
   return (
     <>
@@ -65,7 +70,7 @@ function ProductRow(props: { row: AllProductResponse; index: number }) {
         </StyledTableCell>
 
         <StyledTableCell style={{ minWidth: 150, overflowWrap: "break-word" }}>
-          {row.category.name}
+          {row.category?.name}
         </StyledTableCell>
         <StyledTableCell style={{ minWidth: 150, overflowWrap: "break-word" }}>
           {row.invoiceNumber}
@@ -73,11 +78,18 @@ function ProductRow(props: { row: AllProductResponse; index: number }) {
 
         <StyledTableCell align="center">
           <div className="flex gap-2 items-center justify-center">
-            <DeleteBtnModal
+            {/* <DeleteBtnModal
               triggerAction={() => {
-                // getProducts();
+
+                triggerFetch();
               }}
-              data={{ name: row.category.name, categoryId: row.id! }}
+              data={{ name: row.category?.name, categoryId: row.id! }}
+            /> */}
+            <DeleteProductModal
+              triggerAction={() => {
+                triggerFetch();
+              }}
+              data={{ name: row.productName, productId: row.id }}
             />
             <Button
               variant="contained"

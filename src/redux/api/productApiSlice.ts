@@ -1,4 +1,5 @@
 import {
+  AddUpdateProductDetail,
   AllProductResponse,
   GetProductByIdResponse,
 } from "./../../models/product";
@@ -13,7 +14,7 @@ import { apiSlice } from "../auth/authApi";
 
 export const categoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    addNewProduct: builder.mutation<AddProductResponse, ProductDetails>({
+    addNewProduct: builder.mutation<AddProductResponse, AddUpdateProductDetail>({
       query: (productDetails) => ({
         url: "/api/v1/product",
         method: "POST",
@@ -36,7 +37,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
     }),
     updateProduct: builder.mutation<
       AddProductResponse,
-      { productId: string; itemDetails: ProductDetails }
+      { productId: string; itemDetails: AddUpdateProductDetail }
     >({
       query: ({ productId, itemDetails }) => ({
         url: `/api/v1/product/${productId}`,

@@ -1,12 +1,18 @@
 import { AddCategoryResponse } from "./category";
 export interface ProductDetails {
-  categoryDetails?: CategoryDetails;
+  categoryDetails: CategoryDetails;
   invoiceDetails: InvoiceDetails;
   supplierDetails: SupplierDetails;
   productDetails: ProductDetail;
-  categoryId?: string;
 }
 
+export interface AddUpdateProductDetail {
+  supplierDetails: SupplierDetails;
+  invoiceDetails: InvoiceDetails;
+
+  productDetails: ProductDetail;
+  categoryId: string;
+}
 export interface CategoryDetails {
   categoryName: string;
   categoryId: string;
@@ -62,3 +68,14 @@ export type AllProductUrlSearchParams = {
   take: number;
   search: string;
 };
+
+export interface ModifyProductData {
+  name: string;
+  productId: string;
+}
+
+export interface ModifyProductBtnProps {
+  data: ModifyProductData;
+  triggerAction: () => void;
+}
+

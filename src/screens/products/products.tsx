@@ -218,7 +218,7 @@ function Products() {
 
                 <TableBody>
                   {rows.length == 0 && (
-                    <StyledTableRow>
+                    <StyledTableRow className="bg-gray-100 h-12">
                       <StyledTableCell colSpan={4}>
                         <EmptyTableMessage
                           msg={
@@ -231,7 +231,14 @@ function Products() {
                     </StyledTableRow>
                   )}
                   {rows.map((row, i) => (
-                    <ProductRow row={row} key={row.id} index={i} />
+                    <ProductRow
+                      row={row}
+                      key={row.id}
+                      index={i}
+                      triggerFetch={() => {
+                        getProducts();
+                      }}
+                    />
                   ))}
                 </TableBody>
               </Table>

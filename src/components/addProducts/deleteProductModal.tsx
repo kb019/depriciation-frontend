@@ -2,12 +2,14 @@ import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useState } from "react";
 import ModalHoc from "../../common/customModal";
-import DeteteCategory from "./deleteCategory";
 import { ModifyBtnProps, ModifyCategoryData } from "../../models/category";
+import DeleteProduct from "./deleteProduct";
+import { ModifyProductBtnProps } from "../../models/product";
 
-function DeleteBtnModal({ triggerAction, data }: ModifyBtnProps) {
+
+function DeleteProductModal({ triggerAction, data }: ModifyProductBtnProps) {
   const [modelOpen, setModalOpen] = useState<boolean>(false);
-  const HOCModal = ModalHoc(DeteteCategory);
+  const HOCModal = ModalHoc(DeleteProduct);
   return (
     <>
       <HOCModal
@@ -23,7 +25,7 @@ function DeleteBtnModal({ triggerAction, data }: ModifyBtnProps) {
         variant="contained"
         disableElevation={true}
         onClick={(e) => {
-          e.stopPropagation();
+            e.stopPropagation();
           setModalOpen(true);
         }}
         sx={{
@@ -45,4 +47,4 @@ function DeleteBtnModal({ triggerAction, data }: ModifyBtnProps) {
   );
 }
 
-export default DeleteBtnModal;
+export default DeleteProductModal;
