@@ -36,7 +36,7 @@ function DeteteCategory({ triggerAction, data, close }: WrappedComponentProps) {
       <div className="max-w-max ml-auto mb-3 cursor-pointer" onClick={close}>
         <CancelIcon className=" text-gray-600 " />
       </div>
-      <h2>{`Are you sure you want to delete the ${categoryData.name} Category?`}</h2>
+      <h2>{`All items tagged with ${categoryData.name} Category will be deleted!`}</h2>
       <Stack
         direction="row"
         spacing={2}

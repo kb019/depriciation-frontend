@@ -1,21 +1,27 @@
-import { AllProductResponse } from './../../models/product';
+import {
+  AllProductResponse,
+  GetProductByIdResponse,
+} from "./../../models/product";
 
 import { PaginatedResponse } from "../../models/paginatedResponse";
-import { AddProductResponse, AllProductUrlSearchParams, ProductDetails } from "../../models/product";
-  import { apiSlice } from "../auth/authApi";
-  
-  export const categoryApiSlice = apiSlice.injectEndpoints({
-    endpoints: (builder) => ({
-      
-     
-      addNewProduct: builder.mutation<AddProductResponse, ProductDetails>({
-        query: (productDetails) => ({
-          url: "/api/v1/product",
-          method: "POST",
-          body: productDetails
-        }),
+import {
+  AddProductResponse,
+  AllProductUrlSearchParams,
+  ProductDetails,
+} from "../../models/product";
+import { apiSlice } from "../auth/authApi";
+
+export const categoryApiSlice = apiSlice.injectEndpoints({
+  endpoints: (builder) => ({
+    addNewProduct: builder.mutation<AddProductResponse, ProductDetails>({
+      query: (productDetails) => ({
+        url: "/api/v1/product",
+        method: "POST",
+        body: productDetails,
       }),
-      getAllProducts: builder.query<
+    }),
+
+    getAllProducts: builder.query<
       PaginatedResponse<AllProductResponse>,
       AllProductUrlSearchParams
     >({
@@ -28,11 +34,42 @@ import { AddProductResponse, AllProductUrlSearchParams, ProductDetails } from ".
         },
       }),
     }),
-     
-      
+    updateProduct: builder.mutation<
+      AddProductResponse,
+      { productId: string; itemDetails: ProductDetails }
+    >({
+      query: ({ productId, itemDetails }) => ({
+        url: `/api/v1/product/${productId}`,
+        method: "PUT",
+        body: itemDetails,
+      }),
     }),
-  });
-  
-  export const { useAddNewProductMutation,useLazyGetAllProductsQuery} =
-    categoryApiSlice;
-  
+
+    getProductById: builder.query<
+      GetProductByIdResponse,
+      { productId: string }
+    >({
+      query: ({ productId }) => ({
+        url: `api/v1/product/${productId}`,
+      }),
+    }),
+    deleteProductById: builder.mutation<
+      { message: string },
+      { productId: string }
+    >({
+      query: ({ productId }) => ({
+        url: `/api/v1/product/${productId}`,
+        method: "DELETE",
+      }),
+    }),
+  }),
+});
+
+export const {
+  useAddNewProductMutation,
+  useLazyGetAllProductsQuery,
+  useGetProductByIdQuery,
+  useLazyGetProductByIdQuery,
+  useUpdateProductMutation,
+  useDeleteProductByIdMutation
+} = categoryApiSlice;

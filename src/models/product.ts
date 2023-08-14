@@ -1,8 +1,10 @@
+import { AddCategoryResponse } from "./category";
 export interface ProductDetails {
-  categoryDetails: CategoryDetails;
+  categoryDetails?: CategoryDetails;
   invoiceDetails: InvoiceDetails;
   supplierDetails: SupplierDetails;
   productDetails: ProductDetail;
+  categoryId?: string;
 }
 
 export interface CategoryDetails {
@@ -34,16 +36,29 @@ export interface AddProductResponse extends ProductDetails {
   updated_at: string;
 }
 
+export interface AllProductResponse
+  extends InvoiceDetails,
+    ProductDetail,
+    SupplierDetails {
+  id: string;
+  created_at: string;
+  updated_at: string;
 
-export interface AllProductResponse extends CategoryDetails,InvoiceDetails,ProductDetail,SupplierDetails{
-    id: string;
-    created_at: string;
-    updated_at: string;
+  category: AddCategoryResponse;
 }
 
+export interface GetProductByIdResponse
+  extends InvoiceDetails,
+    ProductDetail,
+    SupplierDetails {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  category: AddCategoryResponse;
+}
 
 export type AllProductUrlSearchParams = {
-    page: number;
-    take: number;
-    search: string;
-  };
+  page: number;
+  take: number;
+  search: string;
+};

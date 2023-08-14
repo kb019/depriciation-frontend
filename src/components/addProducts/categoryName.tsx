@@ -2,7 +2,7 @@ import { Autocomplete, CircularProgress, TextField } from "@mui/material";
 import React from "react";
 import { useGetAllCategoriesWithoutPaginationQuery } from "../../redux/api/categoryApiSlice";
 import { FormikProps } from "formik";
-import { ProductDetails } from "../../models/product";
+import { CategoryDetails, ProductDetails } from "../../models/product";
 
 function CategoryName({
   formikProps,
@@ -26,12 +26,16 @@ function CategoryName({
           disableClearable
           options={categoryData || []}
           getOptionLabel={(option) => option.name}
+          onInputChange={(event, value) => {
+            console.log("on Input change triggered",value);
+          }}
           onChange={(event, value) => {
+            console.log(value);
             setFieldValue("categoryDetails.categoryName", value?.name);
             setFieldValue("categoryDetails.categoryId", value?.id);
           }}
           sx={{ width: "100%" }}
-          inputValue={values.categoryDetails.categoryName}
+          inputValue={values.categoryDetails?.categoryName}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -46,7 +50,7 @@ function CategoryName({
                 Boolean(errors.categoryDetails?.categoryName)
               }
               helperText={
-                touched.categoryDetails?.categoryName &&
+                touched.categoryDetails!.categoryName &&
                 errors.categoryDetails?.categoryName
               }
               disabled={isSubmitting}

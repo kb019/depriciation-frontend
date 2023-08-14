@@ -5,7 +5,7 @@ import { SearchProps } from "../models/searchProps";
 
 
 function Search(props: SearchProps) {
-  const { triggerFunction, ...restProps } = props;
+  const { triggerFunction,placeHolder, ...restProps } = props;
   const [searchValue, setSearchValue] = useState<string>("");
 
   useEffect(() => {
@@ -25,7 +25,7 @@ function Search(props: SearchProps) {
           <input
             type="text"
             value={searchValue}
-            placeholder="Search for categories"
+            placeholder={placeHolder}
             onChange={(e) => {
               setSearchValue(e.target.value);
             }}

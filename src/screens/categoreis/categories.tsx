@@ -124,10 +124,11 @@ function Categories() {
           categoriesLoading || categoriesFetching ? "pointer-events-none " : ""
         }`}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex  sm:items-center items-start sm:flex-row flex-col justify-between gap-4">
           {/* //search */}
           <div className="w-full lg:w-[60%]">
             <Search
+            placeHolder="Search Categories"
               triggerFunction={(searchVal: string) => {
                 setSearch(searchVal);
               }}
@@ -163,16 +164,16 @@ function Categories() {
               >
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="left" style={{ width: "40%" }}>
+                    <StyledTableCell align="left" >
                       Name
                     </StyledTableCell>
-                    <StyledTableCell align="center" style={{ width: "20%" }}>
+                    <StyledTableCell align="center" >
                       Created At
                     </StyledTableCell>
-                    <StyledTableCell align="center" style={{ width: "20%" }}>
+                    <StyledTableCell align="center" >
                       Add
                     </StyledTableCell>
-                    <StyledTableCell align="center" style={{ width: "20%" }}>
+                    <StyledTableCell align="center" >
                       Modify
                     </StyledTableCell>
                   </TableRow>
@@ -195,11 +196,11 @@ function Categories() {
                   {rows.map((row) => (
                     <StyledTableRow key={row.name}>
                       {/* sx={{ minWidth: 700 }} */}
-                      <StyledTableCell align="left">{row.name}</StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align="left" style={{minWidth:150,overflowWrap:"break-word"}}>{row.name}</StyledTableCell>
+                      <StyledTableCell align="center" style={{minWidth:150,overflowWrap:"break-word"}}>
                         {new Date(row.created_at!).toDateString()}
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      <StyledTableCell align="center" style={{minWidth:200,overflowWrap:"break-word"}}>
                         <Button
                           startIcon={<AddIcon sx={{ color: "#9a0afa" }} />}
                           variant="outlined"
@@ -230,7 +231,7 @@ function Categories() {
                         </Button>
                       </StyledTableCell>
 
-                      <StyledTableCell align="center">
+                      <StyledTableCell align="center" style={{minWidth:150,overflowWrap:"break-word"}}>
                         <div className="flex gap-2 items-center justify-center">
                           <DeleteBtnModal
                             triggerAction={() => {

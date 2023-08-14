@@ -8,29 +8,17 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Collapse,
-  IconButton,
-  LinearProgress,
-  Typography,
-} from "@mui/material";
-import { useLazyGetAllCategoriesQuery } from "../../redux/api/categoryApiSlice";
-import { AllCategoryResponse } from "../../models/category";
+import { LinearProgress } from "@mui/material";
 import Search from "../../common/searchComponent";
 import Mask from "../../common/mask";
-import AddcategoryButnModal from "../../components/categories/addCategoryBtnModal";
-import EditBtnModal from "../../components/categories/editbtnModal";
-import DeleteBtnModal from "../../components/categories/deleteBtnModal";
 import AddIcon from "@mui/icons-material/Add";
+import { useLazyGetAllProductsQuery } from "../../redux/api/productApiSlice";
+import ProductRow from "../../components/products/productRow";
+import { AllProductResponse } from "../../models/product";
+import ComponentWithHeader from "../../common/componentWithHeader";
 import EmptyTableMessage from "../../components/categories/emptyTableMessage";
 import { useNavigate } from "react-router-dom";
-import ComponentWithHeader from "../../common/componentWithHeader";
-import { useLazyGetAllProductsQuery } from "../../redux/api/productApiSlice";
-import { AddProductResponse, AllProductResponse } from "../../models/product";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { AddCategoryResponse as CategoryType } from "../../models/category";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,7 +30,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     fontSize: 14,
   },
   // height: 30,
-  border:0,
+  border: 0,
   paddingTop: 0,
   paddingBottom: 0,
 }));
@@ -67,8 +55,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 function createData(
   invoiceNumber: string,
   invoiceDate: Date,
-  categoryName: string,
-  categoryId: string,
   supplierName: string,
   supplierAddress: string,
   productName: string,
@@ -79,13 +65,12 @@ function createData(
   sgst: number,
   id: string,
   created_at: string,
-  updated_at: string
+  updated_at: string,
+  category: CategoryType
 ) {
   return {
     invoiceNumber,
     invoiceDate,
-    categoryName,
-    categoryId,
     supplierName,
     supplierAddress,
     productName,
@@ -97,239 +82,8 @@ function createData(
     id,
     created_at,
     updated_at,
+    category,
   };
-}
-
-function Row(props: { row: AllProductResponse,index:number }) {
-  const { row,index } = props;
-  const [open, setOpen] = useState<boolean>(false);
-
-  return (
-    <>
-      <StyledTableRow
-        key={row.id}
-        className={`${index%2==0?"bg-gray-100":""}`}
-        sx={{ "& > *": { borderBottom: "unset" } }}
-        style={{height:50}}
-      >
-        {/* sx={{ minWidth: 700 }} */}
-        <StyledTableCell style={{minWidth:50,maxWidth:50}}>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </StyledTableCell>
-        <StyledTableCell style={{minWidth:150,maxWidth:150,overflowWrap:"break-word"}}>{row.categoryName}</StyledTableCell>
-
-        <StyledTableCell style={{minWidth:150,maxWidth:150,overflowWrap:"break-word"}}>{row.productName}</StyledTableCell>
-        <StyledTableCell style={{minWidth:150,maxWidth:150,overflowWrap:"break-word"}}>
-          {new Date(row.updated_at!).toDateString()}
-        </StyledTableCell>
-    
-
-        <StyledTableCell align="center">
-          <div className="flex gap-2 items-center justify-center">
-            <DeleteBtnModal
-          triggerAction={() => {
-            // getProducts();
-          }}
-          data={{ name: row.categoryName!, categoryId: row.id! }}
-        />
-        <EditBtnModal
-          data={{ name: row.categoryName!, categoryId: row.id! }}
-          triggerAction={() => {
-            // getProducts();
-          }}
-        />
-          </div>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow style={{ paddingBottom: 0, paddingTop: 0 }}>
-        <StyledTableCell
-          style={{ paddingBottom: 0, paddingTop: 0 }}
-          // colSpan={6}
-        >
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Product Details
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Purchase Date</TableCell>
-                    <TableCell> CGST(%)</TableCell>
-                    <TableCell>SGST(%)</TableCell>
-                    <TableCell> Quantity</TableCell>
-                    <TableCell align="right">Amount(₹)</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      style={{
-                        minWidth: 150,
-                        maxWidth: 150,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {row.productName}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        minWidth: 150,
-                        maxWidth: 150,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {new Date(row.purchaseDate!).toDateString()}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        minWidth: 150,
-                        maxWidth: 150,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {row.cgst}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        minWidth: 150,
-                        maxWidth: 150,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {row.sgst}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        minWidth: 150,
-                        maxWidth: 150,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {row.quantity}
-                    </TableCell>
-                    <TableCell
-                      align="right"
-                      style={{
-                        minWidth: 150,
-                        maxWidth: 150,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {row.price}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow style={{ paddingBottom: 0, paddingTop: 0 }}>
-        <StyledTableCell
-          style={{ paddingBottom: 0, paddingTop: 0 }}
-          // colSpan={6}
-        >
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Supplier Details
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Supplier Name</TableCell>
-                    <TableCell align="center" className="w-32">
-                      Supplier Address
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      style={{
-                        minWidth: 400,
-                        maxWidth: 400,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {row.supplierName}
-                    </TableCell>
-                    <TableCell
-                      align="center"
-                      style={{
-                        minWidth: 700,
-                        maxWidth: 700,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {
-                        "fddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
-                      }
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow style={{ paddingBottom: 0, paddingTop: 0 }}>
-        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Invoice Details
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Invoice Number</TableCell>
-                    <TableCell>Invoice Date</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <TableCell
-                      component="th"
-                      scope="row"
-                      style={{
-                        minWidth: 150,
-                        maxWidth: 150,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {row.invoiceNumber}
-                    </TableCell>
-                    <TableCell
-                      style={{
-                        minWidth: 50,
-                        maxWidth: 50,
-                        overflowWrap: "break-word",
-                      }}
-                    >
-                      {new Date(row.invoiceDate!).toDateString()}
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </StyledTableCell>
-      </StyledTableRow>
-    </>
-  );
 }
 
 function Products() {
@@ -337,10 +91,10 @@ function Products() {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rows, setRows] = useState<AllProductResponse[] | []>([]);
   const [search, setSearch] = useState<string>("");
+  const navigate = useNavigate();
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-  const navigate = useNavigate();
   const [
     getAllProducts,
     {
@@ -377,8 +131,6 @@ function Products() {
           createData(
             data.invoiceNumber!,
             data.invoiceDate!,
-            data.categoryName,
-            data.categoryId,
             data.supplierName,
             data.supplierAddress,
             data.productName,
@@ -389,7 +141,8 @@ function Products() {
             data.sgst!,
             data.id,
             data.created_at,
-            data.updated_at
+            data.updated_at,
+            data.category
           )
         )
       );
@@ -407,16 +160,17 @@ function Products() {
     // setPage(0);
   };
   return (
-    <ComponentWithHeader title="Added Categories">
+    <ComponentWithHeader title="Added Products">
       <div
         className={`w-full h-full  ${
           productsLoading || productsFetching ? "pointer-events-none " : ""
         }`}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex sm:flex-row flex-col sm:items-center items-start justify-between gap-4">
           {/* //search */}
           <div className="w-full lg:w-[60%]">
             <Search
+              placeHolder="Search Products"
               triggerFunction={(searchVal: string) => {
                 setSearch(searchVal);
               }}
@@ -424,15 +178,18 @@ function Products() {
           </div>
 
           {/* //Add product */}
-          <AddcategoryButnModal
-            triggerAction={() => {
-              setPage(-1);
+          <div
+            className="bg-navitemBg p-2 rounded-full w-10 h-10 flex justify-center items-center shadow-md cursor-pointer hover:scale-90"
+            onClick={() => {
+              navigate("/addProducts");
             }}
-          />
+          >
+            <AddIcon sx={{ color: "#fffefe" }} />
+          </div>
         </div>
 
         {/* //datatable */}
-        <div className="h-[85%] overflow-y-auto  mt-2 relative">
+        <div className="h-[85%]   mt-2 relative">
           <Paper className="relative shadow-xl">
             {(productsLoading || productsFetching) && <Mask />}
             <div
@@ -452,19 +209,10 @@ function Products() {
               >
                 <TableHead>
                   <TableRow style={{ height: 50 }}>
-                    <StyledTableCell />
-                    <StyledTableCell  >
-                      Name
-                    </StyledTableCell>
-                    <StyledTableCell >
-                      Created At
-                    </StyledTableCell>
-                    <StyledTableCell  >
-                      Add
-                    </StyledTableCell>
-                    <StyledTableCell align="center" >
-                      Modify
-                    </StyledTableCell>
+                    <StyledTableCell>Product Name</StyledTableCell>
+                    <StyledTableCell>Category Name</StyledTableCell>
+                    <StyledTableCell>Invoice Number</StyledTableCell>
+                    <StyledTableCell align="center">Modify</StyledTableCell>
                   </TableRow>
                 </TableHead>
 
@@ -482,8 +230,8 @@ function Products() {
                       </StyledTableCell>
                     </StyledTableRow>
                   )}
-                  {rows.map((row,i) => (
-                    <Row row={row} key={row.id} index={i}/>
+                  {rows.map((row, i) => (
+                    <ProductRow row={row} key={row.id} index={i} />
                   ))}
                 </TableBody>
               </Table>
