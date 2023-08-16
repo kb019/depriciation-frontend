@@ -17,6 +17,7 @@ function CompanyDetails({
     setFieldValue,
     isSubmitting,
   } = formikProps;
+
   return (
     <div>
       <h2 className="font-medium">Company Details</h2>

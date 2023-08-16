@@ -35,7 +35,6 @@ function ItemInfo() {
             desc={new Date(itemData?.purchaseDate!).toDateString()}
           />
           <ItemDetail title={"Product Price"} desc={`₹ ${itemData?.price}`} />
-          <ItemDetail title={"Product Price"} desc={`₹ ${itemData?.price}`} />
           <ItemDetail title={"Quantity"} desc={`${itemData?.quantity}`} />
           <ItemDetail title={"CGST"} desc={`${itemData?.cgst} %`} />
           <ItemDetail title={"SGST"} desc={`${itemData?.sgst} %`} />

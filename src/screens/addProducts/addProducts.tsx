@@ -70,12 +70,16 @@ function AddProducts() {
   const navigate = useNavigate();
   const initialValues: ProductDetailsType = {
     categoryDetails: {
-      categoryName: state?.categoryName || (state?.productId && itemData?.category.name) || "",
-      categoryId: state?.categoryId || (state?.productId && itemData?.category.id) || "",
+      categoryName:
+        state?.categoryName ||
+        (state?.productId && itemData?.category.name) ||
+        "",
+      categoryId:
+        state?.categoryId || (state?.productId && itemData?.category.id) || "",
     },
     invoiceDetails: {
       invoiceNumber: (state?.productId && itemData?.invoiceNumber) || "",
-      invoiceDate: (state?.productId &&itemData?.invoiceDate) || null,
+      invoiceDate: (state?.productId && itemData?.invoiceDate) || null,
     },
     supplierDetails: {
       supplierName: (state?.productId && itemData?.supplierName) || "",
@@ -84,15 +88,16 @@ function AddProducts() {
     productDetails: {
       productName: (state?.productId && itemData?.productName) || "",
       purchaseDate: (state?.productId && itemData?.purchaseDate) || null,
-      quantity: (state?.productId && itemData?.quantity) ? Number(itemData?.quantity) : null,
-      price:(state?.productId && itemData?.price) ? Number(itemData?.price) : null,
-      cgst:  (state?.productId && itemData?.cgst) ? Number(itemData.cgst) : null,
-      sgst: (state?.productId && itemData?.sgst) ? Number(itemData?.sgst) : null,
+      quantity:
+        state?.productId && itemData?.quantity
+          ? Number(itemData?.quantity)
+          : null,
+      price:
+        state?.productId && itemData?.price ? Number(itemData?.price) : null,
+      cgst: state?.productId && itemData?.cgst ? Number(itemData.cgst) : null,
+      sgst: state?.productId && itemData?.sgst ? Number(itemData?.sgst) : null,
     },
   };
-
-  console.log(state,initialValues);
-
 
   async function updateProduct(
     productId: string,
@@ -125,6 +130,7 @@ function AddProducts() {
 
   async function getProductDetail() {
     try {
+      //loadind is set to true initially
       // setLoading(true);
       await getProductById({ productId: state?.productId }).unwrap();
       setLoading(false);
@@ -147,11 +153,14 @@ function AddProducts() {
       key={`${state?.productId ? "Edit Product" : "Add Product"}`}
     >
       <Formik
-        initialValues={initialValues}
+        enableReinitialize={true}
+        initialValues={{ ...initialValues }}
         validationSchema={schema}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
+        onSubmit={async (
+          values,
+          { setSubmitting, resetForm }
+        ) => {
           try {
-            setLoading(true);
             const body: AddUpdateProductDetail = {
               supplierDetails: {
                 ...values.supplierDetails,
@@ -167,8 +176,16 @@ function AddProducts() {
             await addNewProduct(body).unwrap();
             notifySuccess("Product added successfully");
             setSubmitting(false);
-            setLoading(false);
-            resetForm({ values: initialValues });
+           
+            resetForm({
+              values: {
+                ...initialValues,
+                categoryDetails: {
+                  categoryName: "",
+                  categoryId: "",
+                },
+              },
+            });
           } catch (e) {
             notifyFailure(
               "There was a problem adding product, please try again"
@@ -181,6 +198,7 @@ function AddProducts() {
       >
         {(formikProps) => (
           <div className="mt-2">
+            
             <div className=" grid md:grid-cols-2 grid-cols-1 grid-rows-[auto_auto] gap-8 items-start bg-white p-5 rounded-lg shadow-lg ">
               <CategoryName formikProps={formikProps} />
               <InvoiceDetails formikProps={formikProps} />
@@ -226,7 +244,7 @@ function AddProducts() {
               {state?.productId ? (
                 <Button
                   variant="contained"
-                  disabled={formikProps.isSubmitting}
+                  disabled={formikProps.isSubmitting|| !formikProps.dirty}
                   sx={buttonCss}
                   onClick={() => {
                     updateProduct(state?.productId, formikProps.values);

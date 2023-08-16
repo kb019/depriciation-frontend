@@ -23,16 +23,21 @@ function CategoryName({
         <Autocomplete
           disablePortal
           id="combo-box-demo"
-          disableClearable
-          options={categoryData || []}
+         options={categoryData || []}
           getOptionLabel={(option) => option.name}
+          value={{
+            id: values.categoryDetails.categoryId,
+            //created_at and updated_at can be set to any arbitrary value,it does not matter
+            created_at: "2023-08-16T18:05:45.932Z",
+            updated_at: "2023-08-16T18:05:45.932Z",
+            name: values.categoryDetails.categoryName,
+          }}
           onChange={(event, value) => {
-            console.log(value);
             setFieldValue("categoryDetails.categoryName", value?.name);
             setFieldValue("categoryDetails.categoryId", value?.id);
           }}
           sx={{ width: "100%" }}
-          inputValue={values.categoryDetails?.categoryName}
+          
           renderInput={(params) => (
             <TextField
               {...params}

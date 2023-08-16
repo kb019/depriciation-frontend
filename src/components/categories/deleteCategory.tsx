@@ -33,7 +33,13 @@ function DeteteCategory({ triggerAction, data, close }: WrappedComponentProps) {
   }
   return (
     <div className="lg:w-[500px] md:w-[400px] w-64">
-      <div className="max-w-max ml-auto mb-3 cursor-pointer" onClick={close}>
+      <div
+        className="max-w-max ml-auto mb-3 cursor-pointer"
+        onClick={(e) => {
+          e.stopPropagation();
+          close!();
+        }}
+      >
         <CancelIcon className=" text-gray-600 " />
       </div>
       <h2>{`All items tagged with ${categoryData.name} Category will be deleted!`}</h2>
