@@ -69,6 +69,7 @@ function AddProducts() {
   ] = useAddNewProductMutation();
   const navigate = useNavigate();
   const initialValues: ProductDetailsType = {
+    categoryInputValue: "",
     categoryDetails: {
       categoryName:
         state?.categoryName ||
@@ -156,10 +157,7 @@ function AddProducts() {
         enableReinitialize={true}
         initialValues={{ ...initialValues }}
         validationSchema={schema}
-        onSubmit={async (
-          values,
-          { setSubmitting, resetForm }
-        ) => {
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
           try {
             const body: AddUpdateProductDetail = {
               supplierDetails: {
@@ -176,7 +174,7 @@ function AddProducts() {
             await addNewProduct(body).unwrap();
             notifySuccess("Product added successfully");
             setSubmitting(false);
-           
+
             resetForm({
               values: {
                 ...initialValues,
@@ -198,7 +196,6 @@ function AddProducts() {
       >
         {(formikProps) => (
           <div className="mt-2">
-            
             <div className=" grid md:grid-cols-2 grid-cols-1 grid-rows-[auto_auto] gap-8 items-start bg-white p-5 rounded-lg shadow-lg ">
               <CategoryName formikProps={formikProps} />
               <InvoiceDetails formikProps={formikProps} />
@@ -244,7 +241,7 @@ function AddProducts() {
               {state?.productId ? (
                 <Button
                   variant="contained"
-                  disabled={formikProps.isSubmitting|| !formikProps.dirty}
+                  disabled={formikProps.isSubmitting || !formikProps.dirty}
                   sx={buttonCss}
                   onClick={() => {
                     updateProduct(state?.productId, formikProps.values);

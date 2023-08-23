@@ -1,5 +1,6 @@
 import { AddCategoryResponse } from "./category";
 export interface ProductDetails {
+  categoryInputValue?:"",
   categoryDetails: CategoryDetails;
   invoiceDetails: InvoiceDetails;
   supplierDetails: SupplierDetails;

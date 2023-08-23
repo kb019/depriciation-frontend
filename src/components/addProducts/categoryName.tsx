@@ -1,5 +1,5 @@
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useGetAllCategoriesWithoutPaginationQuery } from "../../redux/api/categoryApiSlice";
 import { FormikProps } from "formik";
 import { ProductDetails } from "../../models/product";
@@ -15,15 +15,15 @@ function CategoryName({
     useGetAllCategoriesWithoutPaginationQuery(undefined, {
       refetchOnMountOrArgChange: true,
     });
-
+  const [inputValue, setInputValue] = useState("");
   return (
     <div className=" ">
       <h2 className="font-medium">Select Category</h2>
       <div className="w-full border-2 border-gray-300 rounded-md p-4 mt-2 ">
         <Autocomplete
-          disablePortal
+          // disablePortal
           id="combo-box-demo"
-         options={categoryData || []}
+          options={categoryData || []}
           getOptionLabel={(option) => option.name}
           value={{
             id: values.categoryDetails.categoryId,
@@ -37,7 +37,10 @@ function CategoryName({
             setFieldValue("categoryDetails.categoryId", value?.id);
           }}
           sx={{ width: "100%" }}
-          
+          inputValue={values.categoryInputValue}
+          onInputChange={(e, newValue) => {
+            setFieldValue("categoryInputValue",newValue); 
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
