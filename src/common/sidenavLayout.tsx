@@ -8,13 +8,14 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { NavLink } from "react-router-dom";
 import { LinearProgress } from "@mui/material";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import LanIcon from "@mui/icons-material/Lan";
 const menuItems = [
   { name: "Schedule", icon: TodayIcon, path: "/schedule" },
   { name: "Categories", icon: CategoryIcon, path: "/categories" },
+  { name: "Product Types", icon: LanIcon, path: "/productTypes" },
+  { name: "Add Products", icon: AddCircleIcon, path: "/addProducts" },
   { name: "Products", icon: WidgetsIcon, path: "/products" },
-  {name:"Add Products",icon:AddCircleIcon,path:"/addProducts"}
 ];
 
 function NavItem(ele: NavBarItem, isOpen: boolean, isActive: boolean) {
@@ -23,7 +24,9 @@ function NavItem(ele: NavBarItem, isOpen: boolean, isActive: boolean) {
   return (
     <div
       className={`flex items-center gap-3 mt-5   px-3 py-[6px] hover:scale-110 rounded-full  hover:cursor-pointer ${
-        isActive ? " bg-navitemBg bg-gradient-to-r from-indigo-600 to-purple-600 shadow-xl text-white" : "hover:bg-gray-200"
+        isActive
+          ? " bg-navitemBg bg-gradient-to-r from-indigo-600 to-purple-600 shadow-xl text-white"
+          : "hover:bg-gray-200"
       }`}
     >
       <div>
@@ -58,7 +61,7 @@ function SidenavLayout({ children }: Children) {
           )}
         </div>
 
-        {menuItems.map((ele: NavBarItem,i) => {
+        {menuItems.map((ele: NavBarItem, i) => {
           return (
             <NavLink to={`${ele.path}`} key={i}>
               {({ isActive }) => {
@@ -74,7 +77,6 @@ function SidenavLayout({ children }: Children) {
         className="flex-1 h-full bg-slate-100 relative  overflow-y-auto"
         style={{ boxShadow: "inset 10px 0 10px 0 #ececec" }}
       >
-        
         {children}
       </div>
       {/* Content Ends */}

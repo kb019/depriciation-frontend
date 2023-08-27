@@ -19,6 +19,8 @@ import ComponentWithHeader from "../../common/componentWithHeader";
 import EmptyTableMessage from "../../components/categories/emptyTableMessage";
 import { useNavigate } from "react-router-dom";
 import { AddCategoryResponse as CategoryType } from "../../models/category";
+import AddcategoryButnModal from "../../components/categories/addCategoryBtnModal";
+import AddproductBtnModal from "../../components/products/addProductBtnModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -186,6 +188,8 @@ function Products() {
           >
             <AddIcon sx={{ color: "#fffefe" }} />
           </div>
+         
+        
         </div>
 
         {/* //datatable */}

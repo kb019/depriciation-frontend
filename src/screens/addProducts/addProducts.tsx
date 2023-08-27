@@ -16,10 +16,11 @@ import {
   useUpdateProductMutation,
 } from "../../redux/api/productApiSlice";
 import { notifyFailure, notifySuccess } from "../../common/notify";
-import CategoryName from "../../components/addProducts/categoryName";
+import CategoryName from "../../components/addProducts/productTypeName";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "../../common/loader";
+import ProductTypeName from "../../components/addProducts/productTypeName";
 
 const buttonCss = {
   backgroundColor: "#6A00F4",
@@ -34,8 +35,10 @@ const buttonCss = {
   },
 };
 const schema = Yup.object({
-  categoryDetails: Yup.object({
-    categoryName: Yup.string().trim().required("Please Select Category Name"),
+  productTypeDetails: Yup.object({
+    productTypeName: Yup.string()
+      .trim()
+      .required("Please Select Product Type Name"),
   }),
   invoiceDetails: Yup.object({
     invoiceNumber: Yup.string().trim().required("Please enter Invoice number"),
@@ -57,6 +60,7 @@ const schema = Yup.object({
 
 function AddProducts() {
   const { state } = useLocation();
+  const [rerenderKeyProp, setRerenderKeyProp] = useState<number>(0);
   //as soon as i get product id,i want to set loader and hence using separate loader state
   const [loading, setLoading] = useState<boolean>(!!state?.productId);
   const [getProductById, { data: itemData, isLoading: itemLoading }] =
@@ -69,14 +73,10 @@ function AddProducts() {
   ] = useAddNewProductMutation();
   const navigate = useNavigate();
   const initialValues: ProductDetailsType = {
-    categoryInputValue: "",
-    categoryDetails: {
-      categoryName:
-        state?.categoryName ||
-        (state?.productId && itemData?.category.name) ||
-        "",
-      categoryId:
-        state?.categoryId || (state?.productId && itemData?.category.id) || "",
+    productTypeInputValue: "",
+    productTypeDetails: {
+      productTypeId: "",
+      productTypeName: "",
     },
     invoiceDetails: {
       invoiceNumber: (state?.productId && itemData?.invoiceNumber) || "",
@@ -115,7 +115,7 @@ function AddProducts() {
         productDetails: {
           ...itemDetails.productDetails,
         },
-        categoryId: itemDetails.categoryDetails?.categoryId,
+        productTypeId: itemDetails.productTypeDetails.productTypeId,
       };
 
       await updateProductById({ productId, itemDetails: body }).unwrap();
@@ -151,7 +151,9 @@ function AddProducts() {
   return (
     <ComponentWithHeader
       title={`${state?.productId ? "Edit Product" : "Add Product"}`}
-      key={`${state?.productId ? "Edit Product" : "Add Product"}`}
+      key={`${
+        state?.productId ? "Edit Product" : `Add Product ${rerenderKeyProp}`
+      }`}
     >
       <Formik
         enableReinitialize={true}
@@ -169,21 +171,13 @@ function AddProducts() {
               productDetails: {
                 ...values.productDetails,
               },
-              categoryId: values.categoryDetails?.categoryId,
+              productTypeId: values.productTypeDetails.productTypeId,
             };
             await addNewProduct(body).unwrap();
             notifySuccess("Product added successfully");
             setSubmitting(false);
-
-            resetForm({
-              values: {
-                ...initialValues,
-                categoryDetails: {
-                  categoryName: "",
-                  categoryId: "",
-                },
-              },
-            });
+            values.productTypeInputValue = "";
+            setRerenderKeyProp((prev) => prev + 1);
           } catch (e) {
             notifyFailure(
               "There was a problem adding product, please try again"
@@ -197,7 +191,7 @@ function AddProducts() {
         {(formikProps) => (
           <div className="mt-2">
             <div className=" grid md:grid-cols-2 grid-cols-1 grid-rows-[auto_auto] gap-8 items-start bg-white p-5 rounded-lg shadow-lg ">
-              <CategoryName formikProps={formikProps} />
+              <ProductTypeName formikProps={formikProps} />
               <InvoiceDetails formikProps={formikProps} />
               <CompanyDetails formikProps={formikProps} />
               <ProductDetails formikProps={formikProps} />
@@ -215,9 +209,9 @@ function AddProducts() {
                     formikProps.resetForm({
                       values: {
                         ...initialValues,
-                        categoryDetails: {
-                          categoryName: "",
-                          categoryId: "",
+                        productTypeDetails: {
+                          productTypeName: "",
+                          productTypeId: "",
                         },
                       },
                     });

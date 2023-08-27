@@ -4,6 +4,11 @@ import { useDeleteCategoryByIdMutation } from "../../redux/api/categoryApiSlice"
 import { ModifyCategoryData } from "../../models/category";
 import { notifyFailure, notifySuccess } from "../../common/notify";
 import { WrappedComponentProps } from "../../models/modalHocType";
+import { useDeleteProductTypeByIdMutation } from "../../redux/api/productTypeApiSlice";
+import {
+  ModifyProductTypeInfo,
+  ProductTypeEditInfo,
+} from "../../models/productTypeInfo";
 
 const buttonCss = {
   backgroundColor: "#fa0a5a",
@@ -15,18 +20,31 @@ const buttonCss = {
   boxShadow: 1,
 };
 
-function DeteteCategory({ triggerAction, data, close }: WrappedComponentProps) {
-  const categoryData = data as ModifyCategoryData;
-  const [
-    deleteCategory,
-    { isLoading: deletingCategory, isError: deleteError },
-  ] = useDeleteCategoryByIdMutation();
+function DeleteProductType({
+  triggerAction,
+  data,
+  close,
+}: WrappedComponentProps) {
+  const deleteProductTypeInfo = data as ProductTypeEditInfo;
+  //   const [
+  //     deleteCategory,
+  //     { isLoading: deletingCategory, isError: deleteError },
+  //   ] = useDeleteCategoryByIdMutation();
 
-  async function deleteCategoryHandler() {
+  const [
+    deleteProductType,
+    { isLoading: deletingProductType, isError: deleteError },
+  ] = useDeleteProductTypeByIdMutation();
+
+  async function deleteProductTypeHandler() {
     try {
-      await deleteCategory({ categoryId: categoryData.categoryId }).unwrap();
+      await deleteProductType({
+        productTypeId: deleteProductTypeInfo.productId,
+      }).unwrap();
       triggerAction();
-      notifySuccess(`Deleted ${categoryData.name} Category Successfully`);
+      notifySuccess(
+        `Deleted ${deleteProductTypeInfo.productName} Category Successfully`
+      );
     } catch (e) {
       notifyFailure("There was a problem deleting category,please try again");
     }
@@ -42,19 +60,22 @@ function DeteteCategory({ triggerAction, data, close }: WrappedComponentProps) {
       >
         <CancelIcon className=" text-gray-600 " />
       </div>
-      <h2>{`All items tagged with ${categoryData.name} Category will be deleted!`}</h2>
+      <h2>{`All items tagged with ${deleteProductTypeInfo.productName} Type  will be deleted!`}</h2>
       <Stack
-        spacing={{ xs: 3, sm: 3, md: 3 }}
-        direction={{ sm: "column", md: "row" }}
+        // spacing={2}
         justifyContent={"flex-end"}
         className="mt-5"
+        spacing={{ xs: 3, sm: 3, md: 3 }}
+        direction={{ sm: "column", md: "row" }}
+
+
       >
         <Button
           onClick={() => {
             close!();
           }}
           variant="outlined"
-          disabled={deletingCategory}
+          disabled={deletingProductType}
           sx={{
             border: "1px solid #fa0a5a",
             color: "#fa0a5a",
@@ -72,15 +93,15 @@ function DeteteCategory({ triggerAction, data, close }: WrappedComponentProps) {
 
         <Button
           variant="contained"
-          disabled={deletingCategory}
-          onClick={deleteCategoryHandler}
+          disabled={deletingProductType}
+          onClick={deleteProductTypeHandler}
           sx={buttonCss}
         >
-          Delete Category
+          Delete Product Type
         </Button>
       </Stack>
     </div>
   );
 }
 
-export default DeteteCategory;
+export default DeleteProductType;

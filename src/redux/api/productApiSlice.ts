@@ -12,7 +12,7 @@ import {
 } from "../../models/product";
 import { apiSlice } from "../auth/authApi";
 
-export const categoryApiSlice = apiSlice.injectEndpoints({
+export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addNewProduct: builder.mutation<AddProductResponse, AddUpdateProductDetail>({
       query: (productDetails) => ({
@@ -73,4 +73,4 @@ export const {
   useLazyGetProductByIdQuery,
   useUpdateProductMutation,
   useDeleteProductByIdMutation
-} = categoryApiSlice;
+} = productApiSlice;

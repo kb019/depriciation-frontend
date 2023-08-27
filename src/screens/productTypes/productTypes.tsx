@@ -8,18 +8,15 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { useEffect, useState } from "react";
-import { Button, LinearProgress } from "@mui/material";
-import { useLazyGetAllCategoriesQuery } from "../../redux/api/categoryApiSlice";
-import { AllCategoryResponse } from "../../models/category";
+import { LinearProgress } from "@mui/material";
 import Search from "../../common/searchComponent";
 import Mask from "../../common/mask";
-import AddcategoryButnModal from "../../components/categories/addCategoryBtnModal";
-import EditBtnModal from "../../components/categories/editbtnModal";
-import DeleteBtnModal from "../../components/categories/deleteBtnModal";
-import AddIcon from "@mui/icons-material/Add";
-import EmptyTableMessage from "../../components/categories/emptyTableMessage";
-import { useNavigate } from "react-router-dom";
 import ComponentWithHeader from "../../common/componentWithHeader";
+import { useLazyGetAllProductsTypeQuery } from "../../redux/api/productTypeApiSlice";
+import EditProductTypeBtnModal from "../../components/productTypes/editProductTypeBtnModal";
+import DeleteProductTypeBtnModal from "../../components/productTypes/deleteProductTypeModal";
+import EmptyTableMessage from "../../components/categories/emptyTableMessage";
+import AddproductBtnModal from "../../components/products/addProductBtnModal";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -50,35 +47,38 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 function createData(
-  name: string,
+  productName: string,
+  categoryName: string,
   id: string,
   created_at: string,
-  updated_at: string
+  updated_at: string,
+  categoryId: string
 ) {
-  return { name, created_at, updated_at, id };
+  return { productName, categoryName, created_at, updated_at, id, categoryId };
 }
 
-function Categories() {
+type Row = ReturnType<typeof createData>;
+
+function ProductTypes() {
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
-  const [rows, setRows] = useState<Partial<AllCategoryResponse>[] | []>([]);
+  const [rows, setRows] = useState<Row[] | []>([]);
   const [search, setSearch] = useState<string>("");
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-  const navigate = useNavigate();
   const [
-    getAllCategories,
+    getAllProductsType,
     {
-      data: categoriesData,
-      isLoading: categoriesLoading,
-      isFetching: categoriesFetching,
-      isError: categoriesError,
+      data: productsTypeData,
+      isLoading: productsTypeLoading,
+      isFetching: productsTypeFetching,
+      isError: productsTypeError,
     },
-  ] = useLazyGetAllCategoriesQuery();
+  ] = useLazyGetAllProductsTypeQuery();
 
-  const getCategories = () => {
-    getAllCategories({
+  const getProductsType = () => {
+    getAllProductsType({
       page: page + 1,
       take: rowsPerPage,
       search: search.trim(),
@@ -89,7 +89,7 @@ function Categories() {
       setPage(0);
       return;
     }
-    getCategories();
+    getProductsType();
   }, [page]);
 
   useEffect(() => {
@@ -97,14 +97,22 @@ function Categories() {
   }, [search]);
 
   useEffect(() => {
-    if (categoriesData?.data) {
+    if (productsTypeData?.data) {
+      console.log(productsTypeData?.data);
       setRows(
-        categoriesData!.data.map((data) =>
-          createData(data.name, data.id, data.created_at, data.updated_at)
+        productsTypeData!.data.map((data) =>
+          createData(
+            data.productType,
+            data.category.name,
+            data.id,
+            data.created_at,
+            data.updated_at,
+            data.category.id
+          )
         )
       );
     }
-  }, [categoriesData]);
+  }, [productsTypeData]);
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -121,22 +129,24 @@ function Categories() {
     <ComponentWithHeader title="Added Categories">
       <div
         className={`w-full h-full  ${
-          categoriesLoading || categoriesFetching ? "pointer-events-none " : ""
+          productsTypeLoading || productsTypeFetching
+            ? "pointer-events-none "
+            : ""
         }`}
       >
         <div className="flex  sm:items-center items-start sm:flex-row flex-col justify-between gap-4">
           {/* //search */}
           <div className="w-full lg:w-[60%]">
             <Search
-            placeHolder="Search Categories"
+              placeHolder="Search Product Types"
               triggerFunction={(searchVal: string) => {
                 setSearch(searchVal);
               }}
             />
           </div>
 
-          {/* //Add product */}
-          <AddcategoryButnModal
+          {/* //Add product Type*/}
+          <AddproductBtnModal
             triggerAction={() => {
               setPage(-1);
             }}
@@ -146,10 +156,10 @@ function Categories() {
         {/* //datatable */}
         <div className="h-[85%] overflow-y-auto  mt-2 relative">
           <Paper className="relative shadow-xl">
-            {(categoriesFetching || categoriesLoading) && <Mask />}
+            {(productsTypeFetching || productsTypeLoading) && <Mask />}
             <div
               className={`w-fll ${
-                categoriesLoading || categoriesFetching
+                productsTypeLoading || productsTypeFetching
                   ? "opacity-100"
                   : "opacity-0"
               }`}
@@ -164,18 +174,12 @@ function Categories() {
               >
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="left" >
-                      Name
+                    <StyledTableCell align="left">Product Name</StyledTableCell>
+                    <StyledTableCell align="center">
+                      Category Name
                     </StyledTableCell>
-                    <StyledTableCell align="center" >
-                      Created At
-                    </StyledTableCell>
-                    <StyledTableCell align="center" >
-                      Add
-                    </StyledTableCell>
-                    <StyledTableCell align="center" >
-                      Modify
-                    </StyledTableCell>
+                    <StyledTableCell align="center">Created At</StyledTableCell>
+                    <StyledTableCell align="center">Modify</StyledTableCell>
                   </TableRow>
                 </TableHead>
 
@@ -194,55 +198,53 @@ function Categories() {
                     </StyledTableRow>
                   )}
                   {rows.map((row) => (
-                    <StyledTableRow key={row.name}>
+                    <StyledTableRow key={row.id}>
                       {/* sx={{ minWidth: 700 }} */}
-                      <StyledTableCell align="left" style={{minWidth:150,overflowWrap:"break-word"}}>{row.name}</StyledTableCell>
-                      <StyledTableCell align="center" style={{minWidth:150,overflowWrap:"break-word"}}>
-                        {new Date(row.created_at!).toDateString()}
+                      <StyledTableCell
+                        align="left"
+                        style={{ minWidth: 150, overflowWrap: "break-word" }}
+                      >
+                        {row.productName}
                       </StyledTableCell>
-                      <StyledTableCell align="center" style={{minWidth:250,overflowWrap:"break-word"}}>
-                        <Button
-                          startIcon={<AddIcon sx={{ color: "#9a0afa" }} />}
-                          variant="outlined"
-                          sx={{
-                            border: "1px solid #9a0afa",
-                            color: "#9a0afa",
-                            padding: 0,
-                            paddingX: 1,
-                            fontSize: 14,
-                            ":hover": {
-                              bgcolor: "white", // theme.palette.primary.main
-                              boxShadow: 1,
-                              transform: "scale(0.95)",
-                              border: "1px solid #9a0afa",
-                            },
-                            boxShadow: 1,
-                          }}
-                          onClick={() => {
-                            navigate("/productTypes", {
-                              // state: {
-                              //   categoryId: row.id,
-                              //   categoryName: row.name,
-                              // },
-                            });
-                          }}
-                        >
-                          Add Product Type
-                        </Button>
+                      <StyledTableCell
+                        align="center"
+                        style={{ minWidth: 150, overflowWrap: "break-word" }}
+                      >
+                        {row.categoryName}
                       </StyledTableCell>
 
-                      <StyledTableCell align="center" style={{minWidth:150,overflowWrap:"break-word"}}>
+                      <StyledTableCell
+                        align="center"
+                        style={{ minWidth: 150, overflowWrap: "break-word" }}
+                      >
+                        {new Date(row.created_at!).toDateString()}
+                      </StyledTableCell>
+
+                      <StyledTableCell
+                        align="center"
+                        style={{ minWidth: 150, overflowWrap: "break-word" }}
+                      >
                         <div className="flex gap-2 items-center justify-center">
-                          <DeleteBtnModal
+                          <DeleteProductTypeBtnModal
                             triggerAction={() => {
-                              getCategories();
+                              getProductsType();
                             }}
-                            data={{ name: row.name!, categoryId: row.id! }}
+                            data={{
+                              categoryId: row.categoryId,
+                              categoryName: row.categoryName!,
+                              productName: row.productName,
+                              productId: row.id,
+                            }}
                           />
-                          <EditBtnModal
-                            data={{ name: row.name!, categoryId: row.id! }}
+                          <EditProductTypeBtnModal
+                            data={{
+                              categoryId: row.categoryId,
+                              categoryName: row.categoryName!,
+                              productName: row.productName,
+                              productId: row.id,
+                            }}
                             triggerAction={() => {
-                              getCategories();
+                              getProductsType();
                             }}
                           />
                         </div>
@@ -255,7 +257,7 @@ function Categories() {
             <TablePagination
               rowsPerPageOptions={[5, 10]}
               component="div"
-              count={categoriesData?.meta.itemCount! || 0}
+              count={productsTypeData?.meta.itemCount! || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -268,4 +270,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default ProductTypes;

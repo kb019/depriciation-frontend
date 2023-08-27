@@ -1,10 +1,15 @@
 import { AddCategoryResponse } from "./category";
 export interface ProductDetails {
-  categoryInputValue?:"",
-  categoryDetails: CategoryDetails;
+  productTypeInputValue?: "";
   invoiceDetails: InvoiceDetails;
   supplierDetails: SupplierDetails;
   productDetails: ProductDetail;
+  productTypeDetails: ProductTypeDetails;
+}
+
+export interface ProductTypeDetails {
+  productTypeId: string;
+  productTypeName: string;
 }
 
 export interface AddUpdateProductDetail {
@@ -12,7 +17,7 @@ export interface AddUpdateProductDetail {
   invoiceDetails: InvoiceDetails;
 
   productDetails: ProductDetail;
-  categoryId: string;
+  productTypeId: string;
 }
 export interface CategoryDetails {
   categoryName: string;
@@ -79,4 +84,3 @@ export interface ModifyProductBtnProps {
   data: ModifyProductData;
   triggerAction: () => void;
 }
-

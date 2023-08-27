@@ -84,8 +84,8 @@ function CategoriesModal({
         helperText={!error ? "" : "Please enter category Name"}
       />
       <Stack
-        direction="row"
-        spacing={2}
+        spacing={{ xs: 3, sm: 3, md: 3 }}
+        direction={{ sm: "column", md: "row" }}
         justifyContent={"flex-end"}
         className="mt-5"
       >
