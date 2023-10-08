@@ -16,7 +16,10 @@ function ProductTypeName({
     useGetAllProductTypesWithoutPaginationQuery(undefined, {
       refetchOnMountOrArgChange: true,
     });
-
+  console.log(
+    values.productTypeDetails?.productTypeName,
+    values.productTypeDetails
+  );
   return (
     <div className=" ">
       <h2 className="font-medium">Select Category</h2>
@@ -25,20 +28,32 @@ function ProductTypeName({
           id="combo-box-demo"
           options={productTypeData || []}
           loadingText="Loading Values ..."
+          
           getOptionLabel={(option) => option.productType}
-          // value={{
-          //   id: values.productTypeDetails.productTypeId,
-          //   // created_at and updated_at can be set to any arbitrary value,it does not matter
-          //   created_at: "2023-08-16T18:05:45.932Z",
-          //   updated_at: "2023-08-16T18:05:45.932Z",
-          //   productType: values.productTypeDetails.productTypeName,
-            
-          // }}
-          onChange={(event, value) => {
-            setFieldValue("productTypeDetails.productTypeName", value?.productType);
-            setFieldValue("productTypeDetails.productTypeId", value?.id);
+          value={{
+            id: values.productTypeDetails?.productTypeId || "",
+            // created_at and updated_at can be set to any arbitrary value,it does not matter
+            created_at: "2023-08-16T18:05:45.932Z",
+            updated_at: "2023-08-16T18:05:45.932Z",
+            productType: values.productTypeDetails?.productTypeName || "",
+            depreciationItValues: [],
           }}
-          isOptionEqualToValue={(option, value) => option.productType===value.productType}
+          onChange={(event, value) => {
+            console.log(value);
+            if (value != null) {
+              setFieldValue(
+                "productTypeDetails.productTypeName",
+                value?.productType
+              );
+              setFieldValue("productTypeDetails.productTypeId", value?.id);
+            } else {
+              setFieldValue("productTypeDetails.productTypeName", "");
+              setFieldValue("productTypeDetails.productTypeId", "");
+            }
+          }}
+          isOptionEqualToValue={(option, value) =>
+            option.productType === value.productType
+          }
           sx={{ width: "100%" }}
           inputValue={values.productTypeInputValue}
           onInputChange={(e, newValue) => {

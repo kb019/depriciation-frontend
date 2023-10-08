@@ -11,6 +11,15 @@ function ItemInfo() {
     productId: productId!,
   });
 
+  if (!productId)
+    return (
+      <div className="flex justify-center items-center h-full text-lg text-gray-500">
+        <div className="">
+          Please select a product type to View all the depreciation rates
+        </div>
+      </div>
+    );
+
   if (itemLoading) return <Loader />;
   return (
     <ComponentWithHeader title="Item Details">
@@ -22,6 +31,11 @@ function ItemInfo() {
           <ItemDetail
             title={"Supplier Address"}
             desc={itemData?.supplierAddress!}
+          />
+          <h3 className="font-semibold mt-5">Category Details</h3>
+          <ItemDetail
+            title={"Category Name"}
+            desc={itemData?.productType.category.name!}
           />
         </div>
         {/* Supplier Details End */}
@@ -51,6 +65,11 @@ function ItemInfo() {
           <ItemDetail
             title={"Invoice Date"}
             desc={new Date(itemData?.invoiceDate!).toDateString()}
+          />
+          <h3 className="font-semibold mt-5">Product Type Details</h3>
+          <ItemDetail
+            title={"Product Type Name"}
+            desc={itemData?.productType.productType!}
           />
         </div>
         {/* {Invoice Details End} */}

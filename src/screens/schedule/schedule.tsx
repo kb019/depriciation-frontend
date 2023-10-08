@@ -1,7 +1,8 @@
 import React from "react";
+import ComponentWithHeader from "../../common/componentWithHeader";
 
 function Schedule() {
-  return <div>Schedule</div>;
+  return <ComponentWithHeader title="Schedule"><></></ComponentWithHeader>;
 }
 
 export default Schedule;

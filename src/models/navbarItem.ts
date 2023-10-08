@@ -5,4 +5,5 @@ export interface NavBarItem {
   name: string;
   icon: OverridableComponent<SvgIconTypeMap> & { muiName: string };
   path: string;
+  subItems?: Omit<NavBarItem, "subItems">[];
 }

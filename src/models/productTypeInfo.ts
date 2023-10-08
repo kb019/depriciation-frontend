@@ -1,3 +1,4 @@
+import { DepreciationItValue } from "./depreciationRates";
 import { AddCategoryResponse, AllCategoryResponse } from "./category";
 import { CategoryDetails } from "./product";
 
@@ -26,6 +27,7 @@ export interface AllProductTypeResponse {
   updated_at: string;
   productType: string;
   category: AllCategoryResponse;
+  depreciationItValues: DepreciationItValue[];
 }
 
 export interface ModifyProductTypeInfo {

@@ -1,4 +1,5 @@
-import { AddCategoryResponse } from "./category";
+import { AddCategoryResponse, AllCategoryResponse } from "./category";
+import { AllProductTypeResponse } from "./productTypeInfo";
 export interface ProductDetails {
   productTypeInputValue?: "";
   invoiceDetails: InvoiceDetails;
@@ -55,8 +56,7 @@ export interface AllProductResponse
   id: string;
   created_at: string;
   updated_at: string;
-
-  category: AddCategoryResponse;
+  productType: Omit<AllProductTypeResponse, "depreciationItValues">;
 }
 
 export interface GetProductByIdResponse
@@ -66,7 +66,7 @@ export interface GetProductByIdResponse
   id: string;
   created_at: string;
   updated_at: string;
-  category: AddCategoryResponse;
+  productType: Omit<AllProductTypeResponse, "depreciationItValues">;
 }
 
 export type AllProductUrlSearchParams = {

@@ -75,7 +75,7 @@
 
 @layer components {
   .open-nav {
-    width: 210px;
+    width: 250px;
     transition: all 0.5s;
   }
 

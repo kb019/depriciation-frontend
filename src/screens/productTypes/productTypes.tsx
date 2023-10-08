@@ -17,8 +17,12 @@ import EditProductTypeBtnModal from "../../components/productTypes/editProductTy
 import DeleteProductTypeBtnModal from "../../components/productTypes/deleteProductTypeModal";
 import EmptyTableMessage from "../../components/categories/emptyTableMessage";
 import AddproductBtnModal from "../../components/products/addProductBtnModal";
+import { DepreciationItValue } from "../../models/depreciationRates";
+import { NavLink, useNavigate, useNavigation } from "react-router-dom";
+import { notifyFailure } from "../../common/notify";
+import ApiError from "../../common/apiError";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+export const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     fontWeight: 600,
     color: "#4b4545",
@@ -52,14 +56,24 @@ function createData(
   id: string,
   created_at: string,
   updated_at: string,
-  categoryId: string
+  categoryId: string,
+  depreciationItValue: DepreciationItValue[]
 ) {
-  return { productName, categoryName, created_at, updated_at, id, categoryId };
+  return {
+    productName,
+    categoryName,
+    created_at,
+    updated_at,
+    id,
+    categoryId,
+    depreciationItValue,
+  };
 }
 
 type Row = ReturnType<typeof createData>;
 
 function ProductTypes() {
+  const navigate = useNavigate();
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rows, setRows] = useState<Row[] | []>([]);
@@ -78,11 +92,15 @@ function ProductTypes() {
   ] = useLazyGetAllProductsTypeQuery();
 
   const getProductsType = () => {
-    getAllProductsType({
-      page: page + 1,
-      take: rowsPerPage,
-      search: search.trim(),
-    });
+    try {
+      getAllProductsType({
+        page: page + 1,
+        take: rowsPerPage,
+        search: search.trim(),
+      });
+    } catch (e) {
+      notifyFailure("Unable to get all Product Types");
+    }
   };
   useEffect(() => {
     if (page == -1) {
@@ -107,7 +125,8 @@ function ProductTypes() {
             data.id,
             data.created_at,
             data.updated_at,
-            data.category.id
+            data.category.id,
+            data.depreciationItValues
           )
         )
       );
@@ -125,8 +144,18 @@ function ProductTypes() {
     //setPage(-1)
     // setPage(0);
   };
+
+  if (productsTypeError) {
+    return (
+      <ApiError
+        refecthAction={() => {
+          getProductsType();
+        }}
+      />
+    );
+  }
   return (
-    <ComponentWithHeader title="Added Categories">
+    <ComponentWithHeader title="Added Product Types">
       <div
         className={`w-full h-full  ${
           productsTypeLoading || productsTypeFetching
@@ -166,7 +195,7 @@ function ProductTypes() {
             >
               <LinearProgress />
             </div>
-            <TableContainer>
+            <TableContainer sx={{ maxHeight: 360 }}>
               <Table
                 sx={{ minWidth: 400 }}
                 aria-label="customized table"
@@ -178,7 +207,9 @@ function ProductTypes() {
                     <StyledTableCell align="center">
                       Category Name
                     </StyledTableCell>
-                    <StyledTableCell align="center">Created At</StyledTableCell>
+                    <StyledTableCell align="center">
+                      Depreciation Rates to fill
+                    </StyledTableCell>
                     <StyledTableCell align="center">Modify</StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -190,7 +221,7 @@ function ProductTypes() {
                         <EmptyTableMessage
                           msg={
                             search.length == 0
-                              ? "Please add Categories"
+                              ? "Please Product Types to Categories"
                               : "No categories in this name"
                           }
                         />
@@ -217,7 +248,34 @@ function ProductTypes() {
                         align="center"
                         style={{ minWidth: 150, overflowWrap: "break-word" }}
                       >
-                        {new Date(row.created_at!).toDateString()}
+                        <div className="flex gap-4  justify-center items-center">
+                          <p>{row.depreciationItValue?.length}</p>
+                          {
+                            <div
+                              className={`${
+                                row.depreciationItValue?.length == 0
+                                  ? "bg-navitemBg"
+                                  : "bg-red-500"
+                              }  p-1 px-2 cursor-pointer text-white font-medium rounded-full  tracking-wide ${
+                                row.depreciationItValue.length == 0
+                                  ? ""
+                                  : "animate-pulse"
+                              }`}
+                              onClick={() => {
+                                navigate("fillrates", {
+                                  state: {
+                                    productTypeName: row.productName,
+                                    productTypeId: row.id,
+                                  },
+                                });
+                              }}
+                            >
+                              {row.depreciationItValue?.length == 0
+                                ? "View Rates"
+                                : "Fill here"}
+                            </div>
+                          }
+                        </div>
                       </StyledTableCell>
 
                       <StyledTableCell

@@ -8,6 +8,9 @@ import Products from "./screens/products/products";
 import AddProducts from "./screens/addProducts/addProducts";
 import ItemInfo from "./screens/itemInfo/itemInfo";
 import ProductTypes from "./screens/productTypes/productTypes";
+import RatesIt from "./screens/productTypes/ratesIt";
+import InfoMessage from "./common/infoMessage";
+import PageNotExist from "./common/pageNotExsist";
 
 function App() {
   return (
@@ -17,12 +20,24 @@ function App() {
           <Route path="/" element={<Navigate to="/schedule" replace />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="categories" element={<Categories />} />
-          <Route path="productTypes" element={<ProductTypes />} />
+          <Route path="productTypes" element={<Outlet />}>
+            <Route path="" element={<ProductTypes />}></Route>
+            <Route path="fillrates" element={<RatesIt />}></Route>
+          </Route>
           <Route path="products" element={<Outlet />}>
             <Route path="" element={<Products />} />
-            <Route path="info/:productId" element={<ItemInfo />} />
+            <Route path="info" element={<Outlet />}>
+              <Route
+                path=""
+                element={
+                  <InfoMessage message="Please select a product to view Details" />
+                }
+              ></Route>
+              <Route path=":productId" element={<ItemInfo />}></Route>
+            </Route>
           </Route>
           <Route path="addProducts" element={<AddProducts />} />
+          <Route path="*" element={<PageNotExist />}></Route>
         </Routes>
       </SidenavLayout>
     </Layout>

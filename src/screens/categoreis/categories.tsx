@@ -20,6 +20,7 @@ import AddIcon from "@mui/icons-material/Add";
 import EmptyTableMessage from "../../components/categories/emptyTableMessage";
 import { useNavigate } from "react-router-dom";
 import ComponentWithHeader from "../../common/componentWithHeader";
+import ApiError from "../../common/apiError";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -117,6 +118,16 @@ function Categories() {
     //setPage(-1)
     // setPage(0);
   };
+
+  if (categoriesError) {
+    return (
+      <ApiError
+        refecthAction={() => {
+          getCategories();
+        }}
+      />
+    );
+  }
   return (
     <ComponentWithHeader title="Added Categories">
       <div
@@ -128,7 +139,7 @@ function Categories() {
           {/* //search */}
           <div className="w-full lg:w-[60%]">
             <Search
-            placeHolder="Search Categories"
+              placeHolder="Search Categories"
               triggerFunction={(searchVal: string) => {
                 setSearch(searchVal);
               }}
@@ -156,7 +167,7 @@ function Categories() {
             >
               <LinearProgress />
             </div>
-            <TableContainer>
+            <TableContainer sx={{ maxHeight: 360 }}>
               <Table
                 sx={{ minWidth: 400 }}
                 aria-label="customized table"
@@ -164,18 +175,10 @@ function Categories() {
               >
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell align="left" >
-                      Name
-                    </StyledTableCell>
-                    <StyledTableCell align="center" >
-                      Created At
-                    </StyledTableCell>
-                    <StyledTableCell align="center" >
-                      Add
-                    </StyledTableCell>
-                    <StyledTableCell align="center" >
-                      Modify
-                    </StyledTableCell>
+                    <StyledTableCell align="left">Name</StyledTableCell>
+                    <StyledTableCell align="center">Created At</StyledTableCell>
+                    <StyledTableCell align="center">Add</StyledTableCell>
+                    <StyledTableCell align="center">Modify</StyledTableCell>
                   </TableRow>
                 </TableHead>
 
@@ -196,11 +199,22 @@ function Categories() {
                   {rows.map((row) => (
                     <StyledTableRow key={row.name}>
                       {/* sx={{ minWidth: 700 }} */}
-                      <StyledTableCell align="left" style={{minWidth:150,overflowWrap:"break-word"}}>{row.name}</StyledTableCell>
-                      <StyledTableCell align="center" style={{minWidth:150,overflowWrap:"break-word"}}>
+                      <StyledTableCell
+                        align="left"
+                        style={{ minWidth: 150, overflowWrap: "break-word" }}
+                      >
+                        {row.name}
+                      </StyledTableCell>
+                      <StyledTableCell
+                        align="center"
+                        style={{ minWidth: 150, overflowWrap: "break-word" }}
+                      >
                         {new Date(row.created_at!).toDateString()}
                       </StyledTableCell>
-                      <StyledTableCell align="center" style={{minWidth:250,overflowWrap:"break-word"}}>
+                      <StyledTableCell
+                        align="center"
+                        style={{ minWidth: 250, overflowWrap: "break-word" }}
+                      >
                         <Button
                           startIcon={<AddIcon sx={{ color: "#9a0afa" }} />}
                           variant="outlined"
@@ -231,7 +245,10 @@ function Categories() {
                         </Button>
                       </StyledTableCell>
 
-                      <StyledTableCell align="center" style={{minWidth:150,overflowWrap:"break-word"}}>
+                      <StyledTableCell
+                        align="center"
+                        style={{ minWidth: 150, overflowWrap: "break-word" }}
+                      >
                         <div className="flex gap-2 items-center justify-center">
                           <DeleteBtnModal
                             triggerAction={() => {

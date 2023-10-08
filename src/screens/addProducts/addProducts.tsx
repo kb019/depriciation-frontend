@@ -73,10 +73,12 @@ function AddProducts() {
   ] = useAddNewProductMutation();
   const navigate = useNavigate();
   const initialValues: ProductDetailsType = {
-    productTypeInputValue: "",
+    productTypeInputValue:
+      (state?.productId && itemData?.productType.productType) || "",
     productTypeDetails: {
-      productTypeId: "",
-      productTypeName: "",
+      productTypeId: (state?.productId && itemData?.productType.id) || "",
+      productTypeName:
+        (state?.productId && itemData?.productType.productType) || "",
     },
     invoiceDetails: {
       invoiceNumber: (state?.productId && itemData?.invoiceNumber) || "",
@@ -119,7 +121,7 @@ function AddProducts() {
       };
 
       await updateProductById({ productId, itemDetails: body }).unwrap();
-      notifySuccess("Product updated successfully");
+      // notifySuccess("Product updated successfully");
       await getProductDetail();
       setTimeout(() => {
         navigate("/products");
@@ -173,8 +175,13 @@ function AddProducts() {
               },
               productTypeId: values.productTypeDetails.productTypeId,
             };
-            await addNewProduct(body).unwrap();
-            notifySuccess("Product added successfully");
+            if (state?.productId) {
+              await updateProduct(state?.productId, values);
+              notifySuccess("Product Updated successfully");
+            } else {
+              await addNewProduct(body).unwrap();
+              notifySuccess("Product added successfully");
+            }
             setSubmitting(false);
             values.productTypeInputValue = "";
             setRerenderKeyProp((prev) => prev + 1);
@@ -238,7 +245,8 @@ function AddProducts() {
                   disabled={formikProps.isSubmitting || !formikProps.dirty}
                   sx={buttonCss}
                   onClick={() => {
-                    updateProduct(state?.productId, formikProps.values);
+                    // updateProduct(state?.productId, formikProps.values);
+                    formikProps.handleSubmit();
                   }}
                 >
                   Update Product

@@ -21,6 +21,8 @@ import { useNavigate } from "react-router-dom";
 import { AddCategoryResponse as CategoryType } from "../../models/category";
 import AddcategoryButnModal from "../../components/categories/addCategoryBtnModal";
 import AddproductBtnModal from "../../components/products/addProductBtnModal";
+import { AllProductTypeResponse } from "../../models/productTypeInfo";
+import ApiError from "../../common/apiError";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -68,7 +70,7 @@ function createData(
   id: string,
   created_at: string,
   updated_at: string,
-  category: CategoryType
+  productType: Omit<AllProductTypeResponse, "depreciationItValues">
 ) {
   return {
     invoiceNumber,
@@ -84,7 +86,7 @@ function createData(
     id,
     created_at,
     updated_at,
-    category,
+    productType,
   };
 }
 
@@ -144,7 +146,7 @@ function Products() {
             data.id,
             data.created_at,
             data.updated_at,
-            data.category
+            data.productType
           )
         )
       );
@@ -161,6 +163,16 @@ function Products() {
     //setPage(-1)
     // setPage(0);
   };
+
+  if (productsError) {
+    return (
+      <ApiError
+        refecthAction={() => {
+          getProducts();
+        }}
+      />
+    );
+  }
   return (
     <ComponentWithHeader title="Added Products">
       <div
@@ -188,8 +200,6 @@ function Products() {
           >
             <AddIcon sx={{ color: "#fffefe" }} />
           </div>
-         
-        
         </div>
 
         {/* //datatable */}
@@ -205,7 +215,7 @@ function Products() {
             >
               <LinearProgress />
             </div>
-            <TableContainer>
+            <TableContainer sx={{ maxHeight: 360 }}>
               <Table
                 sx={{ minWidth: 400 }}
                 aria-label="customized table"

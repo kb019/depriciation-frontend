@@ -26,7 +26,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   paddingBottom: 0,
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     // backgroundColor: theme.palette.action.hover,
   },
@@ -70,7 +70,7 @@ function ProductRow(props: {
         </StyledTableCell>
 
         <StyledTableCell style={{ minWidth: 150, overflowWrap: "break-word" }}>
-          {row.category?.name}
+          {row.productType.category?.name}
         </StyledTableCell>
         <StyledTableCell style={{ minWidth: 150, overflowWrap: "break-word" }}>
           {row.invoiceNumber}
@@ -78,13 +78,6 @@ function ProductRow(props: {
 
         <StyledTableCell align="center">
           <div className="flex gap-2 items-center justify-center">
-            {/* <DeleteBtnModal
-              triggerAction={() => {
-
-                triggerFetch();
-              }}
-              data={{ name: row.category?.name, categoryId: row.id! }}
-            /> */}
             <DeleteProductModal
               triggerAction={() => {
                 triggerFetch();
