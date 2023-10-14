@@ -212,7 +212,7 @@ function RatesIt() {
                         <EmptyTableMessage
                           msg={
                             search.length == 0
-                              ? "Please add Categories"
+                              ? "Please add product under this product type"
                               : "No Rates for this year"
                           }
                         />

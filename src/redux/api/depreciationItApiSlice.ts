@@ -1,33 +1,12 @@
+import { DepreciationRate } from "./../../models/depreciationRate";
 import { PaginatedResponse } from "../../models/paginatedResponse";
 import { apiSlice } from "../auth/authApi";
 import { PaginationRequestType } from "../../models/paginatedRequestType";
 import { DepreciationItValue } from "../../models/depreciationRates";
+import { DepreciationItData } from "../../models/deprectionItData";
 
 export const depreciationItApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    //   addNewProductType: builder.mutation<
-    //     AddApiProductTypeResponse,
-    //     ApiProductTypeInfo
-    //   >({
-    //     query: (productTypeDetails) => ({
-    //       url: "/api/v1/productType",
-    //       method: "POST",
-    //       body: productTypeDetails,
-    //     }),
-    //   }),
-    //   getAllProductsType: builder.query<
-    //     PaginatedResponse<AllProductTypeResponse>,
-    //     PaginationRequestType
-    //   >({
-    //     query: ({ page, take, search }) => ({
-    //       url: "/api/v1/productType",
-    //       params: {
-    //         page,
-    //         take,
-    //         search,
-    //       },
-    //     }),
-    //   }),
     getAllRates: builder.query<
       PaginatedResponse<DepreciationItValue>,
       PaginationRequestType & { productTypeId: string }
@@ -42,16 +21,6 @@ export const depreciationItApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-    //   updateProductType: builder.mutation<
-    //     AddApiProductTypeResponse,
-    //     { productTypeId: string; productTypeDetails: ApiProductTypeInfo }
-    //   >({
-    //     query: ({ productTypeId, productTypeDetails }) => ({
-    //       url: `/api/v1/productType/${productTypeId}`,
-    //       method: "PUT",
-    //       body: productTypeDetails,
-    //     }),
-    //   }),
     updateDepriciationItRate: builder.mutation<
       DepreciationItValue,
       { depreciationItId: string; depreciationItRate: string }
@@ -64,37 +33,24 @@ export const depreciationItApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
-    //   deleteProductTypeById: builder.mutation<
-    //     { message: string },
-    //     { productTypeId: string }
-    //   >({
-    //     query: ({ productTypeId }) => ({
-    //       url: `/api/v1/productType/${productTypeId}`,
-    //       method: "DELETE",
-    //     }),
-    //   }),
-    //   getAllProductTypesWithoutPagination: builder.query<
-    //     Omit<AllProductTypeResponse,"category">[],
-    //     void
-    //   >({
-    //     query: (arg) => ({
-    //       url: "api/v1/productType/plain",
-    //     }),
-    //   }),
+    useGetDepriciationItData: builder.query<DepreciationItData[], number>({
+      query: (year) => ({
+        url: `/api/v1/schedule/It/${year}`,
+        method: "GET",
+      }),
+    }),
+    checkNullRatesExsists: builder.query<DepreciationRate[], number>({
+      query: (year) => ({
+        url: `/api/v1/schedule/CheckRates/${year}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
 export const {
-  // useAddNewProductTypeMutation,
-  // useGetAllProductsTypeQuery,
-  // useLazyGetAllProductsTypeQuery,
-  // // useLazyGetAllProductsQuery,
-  // // useGetProductByIdQuery,
-  // // useLazyGetProductByIdQuery,
-  // // useUpdateProductMutation,
-  // useUpdateProductTypeMutation,
-  // useDeleteProductTypeByIdMutation,
-  // useGetAllProductTypesWithoutPaginationQuery
   useLazyGetAllRatesQuery,
   useUpdateDepriciationItRateMutation,
+  useLazyUseGetDepriciationItDataQuery,
+  useLazyCheckNullRatesExsistsQuery
 } = depreciationItApiSlice;

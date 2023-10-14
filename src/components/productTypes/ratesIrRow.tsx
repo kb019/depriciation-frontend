@@ -31,7 +31,7 @@ function RatesItRow({ row }: { row: DepItRowType }) {
   );
   const [updateDepRate, { isLoading: updatingItRate }] =
     useUpdateDepriciationItRateMutation();
- 
+
   async function updateRates() {
     try {
       const res = await updateDepRate({
@@ -84,7 +84,7 @@ function RatesItRow({ row }: { row: DepItRowType }) {
             variant="contained"
             disabled={userInputValue == initialValue || updatingItRate}
           >
-            Update
+            {updatingItRate ? "Updating" : "Update"}
           </Button>
         </StyledTableCell>
         <StyledTableCell
