@@ -1,9 +1,9 @@
+import { DepreciationItData } from "./../../models/deprectionItData";
 import { DepreciationRate } from "./../../models/depreciationRate";
 import { PaginatedResponse } from "../../models/paginatedResponse";
 import { apiSlice } from "../auth/authApi";
 import { PaginationRequestType } from "../../models/paginatedRequestType";
 import { DepreciationItValue } from "../../models/depreciationRates";
-import { DepreciationItData } from "../../models/deprectionItData";
 
 export const depreciationItApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -45,6 +45,29 @@ export const depreciationItApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    downloadPDFFile: builder.mutation({
+      queryFn: async ({ year, pdfContent }, api, extraOptions, baseQuery) => {
+        const result: any = await baseQuery({
+          url: `/api/v1/pdfGenerator/genItDepPdf/${year}`,
+          responseHandler: (response) => response.blob(),
+          body: pdfContent,
+          method: "POST",
+        });
+        var hiddenElement = document.createElement("a");
+        var url = window.URL || window.webkitURL;
+        var blobPDF = url.createObjectURL(result.data);
+        hiddenElement.href = blobPDF;
+        hiddenElement.target = "_blank";
+        hiddenElement.download = `DepreciationIt.pdf`;
+        hiddenElement.click();
+        // setTimeout(() => {
+        //   document.removeChild(hiddenElement);
+        //   url.revokeObjectURL(blobPDF);
+        // }, 2000);
+        return { data: null };
+      },
+    }),
   }),
 });
 
@@ -52,5 +75,6 @@ export const {
   useLazyGetAllRatesQuery,
   useUpdateDepriciationItRateMutation,
   useLazyUseGetDepriciationItDataQuery,
-  useLazyCheckNullRatesExsistsQuery
+  useLazyCheckNullRatesExsistsQuery,
+  useDownloadPDFFileMutation,
 } = depreciationItApiSlice;

@@ -262,7 +262,7 @@ function ProductTypes() {
                                   : "animate-pulse"
                               }`}
                               onClick={() => {
-                                navigate("fillrates", {
+                                navigate("/productTypes/fillrates", {
                                   state: {
                                     productTypeName: row.productName,
                                     productTypeId: row.id,

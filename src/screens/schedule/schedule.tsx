@@ -5,6 +5,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 import {
+  useDownloadPDFFileMutation,
   useLazyCheckNullRatesExsistsQuery,
   useLazyUseGetDepriciationItDataQuery,
 } from "../../redux/api/depreciationItApiSlice";
@@ -12,6 +13,7 @@ import { Button, LinearProgress } from "@mui/material";
 import DepreciationItDataTable from "../../components/schedule/depreciationItData";
 import { notifyFailure } from "../../common/notify";
 import { NavLink, Navigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function Schedule() {
   const [year, setYear] = React.useState<Dayjs | null>(null);
@@ -27,6 +29,10 @@ function Schedule() {
   ] = useLazyUseGetDepriciationItDataQuery();
   const [checkNullRates, { isLoading: checkringNullRates }] =
     useLazyCheckNullRatesExsistsQuery();
+  // const [getPdfDepIt, { isLoading: generatingItPdf }] =
+  //   useLazyGetItDepPdfQuery();
+  const [getPdfDepIt, { isLoading: generatingItPdf }] =
+    useDownloadPDFFileMutation();
 
   async function generateDepData() {
     try {
@@ -44,6 +50,23 @@ function Schedule() {
     }
   }
 
+  async function getItPdf() {
+    try {
+      toast.promise(
+        getPdfDepIt({
+          year: year!.toDate().getFullYear(),
+          pdfContent: depDataIt,
+        }).unwrap(),
+        {
+          loading: "Downloading File",
+          success: () => "Downloaded File Successfully",
+          error: (e) => "File could not be downloaded.Please try again",
+        }
+      );
+    } catch (e) {
+      // console.log(e);
+    }
+  }
   return (
     <ComponentWithHeader title="Schedule">
       {(generatingData || checkringNullRates) && <LinearProgress />}
@@ -86,7 +109,7 @@ function Schedule() {
           </NavLink>
         </p>
       )}
-      {depDataIt && depDataIt.length == 0 && !showNullErrorMessage &&(
+      {depDataIt && depDataIt.length == 0 && !showNullErrorMessage && (
         <div className="text-red-500 text-sm tracking-wider">
           There are no products in till this year.Please add a product{" "}
           <NavLink
@@ -97,11 +120,21 @@ function Schedule() {
           </NavLink>
         </div>
       )}
-      {depDataIt && (
-        <DepreciationItDataTable
-          data={depDataIt!}
-          year={year?.toDate().getFullYear()!}
-        />
+      {depDataIt && depDataIt.length > 0 && (
+        <>
+          <DepreciationItDataTable
+            data={depDataIt!}
+            year={year?.toDate().getFullYear()!}
+          />
+          <div
+            className="mt-2 ml-auto text-end cursor-pointer text-blue-500 border-b-2 border-blue-500  max-w-max"
+            onClick={() => {
+              getItPdf();
+            }}
+          >
+            Download as pdf
+          </div>
+        </>
       )}
     </ComponentWithHeader>
   );

@@ -18,10 +18,17 @@ const menuItems = [
   {
     name: "Product Types",
     icon: LanIcon,
-    path: "/productTypes",
+    path: "/productTypes/list",
     subItems: [
       {
+        name: "List",
+        //icon does not matter here but doing for typescript
+        icon: TrendingUpIcon,
+        path: "/productTypes/list",
+      },
+      {
         name: "IT Rates",
+        //icon does not matter here but doing for typescript
         icon: TrendingUpIcon,
         path: "/productTypes/fillRates",
       },
@@ -31,8 +38,14 @@ const menuItems = [
   {
     name: "Products",
     icon: WidgetsIcon,
-    path: "/products",
+    path: "/products/list",
     subItems: [
+      {
+        name: "List",
+        //icon does not matter here but doing for typescript
+        icon: TrendingUpIcon,
+        path: "/products/list",
+      },
       {
         name: "Item Details",
         //icon does not matter here but doing for typescript
@@ -61,6 +74,11 @@ function NavItem(
               ? " bg-navitemBg bg-gradient-to-r from-indigo-600 to-purple-600 shadow-xl text-white"
               : !isSubItem && "hover:bg-gray-200"
           }`}
+          onClick={(e) => {
+            // e.stopPropagation();
+            // e.preventDefault();
+            setOpen((prev) => !prev);
+          }}
         >
           {!isSubItem && (
             <div>
@@ -79,12 +97,8 @@ function NavItem(
           )}
           {ele.subItems && ele.subItems.length > 0 && isOpen && (
             <div
-            className="ml-auto"
-              onClick={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                setOpen((prev) => !prev);
-              }}
+              className="ml-auto"
+             
             >
               {!open ? <ChevronRightIcon /> : <ExpandMoreIcon />}
             </div>

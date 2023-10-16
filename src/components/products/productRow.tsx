@@ -60,7 +60,7 @@ function ProductRow(props: {
         sx={{ "& > *": { borderBottom: "unset" } }}
         style={{ height: 50 }}
         onClick={() => {
-          navigate(`info/${row.id}`);
+          navigate(`/products/info/${row.id}`);
         }}
       >
         {/* sx={{ minWidth: 700 }} */}

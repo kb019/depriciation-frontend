@@ -21,11 +21,11 @@ function App() {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="categories" element={<Categories />} />
           <Route path="productTypes" element={<Outlet />}>
-            <Route path="" element={<ProductTypes />}></Route>
+            <Route path="list" element={<ProductTypes />}></Route>
             <Route path="fillrates" element={<RatesIt />}></Route>
           </Route>
           <Route path="products" element={<Outlet />}>
-            <Route path="" element={<Products />} />
+            <Route path="list" element={<Products />} />
             <Route path="info" element={<Outlet />}>
               <Route
                 path=""

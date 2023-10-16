@@ -79,7 +79,7 @@ function Row(props: { row: DepreciationItData; year: number }) {
                         color: "#626060",
                       }}
                     >
-                      W.D.V AS ON 01.04.{year}
+                      W.D.V AS ON 01.04.{year - 1}
                     </TableCell>
                     <TableCell
                       align="center"
@@ -109,7 +109,7 @@ function Row(props: { row: DepreciationItData; year: number }) {
                         color: "#626060",
                       }}
                     >
-                      TOTAL AS ON 31.03.{year + 1}
+                      TOTAL AS ON 31.03.{year}
                     </TableCell>
                     <TableCell
                       align="center"
@@ -129,7 +129,7 @@ function Row(props: { row: DepreciationItData; year: number }) {
                         color: "#626060",
                       }}
                     >
-                      W.D.V AS ON 31.03.{year + 1}
+                      W.D.V AS ON 31.03.{year}
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -173,33 +173,33 @@ function Row(props: { row: DepreciationItData; year: number }) {
                   <TableRow>
                     <TableCell></TableCell>
                     <TableCell></TableCell>
-                    <TableCell style={{fontWeight:600}}>
+                    <TableCell style={{ fontWeight: 600 }}>
                       {new Intl.NumberFormat("en-IN").format(
                         row.meta.total_wdvstart
                       )}
                     </TableCell>
-                    <TableCell align="center" style={{fontWeight:600}}>
+                    <TableCell align="center" style={{ fontWeight: 600 }}>
                       {new Intl.NumberFormat("en-IN").format(
                         row.meta.total_before180Days
                       )}
                     </TableCell>
-                    <TableCell align="center" style={{fontWeight:600}}>
+                    <TableCell align="center" style={{ fontWeight: 600 }}>
                       {new Intl.NumberFormat("en-IN").format(
                         row.meta.total_after180Days
                       )}
                     </TableCell>
-                    <TableCell align="center" style={{fontWeight:600}}>
+                    <TableCell align="center" style={{ fontWeight: 600 }}>
                       {new Intl.NumberFormat("en-IN").format(
                         row.meta.total_total
                       )}
                     </TableCell>
 
-                    <TableCell align="center" style={{fontWeight:600}}>
+                    <TableCell align="center" style={{ fontWeight: 600 }}>
                       {new Intl.NumberFormat("en-IN").format(
                         row.meta.total_depForYear
                       )}
                     </TableCell>
-                    <TableCell align="center" style={{fontWeight:600}}>
+                    <TableCell align="center" style={{ fontWeight: 600 }}>
                       {new Intl.NumberFormat("en-IN").format(
                         row.meta.total_wdvend
                       )}
@@ -223,7 +223,7 @@ export default function DepreciationItDataTable({
   year: number;
 }) {
   return (
-    <TableContainer component={Paper} sx={{ maxHeight: 450 }}>
+    <TableContainer component={Paper} sx={{ maxHeight: 420 }}>
       <Table aria-label="collapsible table" stickyHeader>
         <TableHead></TableHead>
         <TableBody>

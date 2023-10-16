@@ -54,7 +54,7 @@ function RatesItRow({ row }: { row: DepItRowType }) {
           align="left"
           style={{ minWidth: 150, overflowWrap: "break-word" }}
         >
-          {row.depYear}
+          {`${row.depYear - 1} - ${row.depYear}`}
         </StyledTableCell>
         <StyledTableCell
           align="center"
