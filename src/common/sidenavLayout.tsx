@@ -18,7 +18,7 @@ const menuItems = [
   {
     name: "Product Types",
     icon: LanIcon,
-    path: "/productTypes/list",
+    path: "/productTypes",
     subItems: [
       {
         name: "List",
@@ -38,7 +38,7 @@ const menuItems = [
   {
     name: "Products",
     icon: WidgetsIcon,
-    path: "/products/list",
+    path: "/products",
     subItems: [
       {
         name: "List",
@@ -96,10 +96,7 @@ function NavItem(
             </div>
           )}
           {ele.subItems && ele.subItems.length > 0 && isOpen && (
-            <div
-              className="ml-auto"
-             
-            >
+            <div className="ml-auto">
               {!open ? <ChevronRightIcon /> : <ExpandMoreIcon />}
             </div>
           )}
