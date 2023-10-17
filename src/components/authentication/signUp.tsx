@@ -28,7 +28,7 @@ const validationSchema = Yup.object().shape({
     .required("Confirm Password is required")
     .oneOf([Yup.ref("password")], "Your passwords do not match."),
 });
-function SignUp() {
+function SignUp({ changePage }: { changePage: () => void }) {
   const initialValues = {
     companyName: "",
     email: "",
@@ -53,7 +53,14 @@ function SignUp() {
           {" "}
           Sign Up
         </h2>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: Boolean(formik.errors.companyName)
+              ? "center"
+              : "flex-end",
+          }}
+        >
           <BusinessIcon sx={{ color: "#B8B8DA", mr: 1, my: 0.5 }} />
           <TextField
             id="input-with-sx"
@@ -71,7 +78,12 @@ function SignUp() {
             helperText={formik.touched.companyName && formik.errors.companyName}
           />
         </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: Boolean(formik.errors.email) ? "center" : "flex-end",
+          }}
+        >
           <EmailIcon sx={{ color: "#B8B8DA", mr: 1, my: 0.5 }} />
           <TextField
             id="input-with-sx"
@@ -87,7 +99,12 @@ function SignUp() {
             fullWidth
           />
         </Box>
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: Boolean(formik.errors.address) ? "center" : "flex-end",
+          }}
+        >
           <HomeIcon sx={{ color: "#B8B8DA", mr: 1, my: 0.5 }} />
           <TextField
             id="input-with-sx"
@@ -137,7 +154,10 @@ function SignUp() {
       </button>
 
       <p className="mt-7 font-semibold text-sm text-[#7373A4]">
-        Exsiting User? <a className="text-[#8887F6] cursor-pointer">Log in</a>
+        Exsiting User?{" "}
+        <a className="text-[#8887F6] cursor-pointer" onClick={changePage}>
+          Log in
+        </a>
       </p>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import SignUp from "./signUp";
 import SignUpOrLoginLogo from "./signUpOrLoginLogo";
 import LogIn from "./logIn";
@@ -14,7 +14,19 @@ function LoginOrSignUpPage() {
         className="flex-1 md:m-auto m-0 overflow-y-auto"
         style={{ maxHeight: "100dvh" }}
       >
-        <LogIn />
+        {showLoginPage ? (
+          <LogIn
+            changePage={() => {
+              setShowLogin(false);
+            }}
+          />
+        ) : (
+          <SignUp
+            changePage={() => {
+              setShowLogin(true);
+            }}
+          />
+        )}
       </div>
     </div>
   );

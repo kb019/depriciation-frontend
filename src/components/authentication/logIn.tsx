@@ -23,7 +23,7 @@ const validationSchema = Yup.object().shape({
 
   password: Yup.string().trim().required("Password is Required"),
 });
-function LogIn() {
+function LogIn({ changePage }: { changePage: () => void }) {
   const initialValues = {
     email: "",
     password: "",
@@ -60,7 +60,12 @@ function LogIn() {
             helperText={formik.touched.companyName && formik.errors.companyName}
           />
         </Box> */}
-        <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: Boolean(formik.errors.email) ? "center" : "flex-end",
+          }}
+        >
           <EmailIcon sx={{ color: "#B8B8DA", mr: 1, my: 0.5 }} />
           <TextField
             id="input-with-sx"
@@ -126,7 +131,10 @@ function LogIn() {
       </button>
 
       <p className="mt-7 font-semibold text-sm text-[#7373A4]">
-        New User? <a className="text-[#8887F6] cursor-pointer">Sign in</a>
+        New User?{" "}
+        <a className="text-[#8887F6] cursor-pointer" onClick={changePage}>
+          Sign in
+        </a>
       </p>
     </div>
   );
