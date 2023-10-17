@@ -18,3 +18,5 @@
   background-color: darkgrey;
   outline: 1px solid slategrey;
 }
+
+div.inserted-svg-logo svg { max-width:100%; }
