@@ -12,6 +12,9 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LanIcon from "@mui/icons-material/Lan";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { logout } from "../redux/auth/authSlice";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 const menuItems = [
   { name: "Schedule", icon: TodayIcon, path: "/schedule" },
   { name: "Categories", icon: CategoryIcon, path: "/categories" },
@@ -71,7 +74,7 @@ function NavItem(
         <div
           className={`flex items-center gap-2  flex-1  px-3 py-[6px] hover:scale-110 rounded-full  hover:cursor-pointer ${
             isActive && !isSubItem
-              ? " bg-navitemBg bg-gradient-to-r from-indigo-600 to-purple-600 shadow-xl text-white"
+              ? " bg-navitemBg bg-gradient-to-r from-indigo-600 to-purple-600 shadow text-white"
               : !isSubItem && "hover:bg-gray-200"
           }`}
           onClick={(e) => {
@@ -132,11 +135,12 @@ function NavItem(
 function SidenavLayout({ children }: Children) {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const className = isOpen ? "open-nav" : "close-nav";
+  const dispatch = useAppDispatch();
   return (
     <div className="flex h-full w-full">
       {/* Side nav Starts */}
       <div
-        className={`h-full bg-white relative pt-20 p-4 shadow-xl  ${className} sm:flex flex-col gap-6 hidden`}
+        className={`h-full bg-white relative pt-20  shadow-xl  ${className} sm:flex flex-col justify-between hidden`}
       >
         <div
           className=" w-max p-2 z-50 flex justify-center items-center rounded-full absolute right-0 top-5 translate-x-[50%] hover:cursor-pointer bg-white shadow-md"
@@ -150,16 +154,28 @@ function SidenavLayout({ children }: Children) {
             <ChevronRightIcon sx={{ color: "#6A00F4" }} />
           )}
         </div>
-
-        {menuItems.map((ele: NavBarItem, i) => {
-          return (
-            <NavLink to={`${ele.path}`} key={i}>
-              {({ isActive }) => {
-                return NavItem(ele, isOpen, isActive);
-              }}
-            </NavLink>
-          );
-        })}
+        <div className="flex flex-col gap-6 overflow-y-auto p-4 overflow-x-hidden">
+          {menuItems.map((ele: NavBarItem, i) => {
+            return (
+              <NavLink to={`${ele.path}`} key={i}>
+                {({ isActive }) => {
+                  return NavItem(ele, isOpen, isActive);
+                }}
+              </NavLink>
+            );
+          })}
+        </div>
+        <div className="p-4 ">
+          <div className="flex bg-gray-300 hover:bg-slate-100 items-center p-2 px-3 rounded-md" onClick={() => {
+                dispatch(logout());
+              }}>
+            <ExitToAppIcon />
+            {isOpen && <button
+              className=" mx-auto  w-full   text-center  "
+              
+            >Logout</button>}
+          </div>
+        </div>
       </div>
       {/* Side Nav Ends */}
       {/* content starts */}

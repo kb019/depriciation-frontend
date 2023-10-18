@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { logout } from "./authSlice";
+import { logout, setUserTokens } from "./authSlice";
 import { RootState } from "../store";
-import { setAccessToken } from "./authSlice";
 
 import type {
   BaseQueryFn,
@@ -10,15 +9,18 @@ import type {
 } from "@reduxjs/toolkit/query";
 import { BaseUrl } from "../../constants/baseUrl";
 
-
 const baseQuery = fetchBaseQuery({
   baseUrl: BaseUrl,
 
   credentials: "same-origin",
   prepareHeaders: (headers, { getState, endpoint }) => {
-    const token = (getState() as RootState).auth.userTokens?.accessToken;
-    if (token && endpoint != "refresh") {
-      headers.set("Authorization", `Bearer ${token}`);
+    const acessToken = (getState() as RootState).auth.userTokens?.accessToken;
+    const refreshToken = (getState() as RootState).auth.userTokens
+      ?.refreshToken;
+    if (acessToken && endpoint != "refresh") {
+      headers.set("Authorization", `Bearer ${acessToken}`);
+    } else if (refreshToken && endpoint == "refresh") {
+      headers.set("Authorization", `Bearer ${refreshToken}`);
     }
     return headers;
   },
@@ -37,11 +39,11 @@ const baseQueryWithReauth: BaseQueryFn<
     const refreshResult = await baseQuery(
       {
         url: "/api/v1/auth/refresh",
-        method: "POST",
-        body: {
-          refreshToken: (api.getState() as RootState).auth.userTokens
-            ?.refreshToken,
-        },
+        method: "GET",
+        // body: {
+        //   refreshToken: (api.getState() as RootState).auth.userTokens
+        //     ?.refreshToken,
+        // },
       },
       { ...api, endpoint: "refresh" },
       extraOptions
@@ -50,7 +52,10 @@ const baseQueryWithReauth: BaseQueryFn<
     if (refreshResult.data) {
       //store new token
       api.dispatch(
-        setAccessToken({ accessToken: (refreshResult.data as any).accessToken })
+        setUserTokens({
+          accessToken: (refreshResult.data as any).accessToken,
+          refreshToken: (refreshResult.data as any).refreshToken,
+        })
       );
       //retry the original query with new access token
       result = await baseQuery(args, api, extraOptions);

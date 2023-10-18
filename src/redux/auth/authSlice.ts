@@ -1,18 +1,14 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "./authActions";
-// import { initialAuthState } from "../../models/authSlice";
+import { AuthState } from "../../models/authState";
 
 const userTokens = localStorage.getItem("userTokens")
   ? JSON.parse(localStorage.getItem("userTokens")!)
   : null;
 
-const userInfo = localStorage.getItem("userInfo")
-  ? JSON.parse(localStorage.getItem("userInfo")!)
-  : null;
-
-const initialState: any = {
+const initialState: AuthState = {
   loading: false,
-  userInfo, // for user object
+  userInfo: null, // for user object
   userTokens, // for storing the JWT
   error: null,
   success: false, // for monitoring the registration process.
@@ -23,15 +19,19 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      state.userInfo = null;
+      // state.userInfo = null;
       state.userTokens = null;
       localStorage.clear();
     },
-    setAccessToken: (state, action: PayloadAction<{ accessToken: string }>) => {
+    setUserTokens: (
+      state,
+      action: PayloadAction<{ accessToken: string; refreshToken: string }>
+    ) => {
       const accessToken = action.payload.accessToken!;
+      const refreshToken = action.payload.refreshToken!;
       const newTokens = {
         accessToken,
-        refreshToken: state.userTokens?.refreshToken!,
+        refreshToken,
       };
       state.userTokens = newTokens;
       localStorage.setItem("userTokens", JSON.stringify(state.userTokens));
@@ -47,7 +47,8 @@ const authSlice = createSlice({
         userLogin.fulfilled,
         (state, { payload }: PayloadAction<any>) => {
           state.loading = false;
-          state.userInfo = payload.userInfo;
+          // state.userInfo = payload.userInfo;
+          // console.log("payload is", payload);
           state.userTokens = payload.userTokens;
         }
       )
@@ -60,4 +61,4 @@ const authSlice = createSlice({
 
 export default authSlice.reducer;
 
-export const { logout, setAccessToken } = authSlice.actions;
+export const { logout, setUserTokens } = authSlice.actions;

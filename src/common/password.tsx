@@ -5,7 +5,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import { PasswordProps } from "../models/passwordProps";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-function Password({ formik, label, helperText, error, name }: PasswordProps) {
+function Password({ formik, label, helperText, error, name,value }: PasswordProps) {
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -20,6 +20,7 @@ function Password({ formik, label, helperText, error, name }: PasswordProps) {
       <LockIcon sx={{ color: "#B8B8DA", mr: 1,my:0.5}} />
       <TextField
         id="input-with-sx"
+        value={value}
         label={label}
         variant="standard"
         name={name}
