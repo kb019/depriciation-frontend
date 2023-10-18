@@ -6,7 +6,7 @@ import { useState } from "react";
 import { NavBarItem } from "../models/navbarItem";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { LinearProgress } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LanIcon from "@mui/icons-material/Lan";
@@ -15,6 +15,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { logout } from "../redux/auth/authSlice";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 const menuItems = [
   { name: "Schedule", icon: TodayIcon, path: "/schedule" },
   { name: "Categories", icon: CategoryIcon, path: "/categories" },
@@ -57,14 +58,20 @@ const menuItems = [
       },
     ],
   },
+  { name: "Profile", icon: AccountCircleIcon, path: "/profile" },
 ];
 
-function NavItem(
-  ele: NavBarItem,
-  isOpen: boolean,
-  isActive: boolean,
-  isSubItem: boolean = false
-) {
+function NavItem({
+  ele,
+  isOpen,
+  isActive,
+  isSubItem = false,
+}: {
+  ele: NavBarItem;
+  isOpen: boolean;
+  isActive: boolean;
+  isSubItem?: boolean;
+}) {
   const className = isOpen ? "options-visible" : "options-invisible";
   const Icon = ele.icon;
   const [open, setOpen] = useState<boolean>(false);
@@ -99,8 +106,22 @@ function NavItem(
             </div>
           )}
           {ele.subItems && ele.subItems.length > 0 && isOpen && (
-            <div className="ml-auto">
+            <div
+              className="ml-auto"
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                setOpen((prev) => !prev);
+              }}
+            >
               {!open ? <ChevronRightIcon /> : <ExpandMoreIcon />}
+              {/* <div
+                className={`max-w-max ${
+                  isOpen ? "rotate-0" : "rotate-90"
+                } transition-all`}
+              >
+                <ChevronRightIcon />
+              </div> */}
             </div>
           )}
         </div>
@@ -109,7 +130,7 @@ function NavItem(
         <div className="ml-7 mt-2">
           {ele.subItems?.map((subItem) => {
             return (
-              <NavLink to={`${subItem.path}`}>
+              <NavLink to={`${subItem.path}`} key={subItem.name}>
                 {({ isActive }) => {
                   return (
                     <div className="flex items-center">
@@ -119,7 +140,14 @@ function NavItem(
                         } rounded-full`}
                       ></div>
 
-                      {NavItem(subItem, isOpen, isActive, true)}
+                      {
+                        <NavItem
+                          ele={subItem}
+                          isOpen={isOpen}
+                          isActive={isActive}
+                          isSubItem={true}
+                        />
+                      }
                     </div>
                   );
                 }}
@@ -136,6 +164,7 @@ function SidenavLayout({ children }: Children) {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const className = isOpen ? "open-nav" : "close-nav";
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   return (
     <div className="flex h-full w-full">
       {/* Side nav Starts */}
@@ -157,23 +186,31 @@ function SidenavLayout({ children }: Children) {
         <div className="flex flex-col gap-6 overflow-y-auto p-4 overflow-x-hidden">
           {menuItems.map((ele: NavBarItem, i) => {
             return (
-              <NavLink to={`${ele.path}`} key={i}>
+              <NavLink to={`${ele.path}`} key={ele.path}>
                 {({ isActive }) => {
-                  return NavItem(ele, isOpen, isActive);
+                  return (
+                    <NavItem ele={ele} isOpen={isOpen} isActive={isActive} />
+                  );
+                  // return NavItem(ele, isOpen, isActive);
                 }}
               </NavLink>
             );
           })}
         </div>
         <div className="p-4 ">
-          <div className="flex bg-gray-300 hover:bg-slate-100 items-center p-2 px-3 rounded-md" onClick={() => {
-                dispatch(logout());
-              }}>
+          <div
+            className="flex bg-gray-300 hover:bg-slate-100 items-center p-2 px-3 rounded-md"
+            onClick={() => {
+              navigate("/");
+              dispatch(logout());
+            }}
+          >
             <ExitToAppIcon />
-            {isOpen && <button
-              className=" mx-auto  w-full   text-center  "
-              
-            >Logout</button>}
+            {isOpen && (
+              <button className=" mx-auto  w-full   text-center  ">
+                Logout
+              </button>
+            )}
           </div>
         </div>
       </div>

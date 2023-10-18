@@ -20,22 +20,36 @@ import { userLogin } from "../../redux/auth/authActions";
 import toast from "react-hot-toast";
 import { notifyFailure } from "../../common/notify";
 import Mask from "../../common/mask";
+import { useForgotPasswordMutation } from "../../redux/api/userApiSlice";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .trim()
     .required("Email is required")
     .email("Please enter correct email"),
-
-  password: Yup.string().trim().required("Password is Required"),
+  password: Yup.string()
+    .trim()
+    .required("Password is Required")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+      "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+    ),
+  confirmPassword: Yup.string()
+    .trim()
+    .required("Confirm Password is required")
+    .oneOf([Yup.ref("password")], "Your passwords do not match."),
 });
-function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showForgotPassword:()=>void }) {
-  const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
+function ForgotPassword({
+  showForgotPassword,
+}: {
+  showForgotPassword: () => void;
+}) {
+  const [forgotPassword, { isLoading: changingPassword }] =
+    useForgotPasswordMutation();
   const initialValues = {
     email: "",
     password: "",
+    confirmPassword: "",
   };
   const formik = useFormik({
     initialValues,
@@ -44,30 +58,27 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
       // console.log(values);
 
       try {
-        setIsLoading(true);
-        toast.promise(dispatch(userLogin(values)).unwrap(), {
-          loading: "Loggin In User",
+        toast.promise(forgotPassword(values).unwrap(), {
+          loading: "Changing Password",
           success: () => {
             formik.resetForm();
-            return "Log In Successful";
+            showForgotPassword();
+            return "Changed Password Successfully";
           },
-          error: (e) => {
-            return typeof e == "string"
-              ? e
-              : "Not able to LogIn,Please try again";
-          },
+          error: (e) =>
+            e?.data?.message || "Not able to change password,Please try again.",
         });
       } catch (e: any) {
-        notifyFailure(e?.data?.message || "Not able to LogIn,Please try again");
-      } finally {
-        setIsLoading(false);
+        notifyFailure(
+          e?.data?.message || "Not able to change password,Please try again"
+        );
       }
     },
   });
   return (
     <>
-      {isLoading && <LinearProgress />}
-      {isLoading && <Mask />}
+      {changingPassword && <LinearProgress />}
+      {changingPassword && <Mask />}
       <div className="p-5  h-max">
         <div className=" flex flex-col gap-4 ">
           <h1 className="font-bold text-gray-700 md:text-4xl  text-2xl text-center mb-4 border-b-2">
@@ -75,7 +86,7 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
           </h1>
           <h2 className="font-bold text-gray-500 md:text-2xl text-xl">
             {" "}
-            Log In
+            Forgot Password
           </h2>
 
           <Box
@@ -105,14 +116,30 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
             label="Password"
             name="password"
             value={formik.values.password}
-            formik={formik}
+            formik={formik as any}
             error={
               formik.touched.password ? Boolean(formik.errors.password) : false
             }
             helperText={formik.touched.password ? formik.errors.password! : ""}
           />
+          <Password
+            label="Confirm Password"
+            name="confirmPassword"
+            value={formik.values.confirmPassword}
+            formik={formik as any}
+            error={
+              formik.touched.confirmPassword
+                ? Boolean(formik.errors.confirmPassword)
+                : false
+            }
+            helperText={
+              formik.touched.confirmPassword
+                ? formik.errors.confirmPassword!
+                : ""
+            }
+          />
         </div>
-        <p className="text-xs mt-5 ml-auto max-w-max text-[#8887F6] border-b cursor-pointer" onClick={showForgotPassword}>Forgot Password</p>
+
         <button
           className="font-semibold bg-[#6C63FF] p-2 mt-10 rounded-2xl text-white shadow-lg text-sm px-7 hover:bg-[#8b85fc]"
           onClick={() => {
@@ -120,13 +147,16 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
           }}
           type="submit"
         >
-          Submit
+          Change Password
         </button>
 
         <p className="mt-7 font-semibold text-sm text-[#7373A4]">
-          New User?{" "}
-          <a className="text-[#8887F6] cursor-pointer" onClick={changePage}>
-            Sign up
+          Go To
+          <a
+            className="text-[#8887F6] cursor-pointer ml-2"
+            onClick={showForgotPassword}
+          >
+            Log In
           </a>
         </p>
       </div>
@@ -134,4 +164,4 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
   );
 }
 
-export default LogIn;
+export default ForgotPassword;

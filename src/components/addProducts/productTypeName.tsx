@@ -16,10 +16,10 @@ function ProductTypeName({
     useGetAllProductTypesWithoutPaginationQuery(undefined, {
       refetchOnMountOrArgChange: true,
     });
-  console.log(
-    values.productTypeDetails?.productTypeName,
-    values.productTypeDetails
-  );
+  // console.log(
+  //   values.productTypeDetails?.productTypeName,
+  //   values.productTypeDetails
+  // );
   return (
     <div className=" ">
       <h2 className="font-medium">Select Category</h2>

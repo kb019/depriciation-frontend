@@ -116,7 +116,6 @@ function ProductTypes() {
 
   useEffect(() => {
     if (productsTypeData?.data) {
-      console.log(productsTypeData?.data);
       setRows(
         productsTypeData!.data.map((data) =>
           createData(

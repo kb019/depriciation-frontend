@@ -32,7 +32,7 @@ const baseQueryWithReauth: BaseQueryFn<
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log("result is ", result);
+  // console.log("result is ", result);
   if (result?.error?.status === 403 || result?.error?.status === 401) {
     console.log("sending refresh token");
     //send refresh token to get new acees token

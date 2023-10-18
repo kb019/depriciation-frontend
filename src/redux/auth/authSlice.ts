@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "./authActions";
-import { AuthState } from "../../models/authState";
+import { AuthState, UserInfo } from "../../models/authState";
+import { UserDetails } from "../../models/userDetails";
 
 const userTokens = localStorage.getItem("userTokens")
   ? JSON.parse(localStorage.getItem("userTokens")!)
@@ -19,7 +20,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      // state.userInfo = null;
+      state.userInfo = null;
       state.userTokens = null;
       localStorage.clear();
     },
@@ -36,7 +37,11 @@ const authSlice = createSlice({
       state.userTokens = newTokens;
       localStorage.setItem("userTokens", JSON.stringify(state.userTokens));
     },
+    setUserInfo: (state, action: PayloadAction<UserInfo>) => {
+      state.userInfo = { ...action.payload };
+    },
   },
+
   extraReducers: (builders) => {
     builders
       .addCase(userLogin.pending, (state) => {
@@ -61,4 +66,4 @@ const authSlice = createSlice({
 
 export default authSlice.reducer;
 
-export const { logout, setUserTokens } = authSlice.actions;
+export const { logout, setUserTokens, setUserInfo } = authSlice.actions;

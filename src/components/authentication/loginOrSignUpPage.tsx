@@ -1,7 +1,8 @@
-import  { useState } from "react";
+import { useState } from "react";
 import SignUp from "./signUp";
 import SignUpOrLoginLogo from "./signUpOrLoginLogo";
 import LogIn from "./logIn";
+import ForgotOrLogin from "./forgotOrLogin";
 
 function LoginOrSignUpPage() {
   const [showLoginPage, setShowLogin] = useState<boolean>(true);
@@ -15,9 +16,12 @@ function LoginOrSignUpPage() {
         style={{ maxHeight: "100dvh" }}
       >
         {showLoginPage ? (
-          <LogIn
+          <ForgotOrLogin
             changePage={() => {
               setShowLogin(false);
+            }}
+            showLoginPage={() => {
+              setShowLogin(true);
             }}
           />
         ) : (
