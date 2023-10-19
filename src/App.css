@@ -7,6 +7,7 @@
 /* Works on Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
   width: 8px;
+  height: 2px;
 }
 
 *::-webkit-scrollbar-track {
@@ -19,4 +20,17 @@
   outline: 1px solid slategrey;
 }
 
-div.inserted-svg-logo svg { max-width:100%; }
+div.inserted-svg-logo svg {
+  max-width: 100%;
+}
+
+.navItems::-webkit-scrollbar {
+  width: 4px;
+}
+
+.MuiTableContainer-root::-webkit-scrollbar {
+  width: 1px;
+}
+.MuiTableContainer-root {
+  overflow: hidden;
+}

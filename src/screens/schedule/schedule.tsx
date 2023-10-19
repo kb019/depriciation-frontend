@@ -14,11 +14,13 @@ import DepreciationItDataTable from "../../components/schedule/depreciationItDat
 import { notifyFailure } from "../../common/notify";
 import { NavLink, Navigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useAppSelector } from "../../hooks/reduxHooks";
 
 function Schedule() {
   const [year, setYear] = React.useState<Dayjs | null>(null);
   const [showNullErrorMessage, setShowNullErrorMessage] =
     useState<boolean>(false);
+  const companyInfo = useAppSelector((state) => state.auth.userInfo);
   const [
     getDepData,
     {
@@ -55,7 +57,10 @@ function Schedule() {
       toast.promise(
         getPdfDepIt({
           year: year!.toDate().getFullYear(),
-          pdfContent: depDataIt,
+          pdfContent: {
+            tableInfo: depDataIt,
+            companyInfo: companyInfo,
+          },
         }).unwrap(),
         {
           loading: "Downloading File",

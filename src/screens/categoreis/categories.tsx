@@ -167,7 +167,7 @@ function Categories() {
             >
               <LinearProgress />
             </div>
-            <TableContainer sx={{ maxHeight: 360 }}>
+            <TableContainer sx={{ maxHeight: 360 }} >
               <Table
                 sx={{ minWidth: 400 }}
                 aria-label="customized table"

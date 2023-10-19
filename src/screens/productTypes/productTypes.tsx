@@ -221,7 +221,7 @@ function ProductTypes() {
                           msg={
                             search.length == 0
                               ? "Please Product Types to Categories"
-                              : "No categories in this name"
+                              : "No Product Types in this name"
                           }
                         />
                       </StyledTableCell>

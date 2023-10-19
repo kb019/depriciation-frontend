@@ -35,6 +35,7 @@ function Search(props: SearchProps) {
         </div>
       </div>
       <div
+      className={`${searchValue.length>0?"opacity-100 rotate-180":"opacity-0 pointer-events-none rotate-0"} transition-all duration-300`}
         onClick={() => {
           setSearchValue("");
         }}
