@@ -15,9 +15,11 @@ import { notifyFailure } from "../../common/notify";
 import { NavLink, Navigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAppSelector } from "../../hooks/reduxHooks";
+import Mask from "../../common/mask";
 
 function Schedule() {
   const [year, setYear] = React.useState<Dayjs | null>(null);
+  const [loading, setIsLoading] = useState<boolean>(false);
   const [showNullErrorMessage, setShowNullErrorMessage] =
     useState<boolean>(false);
   const companyInfo = useAppSelector((state) => state.auth.userInfo);
@@ -38,6 +40,7 @@ function Schedule() {
 
   async function generateDepData() {
     try {
+      setIsLoading(true);
       const getNullRecords = await checkNullRates(
         year!.toDate().getFullYear()
       ).unwrap();
@@ -49,6 +52,8 @@ function Schedule() {
       await getDepData(year!.toDate().getFullYear()).unwrap();
     } catch (e) {
       notifyFailure("Could not generate data.Please try again");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -73,75 +78,79 @@ function Schedule() {
     }
   }
   return (
-    <ComponentWithHeader title="Schedule">
-      {(generatingData || checkringNullRates) && <LinearProgress />}
+    <>
+      {loading && <Mask />}
+      {loading && <LinearProgress />}
+      <ComponentWithHeader title="Schedule">
+        {(generatingData || checkringNullRates) && <LinearProgress />}
 
-      <h6 className="  text-gray-600">
-        Please select a year upto which you want to calculate depreciation
-      </h6>
-      <div className="mt-2 flex gap-3 md:flex-row flex-col items-center mb-4">
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label={"Year"}
-            value={year}
-            sx={{ width: "100%" }}
-            views={["year"]}
-            onChange={(value) => {
-              setYear(value);
-            }}
-            slotProps={{ textField: { size: "small" } }}
-            maxDate={dayjs(new Date())}
-          />
-        </LocalizationProvider>
-        <Button
-          variant="contained"
-          sx={{ backgroundColor: "#5F41E6" }}
-          onClick={generateDepData}
-          disabled={generatingData || !Boolean(year) || checkringNullRates}
-        >
-          Generate
-        </Button>
-      </div>
-      {showNullErrorMessage && (
-        <p className=" text-sm text-red-500 mb-4">
-          Please fill all the depreciation rates upto selected year for all
-          product Types{" "}
-          <NavLink
-            to={"/productTypes"}
-            className="border-b-2 border-blue-500 text-blue-500 "
+        <h6 className="  text-gray-600">
+          Please select a year upto which you want to calculate depreciation
+        </h6>
+        <div className="mt-2 flex gap-3 md:flex-row flex-col items-center mb-4">
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label={"Year"}
+              value={year}
+              sx={{ width: "100%" }}
+              views={["year"]}
+              onChange={(value) => {
+                setYear(value);
+              }}
+              slotProps={{ textField: { size: "small" } }}
+              maxDate={dayjs(new Date())}
+            />
+          </LocalizationProvider>
+          <Button
+            variant="contained"
+            sx={{ backgroundColor: "#5F41E6" }}
+            onClick={generateDepData}
+            disabled={generatingData || !Boolean(year) || checkringNullRates}
           >
-            here
-          </NavLink>
-        </p>
-      )}
-      {depDataIt && depDataIt.length == 0 && !showNullErrorMessage && (
-        <div className="text-red-500 text-sm tracking-wider">
-          There are no products in till this year.Please add a product{" "}
-          <NavLink
-            to={"/addProducts"}
-            className="border-b-2 border-blue-500 text-blue-500 "
-          >
-            here
-          </NavLink>
+            Generate
+          </Button>
         </div>
-      )}
-      {depDataIt && depDataIt.length > 0 && (
-        <>
-          <DepreciationItDataTable
-            data={depDataIt!}
-            year={year?.toDate().getFullYear()!}
-          />
-          <div
-            className="mt-2 ml-auto text-end cursor-pointer text-blue-500 border-b-2 border-blue-500  max-w-max"
-            onClick={() => {
-              getItPdf();
-            }}
-          >
-            Download as pdf
+        {showNullErrorMessage && (
+          <p className=" text-sm text-red-500 mb-4">
+            Please fill all the depreciation rates upto selected year for all
+            product Types{" "}
+            <NavLink
+              to={"/productTypes"}
+              className="border-b-2 border-blue-500 text-blue-500 "
+            >
+              here
+            </NavLink>
+          </p>
+        )}
+        {depDataIt && depDataIt.length == 0 && !showNullErrorMessage && (
+          <div className="text-red-500 text-sm tracking-wider">
+            There are no products in till this year.Please add a product{" "}
+            <NavLink
+              to={"/addProducts"}
+              className="border-b-2 border-blue-500 text-blue-500 "
+            >
+              here
+            </NavLink>
           </div>
-        </>
-      )}
-    </ComponentWithHeader>
+        )}
+        {depDataIt && depDataIt.length > 0 && (
+          <>
+            <DepreciationItDataTable
+              data={depDataIt!}
+              year={year?.toDate().getFullYear()!}
+            />
+            <div
+              className="mt-2 ml-auto text-end cursor-pointer text-blue-500 border-b-2 border-blue-500  max-w-max"
+              onClick={() => {
+                getItPdf();
+              }}
+            >
+              Download as pdf
+            </div>
+          </>
+        )}
+      </ComponentWithHeader>
+    </>
   );
 }
 

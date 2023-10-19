@@ -51,6 +51,7 @@ const schema = Yup.object({
   productDetails: Yup.object({
     productName: Yup.string().trim().required("Please enter product name"),
     purchaseDate: Yup.date().required("Please select purchase date"),
+
     quantity: Yup.number().required("Please enter quantity"),
     price: Yup.number().required("Please enter price"),
     cgst: Yup.number().required("Please enter cgst"),

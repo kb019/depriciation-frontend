@@ -7,7 +7,7 @@ import {
 import Loader from "../../common/loader";
 import ApiError from "../../common/apiError";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { setUserInfo, setUserTokens } from "../../redux/auth/authSlice";
+import { logout, setUserInfo, setUserTokens } from "../../redux/auth/authSlice";
 import { TryOutlined } from "@mui/icons-material";
 
 function CompanyDetails({ children }: Children) {
@@ -25,9 +25,17 @@ function CompanyDetails({ children }: Children) {
 
   async function getUserInfo() {
     try {
-      await getUserDetails().unwrap();
-    } catch (e) {}
+
+      const user = await getUserDetails().unwrap();
+      //means that user was not there
+      if (user == null) {
+        dispatch(logout());
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
+
   useEffect(() => {
     if (!userInfo) return;
     const userDetails = {

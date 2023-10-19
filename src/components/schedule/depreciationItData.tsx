@@ -226,6 +226,14 @@ export default function DepreciationItDataTable({
     <TableContainer component={Paper} sx={{ maxHeight: 420 }}>
       <Table aria-label="collapsible table" stickyHeader>
         <TableHead></TableHead>
+        <TableRow>
+          <TableCell className="">
+            <div className="font-medium text-xs">
+              Depreciation for year  =   Round(((W.D.V Start+Before 180 days)*Rate of
+              depn)+After180days*Rate of Depn/2)
+            </div>
+          </TableCell>
+        </TableRow>
         <TableBody>
           {data.map((row) => (
             <Row key={row.categoryName} row={row} year={year} />

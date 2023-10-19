@@ -29,7 +29,7 @@ function Header() {
         >
           <SideNav />
           <div
-            className="text-white"
+            className="text-white h-max"
             onClick={() => {
               setOpenSideNav(false);
             }}
