@@ -10,10 +10,7 @@ function LoginOrSignUpPage() {
       <div className="inserted-svg-logo flex-1 md:block hidden">
         <SignUpOrLoginLogo />
       </div>
-      <div
-        className="flex-1 md:m-auto m-0 overflow-y-auto"
-        style={{ maxHeight: "100dvh" }}
-      >
+      <div className="flex-1 md:m-auto m-0" style={{ maxHeight: "100dvh" }}>
         {showLoginPage ? (
           <ForgotOrLogin
             changePage={() => {
