@@ -18,11 +18,11 @@ import DeleteProductTypeBtnModal from "../../components/productTypes/deleteProdu
 import EmptyTableMessage from "../../components/categories/emptyTableMessage";
 import AddproductBtnModal from "../../components/products/addProductBtnModal";
 import { DepreciationItValue } from "../../models/depreciationRates";
-import { NavLink, useNavigate, useNavigation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { notifyFailure } from "../../common/notify";
 import ApiError from "../../common/apiError";
 
-export const StyledTableCell = styled(TableCell)(({ theme }) => ({
+export const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
     fontWeight: 600,
     color: "#4b4545",
@@ -78,7 +78,7 @@ function ProductTypes() {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rows, setRows] = useState<Row[] | []>([]);
   const [search, setSearch] = useState<string>("");
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
   const [

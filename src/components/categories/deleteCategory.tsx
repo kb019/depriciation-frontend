@@ -19,7 +19,7 @@ function DeteteCategory({ triggerAction, data, close }: WrappedComponentProps) {
   const categoryData = data as ModifyCategoryData;
   const [
     deleteCategory,
-    { isLoading: deletingCategory, isError: deleteError },
+    { isLoading: deletingCategory },
   ] = useDeleteCategoryByIdMutation();
 
   async function deleteCategoryHandler() {

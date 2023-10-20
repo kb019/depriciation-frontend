@@ -1,4 +1,3 @@
-import React from "react";
 
 function InfoMessage({ message }: { message: string }) {
   return (

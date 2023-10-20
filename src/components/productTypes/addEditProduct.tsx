@@ -45,7 +45,7 @@ function AddEditProduct({ close, triggerAction, data }: WrappedComponentProps) {
 
   const editProductTypeInfo = data as ProductTypeEditInfo;
 
-  const [updateProductType, { isLoading: updatingProductType, isError: updateError }] =
+  const [updateProductType, { isLoading: updatingProductType }] =
     useUpdateProductTypeMutation();
 
 
@@ -95,7 +95,6 @@ function AddEditProduct({ close, triggerAction, data }: WrappedComponentProps) {
           values,
           errors,
           touched,
-          handleChange,
           handleBlur,
           handleSubmit,
           isSubmitting,
@@ -110,13 +109,13 @@ function AddEditProduct({ close, triggerAction, data }: WrappedComponentProps) {
                 options={categoryData || []}
                 getOptionLabel={(option) => option.name}
              
-                onChange={(event, value) => {
+                onChange={(_, value) => {
                   setFieldValue("categoryDetails.categoryName", value?.name);
                   setFieldValue("categoryDetails.categoryId", value?.id);
                 }}
                 sx={{ width: "100%" }}
                 inputValue={values.categoryInputValue}
-                onInputChange={(e, newValue) => {
+                onInputChange={(_, newValue) => {
                   setFieldValue("categoryInputValue", newValue);
                 }}
                 isOptionEqualToValue={(option,value)=>option.id===value.id}

@@ -1,9 +1,9 @@
 import { Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import React, { useState } from "react";
+import  { useState } from "react";
 import ModalHoc from "../../common/customModal";
 import DeteteCategory from "./deleteCategory";
-import { ModifyBtnProps, ModifyCategoryData } from "../../models/category";
+import { ModifyBtnProps } from "../../models/category";
 
 function DeleteBtnModal({ triggerAction, data }: ModifyBtnProps) {
   const [modelOpen, setModalOpen] = useState<boolean>(false);

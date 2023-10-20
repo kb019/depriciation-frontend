@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "./authActions";
 import { AuthState, UserInfo } from "../../models/authState";
-import { UserDetails } from "../../models/userDetails";
 
 const userTokens = localStorage.getItem("userTokens")
   ? JSON.parse(localStorage.getItem("userTokens")!)

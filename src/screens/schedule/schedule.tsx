@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import ComponentWithHeader from "../../common/componentWithHeader";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 import {
   useDownloadPDFFileMutation,
@@ -12,7 +11,7 @@ import {
 import { Button, LinearProgress } from "@mui/material";
 import DepreciationItDataTable from "../../components/schedule/depreciationItData";
 import { notifyFailure } from "../../common/notify";
-import { NavLink, Navigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import Mask from "../../common/mask";
@@ -27,7 +26,7 @@ function Schedule() {
     getDepData,
     {
       isLoading: generatingData,
-      isError: generateDepDataError,
+      isError: _generateDepDataError,
       data: depDataIt,
     },
   ] = useLazyUseGetDepriciationItDataQuery();
@@ -35,7 +34,7 @@ function Schedule() {
     useLazyCheckNullRatesExsistsQuery();
   // const [getPdfDepIt, { isLoading: generatingItPdf }] =
   //   useLazyGetItDepPdfQuery();
-  const [getPdfDepIt, { isLoading: generatingItPdf }] =
+  const [getPdfDepIt, { isLoading: _generatingItPdf }] =
     useDownloadPDFFileMutation();
 
   async function generateDepData() {
@@ -70,7 +69,7 @@ function Schedule() {
         {
           loading: "Downloading File",
           success: () => "Downloaded File Successfully",
-          error: (e) => "File could not be downloaded.Please try again",
+          error: (_e) => "File could not be downloaded.Please try again",
         }
       );
     } catch (e) {

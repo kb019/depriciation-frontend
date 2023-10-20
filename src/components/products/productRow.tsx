@@ -6,12 +6,11 @@ import {
   styled,
   tableCellClasses,
 } from "@mui/material";
-import DeleteBtnModal from "../categories/deleteBtnModal";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteProductModal from "../addProducts/deleteProductModal";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(( ) => ({
   [`&.${tableCellClasses.head}`]: {
     fontWeight: 600,
     color: "#4b4545",
@@ -26,7 +25,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   paddingBottom: 0,
 }));
 
-export const StyledTableRow = styled(TableRow)(({ theme }) => ({
+export const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
     // backgroundColor: theme.palette.action.hover,
   },

@@ -8,7 +8,6 @@ import { PaginatedResponse } from "../../models/paginatedResponse";
 import {
   AddProductResponse,
   AllProductUrlSearchParams,
-  ProductDetails,
 } from "../../models/product";
 import { apiSlice } from "../auth/authApi";
 

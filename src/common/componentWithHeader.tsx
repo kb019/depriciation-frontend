@@ -1,6 +1,5 @@
 
 import { ComponentHeaderProps } from "../models/componenetHeaderProps";
-import Mask from "./mask";
 
 function ComponentWithHeader({ title, children }: ComponentHeaderProps) {
   return (

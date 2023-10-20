@@ -1,4 +1,3 @@
-import React from "react";
 import ComponentWithHeader from "./componentWithHeader";
 import { Button } from "@mui/material";
 import apierror from "../assets/images/error_svg.svg";

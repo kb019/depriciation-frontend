@@ -34,7 +34,7 @@ export const categoryApiSlice = apiSlice.injectEndpoints({
       AllCategoryResponse[],
       void
     >({
-      query: (arg) => ({
+      query: () => ({
         url: "api/v1/category/plain",
       }),
      

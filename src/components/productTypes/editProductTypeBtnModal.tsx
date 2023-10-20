@@ -3,7 +3,6 @@ import ModalHoc from "../../common/customModal";
 // import CategoriesModal from "./addEditCategory";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { ModifyBtnProps, ModifyCategoryData } from "../../models/category";
 import AddEditProduct from "./addEditProduct";
 import { ModifyProductTypeInfo } from "../../models/productTypeInfo";
 

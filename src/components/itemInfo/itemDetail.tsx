@@ -1,4 +1,3 @@
-import React from "react";
 
 function ItemDetail({title,desc}:{title:string,desc:string}) {
   return (

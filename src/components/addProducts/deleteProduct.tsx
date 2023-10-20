@@ -17,7 +17,7 @@ const buttonCss = {
 
 function DeleteProduct({ triggerAction, data, close }: WrappedComponentProps) {
   const productData = data as ModifyProductData;
-  const [deleteProduct, { isLoading: deletingProduct, isError: deleteError }] =
+  const [deleteProduct, { isLoading: deletingProduct}] =
     useDeleteProductByIdMutation();
 
   async function deleteProductHandler() {

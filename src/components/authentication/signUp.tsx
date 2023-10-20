@@ -1,16 +1,10 @@
-import { AccountCircle } from "@mui/icons-material";
 import {
   Box,
-  IconButton,
-  Input,
-  InputAdornment,
   LinearProgress,
   TextField,
 } from "@mui/material";
-import React from "react";
 import BusinessIcon from "@mui/icons-material/Business";
 import EmailIcon from "@mui/icons-material/Email";
-import LockIcon from "@mui/icons-material/Lock";
 import HomeIcon from "@mui/icons-material/Home";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -47,7 +41,7 @@ function SignUp({ changePage }: { changePage: () => void }) {
     password: "",
     confirmPassword: "",
   };
-  const [signUp, { isLoading: registeringUser, isError: registerUserError }] =
+  const [signUp, { isLoading: registeringUser, isError: _registerUserError }] =
     useSignUpMutation();
   const formik = useFormik({
     initialValues,

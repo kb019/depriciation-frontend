@@ -1,4 +1,4 @@
-import { Button, Stack, useMediaQuery } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 
 import InvoiceDetails from "../../components/addProducts/invoiceDetails";
 import CompanyDetails from "../../components/addProducts/companyDetails";
@@ -16,7 +16,6 @@ import {
   useUpdateProductMutation,
 } from "../../redux/api/productApiSlice";
 import { notifyFailure, notifySuccess } from "../../common/notify";
-import CategoryName from "../../components/addProducts/productTypeName";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "../../common/loader";
@@ -64,7 +63,7 @@ function AddProducts() {
   const [rerenderKeyProp, setRerenderKeyProp] = useState<number>(0);
   //as soon as i get product id,i want to set loader and hence using separate loader state
   const [loading, setLoading] = useState<boolean>(!!state?.productId);
-  const [getProductById, { data: itemData, isLoading: itemLoading }] =
+  const [getProductById, { data: itemData, isLoading: _itemLoading }] =
     useLazyGetProductByIdQuery();
   const [updateProductById, { isLoading: updatingProduct }] =
     useUpdateProductMutation();
@@ -162,7 +161,7 @@ function AddProducts() {
         enableReinitialize={true}
         initialValues={{ ...initialValues }}
         validationSchema={schema}
-        onSubmit={async (values, { setSubmitting, resetForm }) => {
+        onSubmit={async (values, { setSubmitting, }) => {
           try {
             const body: AddUpdateProductDetail = {
               supplierDetails: {

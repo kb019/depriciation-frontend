@@ -2,24 +2,11 @@ import {
   AddApiProductTypeResponse,
   AllProductTypeResponse,
 } from "./../../models/productTypeInfo";
-import {
-  AddUpdateProductDetail,
-  AllProductResponse,
-  GetProductByIdResponse,
-} from "./../../models/product";
-
 import { PaginatedResponse } from "../../models/paginatedResponse";
-import {
-  AddProductResponse,
-  AllProductUrlSearchParams,
-  ProductDetails,
-} from "../../models/product";
+
 import { apiSlice } from "../auth/authApi";
 import { ApiProductTypeInfo } from "../../models/productTypeInfo";
-import {
-  AllCategoryResponse,
-  AllCategoryUrlParams,
-} from "../../models/category";
+
 import { PaginationRequestType } from "../../models/paginatedRequestType";
 
 export const productTypeApiSlice = apiSlice.injectEndpoints({
@@ -93,7 +80,7 @@ export const productTypeApiSlice = apiSlice.injectEndpoints({
       Omit<AllProductTypeResponse,"category">[],
       void
     >({
-      query: (arg) => ({
+      query: (_arg) => ({
         url: "api/v1/productType/plain",
       }),
     }),

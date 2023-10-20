@@ -1,4 +1,3 @@
-import React from "react";
 import ComponentWithHeader from "../../common/componentWithHeader";
 import { useParams } from "react-router-dom";
 import { useGetProductByIdQuery } from "../../redux/api/productApiSlice";

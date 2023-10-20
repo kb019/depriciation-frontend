@@ -1,4 +1,3 @@
-import React from "react";
 import ComponentWithHeader from "./componentWithHeader";
 import pagenotfound from "../assets/images/404page.svg";
 import { Button } from "@mui/material";

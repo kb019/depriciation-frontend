@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Children } from "../../models/children";
 import {
-  useGetUserDetailsQuery,
+  
   useLazyGetUserDetailsQuery,
 } from "../../redux/api/userApiSlice";
 import Loader from "../../common/loader";
 import ApiError from "../../common/apiError";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { logout, setUserInfo, setUserTokens } from "../../redux/auth/authSlice";
-import { TryOutlined } from "@mui/icons-material";
+import { logout, setUserInfo } from "../../redux/auth/authSlice";
 
 function CompanyDetails({ children }: Children) {
   const [

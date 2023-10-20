@@ -1,4 +1,3 @@
-import { AddCategoryResponse, AllCategoryResponse } from "./category";
 import { AllProductTypeResponse } from "./productTypeInfo";
 export interface ProductDetails {
   productTypeInputValue?: "";

@@ -6,12 +6,10 @@ import { useState } from "react";
 import { NavBarItem } from "../models/navbarItem";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { NavLink, useMatch, useNavigate } from "react-router-dom";
-import { LinearProgress } from "@mui/material";
+import { NavLink,  useNavigate } from "react-router-dom";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LanIcon from "@mui/icons-material/Lan";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useAppDispatch } from "../hooks/reduxHooks";
 import { logout } from "../redux/auth/authSlice";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
@@ -84,7 +82,7 @@ function NavItem({
               ? " bg-navitemBg bg-gradient-to-r from-indigo-600 to-purple-600 shadow text-white"
               : !isSubItem && "hover:bg-gray-200"
           }`}
-          onClick={(e) => {
+          onClick={() => {
             // e.stopPropagation();
             // e.preventDefault();
             setOpen((prev) => !prev);
@@ -168,26 +166,26 @@ function NavItem({
   );
 }
 
-function NavIconText({
-  ele,
-  isOpen,
-}: // isActive,
-{
-  ele: NavBarItem;
-  isOpen: boolean;
-}) {
-  const navigate = useNavigate();
-  const match = useMatch(ele.path);
-  return (
-    <div
-      onClick={() => {
-        navigate(ele.path);
-      }}
-    >
-      <NavItem ele={ele} isOpen={isOpen} isActive={!!match} />
-    </div>
-  );
-}
+// function NavIconText({
+//   ele,
+//   isOpen,
+// }: // isActive,
+// {
+//   ele: NavBarItem;
+//   isOpen: boolean;
+// }) {
+//   const navigate = useNavigate();
+//   const match = useMatch(ele.path);
+//   return (
+//     <div
+//       onClick={() => {
+//         navigate(ele.path);
+//       }}
+//     >
+//       <NavItem ele={ele} isOpen={isOpen} isActive={!!match} />
+//     </div>
+//   );
+// }
 function SidenavLayout({ children }: Children) {
   // const [isOpen, setIsOpen] = useState<boolean>(true);
   // const className = isOpen ? "open-nav" : "close-nav";
@@ -236,7 +234,7 @@ export default SidenavLayout;
         )}
       </div>
       <div className="flex flex-col gap-6 overflow-y-auto p-4 overflow-x-hidden navItems">
-        {menuItems.map((ele: NavBarItem, i) => {
+        {menuItems.map((ele: NavBarItem) => {
           return (
             <NavLink to={`${ele.path}`} key={ele.path} className={"block"}>
               {({ isActive }) => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DepriciationOutlinePurple from "../assets/images/depreciation_logo_outline_purple.png";
 import { useAppSelector } from "../hooks/reduxHooks";
-import SidenavLayout, { SideNav } from "./sidenavLayout";
+import { SideNav } from "./sidenavLayout";
 import CancelIcon from "@mui/icons-material/Cancel";
 import MenuIcon from "@mui/icons-material/Menu";
 

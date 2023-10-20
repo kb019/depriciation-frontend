@@ -1,6 +1,5 @@
 import { Autocomplete, CircularProgress, TextField } from "@mui/material";
-import React, { useState } from "react";
-import { useGetAllCategoriesWithoutPaginationQuery } from "../../redux/api/categoryApiSlice";
+import React from "react";
 import { FormikProps } from "formik";
 import { ProductDetails } from "../../models/product";
 import { useGetAllProductTypesWithoutPaginationQuery } from "../../redux/api/productTypeApiSlice";
@@ -28,7 +27,6 @@ function ProductTypeName({
           id="combo-box-demo"
           options={productTypeData || []}
           loadingText="Loading Values ..."
-          
           getOptionLabel={(option) => option.productType}
           value={{
             id: values.productTypeDetails?.productTypeId || "",
@@ -38,7 +36,7 @@ function ProductTypeName({
             productType: values.productTypeDetails?.productTypeName || "",
             depreciationItValues: [],
           }}
-          onChange={(event, value) => {
+          onChange={(_, value) => {
             console.log(value);
             if (value != null) {
               setFieldValue(
@@ -56,7 +54,7 @@ function ProductTypeName({
           }
           sx={{ width: "100%" }}
           inputValue={values.productTypeInputValue}
-          onInputChange={(e, newValue) => {
+          onInputChange={(_, newValue) => {
             setFieldValue("productTypeInputValue", newValue);
           }}
           renderInput={(params) => (

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import LogIn from "./logIn";
 import ForgotPassword from "./forgotPassword";
 
 function ForgotOrLogin({
   changePage,
-  showLoginPage,
+  
 }: {
   changePage: () => void;
   showLoginPage: () => void;

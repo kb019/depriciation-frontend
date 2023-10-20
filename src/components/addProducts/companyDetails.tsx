@@ -1,6 +1,5 @@
 import { TextField } from "@mui/material";
 import { FormikProps } from "formik";
-import React from "react";
 import { ProductDetails } from "../../models/product";
 
 function CompanyDetails({
@@ -14,7 +13,6 @@ function CompanyDetails({
     touched,
     handleChange,
     handleBlur,
-    setFieldValue,
     isSubmitting,
   } = formikProps;
 

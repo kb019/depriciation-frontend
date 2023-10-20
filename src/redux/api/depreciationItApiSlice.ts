@@ -47,7 +47,8 @@ export const depreciationItApiSlice = apiSlice.injectEndpoints({
     }),
 
     downloadPDFFile: builder.mutation({
-      queryFn: async ({ year, pdfContent }, api, extraOptions, baseQuery) => {
+      // queryFn: async ({ year, pdfContent }, api, extraOptions, baseQuery) => {
+      queryFn: async ({ year, pdfContent }, _api, _extraOptions, baseQuery) => {
         const result: any = await baseQuery({
           url: `/api/v1/pdfGenerator/genItDepPdf/${year}`,
           responseHandler: (response) => response.blob(),

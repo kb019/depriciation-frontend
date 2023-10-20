@@ -1,7 +1,6 @@
 import { useState } from "react";
 import ModalHoc from "../../common/customModal";
 import AddIcon from "@mui/icons-material/Add";
-import CategoriesModal from "../categories/addEditCategory";
 import AddEditProduct from "../productTypes/addEditProduct";
 
 function AddproductBtnModal({ triggerAction }: { triggerAction: () => void }) {

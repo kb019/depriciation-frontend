@@ -2,9 +2,8 @@ import { TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import dayjs, { Dayjs } from "dayjs";
-import { FormikHelpers, FormikProps } from "formik";
-import React from "react";
+import dayjs from "dayjs";
+import {  FormikProps } from "formik";
 import { ProductDetails } from "../../models/product";
 
 function InvoiceDetails({

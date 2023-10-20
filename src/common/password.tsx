@@ -1,5 +1,4 @@
 import { Box, IconButton, TextField } from "@mui/material";
-import { FormikProps } from "formik";
 import React, { useState } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import { PasswordProps } from "../models/passwordProps";

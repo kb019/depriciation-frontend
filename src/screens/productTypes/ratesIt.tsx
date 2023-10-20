@@ -1,31 +1,19 @@
-import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import TablePagination from "@mui/material/TablePagination";
 import { useEffect, useState } from "react";
-import { Button, LinearProgress } from "@mui/material";
+import { LinearProgress } from "@mui/material";
 import Search from "../../common/searchComponent";
 import Mask from "../../common/mask";
 import ComponentWithHeader from "../../common/componentWithHeader";
-import { useLazyGetAllProductsTypeQuery } from "../../redux/api/productTypeApiSlice";
-import EditProductTypeBtnModal from "../../components/productTypes/editProductTypeBtnModal";
-import DeleteProductTypeBtnModal from "../../components/productTypes/deleteProductTypeModal";
 import EmptyTableMessage from "../../components/categories/emptyTableMessage";
 import AddproductBtnModal from "../../components/products/addProductBtnModal";
-import { DepreciationItValue } from "../../models/depreciationRates";
-import {
-  NavLink,
-  useLocation,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { notifyFailure } from "../../common/notify";
-import ProductTypeName from "../../components/addProducts/productTypeName";
 import { useLazyGetAllRatesQuery } from "../../redux/api/depreciationItApiSlice";
 import { StyledTableRow } from "../../components/products/productRow";
 import { StyledTableCell } from "./productTypes";
@@ -58,12 +46,11 @@ function RatesIt() {
       <InfoMessage message="  Please select a product type to View all the depreciation rates" />
     );
   const { productTypeName, productTypeId } = state;
-  const navigate = useNavigate();
   const [page, setPage] = useState<number>(0);
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rows, setRows] = useState<Row[] | []>([]);
   const [search, setSearch] = useState<string>("");
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
   const [

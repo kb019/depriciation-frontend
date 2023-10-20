@@ -1,7 +1,6 @@
 import { useState } from "react";
 import SignUp from "./signUp";
 import SignUpOrLoginLogo from "./signUpOrLoginLogo";
-import LogIn from "./logIn";
 import ForgotOrLogin from "./forgotOrLogin";
 
 function LoginOrSignUpPage() {

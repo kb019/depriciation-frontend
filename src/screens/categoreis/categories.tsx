@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import ComponentWithHeader from "../../common/componentWithHeader";
 import ApiError from "../../common/apiError";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(( ) => ({
   [`&.${tableCellClasses.head}`]: {
     fontWeight: 600,
     color: "#4b4545",
@@ -64,7 +64,7 @@ function Categories() {
   const [rowsPerPage, setRowsPerPage] = useState<number>(5);
   const [rows, setRows] = useState<Partial<AllCategoryResponse>[] | []>([]);
   const [search, setSearch] = useState<string>("");
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
   const navigate = useNavigate();

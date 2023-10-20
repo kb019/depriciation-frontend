@@ -27,11 +27,11 @@ function CategoriesModal({
   console.log(categoryData);
   const [
     addNewCategory,
-    { isLoading: addingCategory, isError: categoryError },
+    { isLoading: addingCategory },
   ] = useAddNewCategoryMutation();
   const [
     updateCategory,
-    { isLoading: updatingCategory, isError: updateCategoryError },
+    { isLoading: updatingCategory },
   ] = useUpdateCategoryMutation();
   const [categoryName, setCategoryName] = useState<string>(
     `${categoryData?.name ? categoryData.name : ""}`

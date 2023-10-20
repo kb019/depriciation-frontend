@@ -18,13 +18,10 @@ import { AllProductResponse } from "../../models/product";
 import ComponentWithHeader from "../../common/componentWithHeader";
 import EmptyTableMessage from "../../components/categories/emptyTableMessage";
 import { useNavigate } from "react-router-dom";
-import { AddCategoryResponse as CategoryType } from "../../models/category";
-import AddcategoryButnModal from "../../components/categories/addCategoryBtnModal";
-import AddproductBtnModal from "../../components/products/addProductBtnModal";
 import { AllProductTypeResponse } from "../../models/productTypeInfo";
 import ApiError from "../../common/apiError";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
     fontWeight: 600,
     color: "#4b4545",
@@ -39,7 +36,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   paddingBottom: 0,
 }));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
+const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
     // backgroundColor: theme.palette.action.hover,
   },
@@ -96,7 +93,7 @@ function Products() {
   const [rows, setRows] = useState<AllProductResponse[] | []>([]);
   const [search, setSearch] = useState<string>("");
   const navigate = useNavigate();
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
   const [

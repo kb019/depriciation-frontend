@@ -1,12 +1,9 @@
 import { Button, Stack } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { useDeleteCategoryByIdMutation } from "../../redux/api/categoryApiSlice";
-import { ModifyCategoryData } from "../../models/category";
 import { notifyFailure, notifySuccess } from "../../common/notify";
 import { WrappedComponentProps } from "../../models/modalHocType";
 import { useDeleteProductTypeByIdMutation } from "../../redux/api/productTypeApiSlice";
 import {
-  ModifyProductTypeInfo,
   ProductTypeEditInfo,
 } from "../../models/productTypeInfo";
 
@@ -33,7 +30,7 @@ function DeleteProductType({
 
   const [
     deleteProductType,
-    { isLoading: deletingProductType, isError: deleteError },
+    { isLoading: deletingProductType },
   ] = useDeleteProductTypeByIdMutation();
 
   async function deleteProductTypeHandler() {

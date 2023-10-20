@@ -3,7 +3,7 @@ import ModalHoc from "../../common/customModal";
 import CategoriesModal from "./addEditCategory";
 import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { ModifyBtnProps, ModifyCategoryData } from "../../models/category";
+import { ModifyBtnProps } from "../../models/category";
 
 const EditBtnModal = ({ data, triggerAction }: ModifyBtnProps) => {
   const [modelOpen, setModalOpen] = useState<boolean>(false);
