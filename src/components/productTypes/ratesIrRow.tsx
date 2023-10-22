@@ -5,6 +5,7 @@ import { DepItRowType } from "../../screens/productTypes/ratesIt";
 import { Button, TextField, styled } from "@mui/material";
 import { useUpdateDepriciationItRateMutation } from "../../redux/api/depreciationItApiSlice";
 import { notifyFailure, notifySuccess } from "../../common/notify";
+import toast from "react-hot-toast";
 
 export const StyledInput = styled(TextField)(({}) => ({
   "& .MuiInputBase-input": {
@@ -34,13 +35,33 @@ function RatesItRow({ row }: { row: DepItRowType }) {
 
   async function updateRates() {
     try {
-      const res = await updateDepRate({
-        depreciationItId: row.id,
-        depreciationItRate: userInputValue + "",
-      }).unwrap();
-      notifySuccess(`Successfully Updated for the year ${row.depYear}`);
-      setInitialValue(res.depreciationRate);
-      setRecentUpdate(new Date(res.updated_at));
+      // const res = await updateDepRate({
+      //   depreciationItId: row.id,
+      //   depreciationItRate: userInputValue + "",
+      // }).unwrap();
+      toast.promise(
+        updateDepRate({
+          depreciationItId: row.id,
+          depreciationItRate: userInputValue + "",
+        }).unwrap(),
+        {
+          loading: `Updating rate for year ${row.depYear}`,
+          success: (data) => {
+            setInitialValue(data.depreciationRate);
+            setRecentUpdate(new Date(data.updated_at));
+            return `Successfully Updated for the year ${row.depYear}`;
+          },
+          error: (e) => {
+            setUserInputValue(initialValue);
+            return (
+              e?.data?.message || `Unable update for the year ${row.depYear}`
+            );
+          },
+        }
+      );
+      // notifySuccess(`Successfully Updated for the year ${row.depYear}`);
+      // setInitialValue(res.depreciationRate);
+      // setRecentUpdate(new Date(res.updated_at));
     } catch (e) {
       notifyFailure(`Unable update for the year ${row.depYear}`);
       setUserInputValue(initialValue);

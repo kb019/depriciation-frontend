@@ -20,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Loader from "../../common/loader";
 import ProductTypeName from "../../components/addProducts/productTypeName";
+import toast from "react-hot-toast";
 
 const buttonCss = {
   backgroundColor: "#6A00F4",
@@ -106,6 +107,35 @@ function AddProducts() {
     productId: string,
     itemDetails: ProductDetailsType
   ) {
+    // const body: AddUpdateProductDetail = {
+    //   supplierDetails: {
+    //     ...itemDetails.supplierDetails,
+    //   },
+    //   invoiceDetails: {
+    //     ...itemDetails.invoiceDetails,
+    //   },
+    //   productDetails: {
+    //     ...itemDetails.productDetails,
+    //   },
+    //   productTypeId: itemDetails.productTypeDetails.productTypeId,
+    // };
+
+    // toast.promise(
+    //   updateProductById({ productId, itemDetails: body }).unwrap(),
+    //   {
+    //     loading: `updating product`,
+    //     success: async () => {
+    //       await getProductDetail();
+    //       setTimeout(() => {
+    //         navigate("/products");
+    //       }, 1000);
+    //       return `Product udated successfully`;
+    //     },
+    //     error: () => {
+    //       return "There was a problem updating product, please try again";
+    //     },
+    //   }
+    // );
     try {
       const body: AddUpdateProductDetail = {
         supplierDetails: {
@@ -161,7 +191,7 @@ function AddProducts() {
         enableReinitialize={true}
         initialValues={{ ...initialValues }}
         validationSchema={schema}
-        onSubmit={async (values, { setSubmitting, }) => {
+        onSubmit={async (values, { setSubmitting }) => {
           try {
             const body: AddUpdateProductDetail = {
               supplierDetails: {
@@ -179,19 +209,33 @@ function AddProducts() {
               await updateProduct(state?.productId, values);
               notifySuccess("Product Updated successfully");
             } else {
-              await addNewProduct(body).unwrap();
-              notifySuccess("Product added successfully");
-            }
-            setSubmitting(false);
-            values.productTypeInputValue = "";
-            setRerenderKeyProp((prev) => prev + 1);
-          } catch (e) {
-            notifyFailure(
-              "There was a problem adding product, please try again"
-            );
-            setLoading(false);
+              // await addNewProduct(body).unwrap();
+              toast.promise(addNewProduct(body).unwrap(), {
+                loading: `adding product`,
+                success: () => {
+                  setSubmitting(false);
+                  values.productTypeInputValue = "";
+                  setRerenderKeyProp((prev) => prev + 1);
+                  return `Product added successfully`;
+                },
+                error: () => {
+                  setLoading(false);
+                  setSubmitting(false);
 
-            setSubmitting(false);
+                  return "There was a problem adding product, please try again";
+                },
+              });
+              // notifySuccess("Product added successfully");
+            }
+            // setSubmitting(false);
+            // values.productTypeInputValue = "";
+            // setRerenderKeyProp((prev) => prev + 1);
+          } catch (e) {
+            // notifyFailure(
+            //   "There was a problem adding product, please try again"
+            // );
+            // setLoading(false);
+            // setSubmitting(false);
           }
         }}
       >

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { NavBarItem } from "../models/navbarItem";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { NavLink,  useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import LanIcon from "@mui/icons-material/Lan";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
@@ -36,7 +36,7 @@ export const menuItems = [
       },
     ],
   },
-  { name: "Add Products", icon: AddCircleIcon, path: "/addProducts" },
+  { name: "Add Edit Products", icon: AddCircleIcon, path: "/addProducts" },
   {
     name: "Products",
     icon: WidgetsIcon,
@@ -212,7 +212,7 @@ function SidenavLayout({ children }: Children) {
 
 export default SidenavLayout;
 
- export function SideNav() {
+export function SideNav() {
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const className = isOpen ? "open-nav" : "close-nav";
   const dispatch = useAppDispatch();
