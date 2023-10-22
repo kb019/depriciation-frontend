@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import ComponentWithHeader from "../../common/componentWithHeader";
 import ApiError from "../../common/apiError";
 
-const StyledTableCell = styled(TableCell)(( ) => ({
+const StyledTableCell = styled(TableCell)(() => ({
   [`&.${tableCellClasses.head}`]: {
     fontWeight: 600,
     color: "#4b4545",
@@ -110,7 +110,7 @@ function Categories() {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log("changing page", event.target.value);
+    // console.log("changing page", event.target.value);
     setRowsPerPage(parseInt(event.target.value, 10));
     //due to categories depency on page,if its already on page one and rows change,then setting it to page 0 does not work,so i put both page -1 and page0
     setPage(-1);
@@ -167,7 +167,7 @@ function Categories() {
             >
               <LinearProgress />
             </div>
-            <TableContainer sx={{ maxHeight: 360 }} >
+            <TableContainer sx={{ maxHeight: 360 }}>
               <Table
                 sx={{ minWidth: 400 }}
                 aria-label="customized table"

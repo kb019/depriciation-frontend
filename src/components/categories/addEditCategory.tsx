@@ -5,9 +5,10 @@ import {
   useAddNewCategoryMutation,
   useUpdateCategoryMutation,
 } from "../../redux/api/categoryApiSlice";
-import { notifyFailure, notifySuccess } from "../../common/notify";
+import { notifyFailure } from "../../common/notify";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { ModifyCategoryData } from "../../models/category";
+import toast from "react-hot-toast";
 
 const buttonCss = {
   backgroundColor: "#6A00F4",
@@ -25,14 +26,10 @@ function CategoriesModal({
 }: WrappedComponentProps) {
   const categoryData = data as ModifyCategoryData;
   console.log(categoryData);
-  const [
-    addNewCategory,
-    { isLoading: addingCategory },
-  ] = useAddNewCategoryMutation();
-  const [
-    updateCategory,
-    { isLoading: updatingCategory },
-  ] = useUpdateCategoryMutation();
+  const [addNewCategory, { isLoading: addingCategory }] =
+    useAddNewCategoryMutation();
+  const [updateCategory, { isLoading: updatingCategory }] =
+    useUpdateCategoryMutation();
   const [categoryName, setCategoryName] = useState<string>(
     `${categoryData?.name ? categoryData.name : ""}`
   );
@@ -44,10 +41,19 @@ function CategoriesModal({
       return;
     }
     try {
-      await addNewCategory({ name: categoryName }).unwrap();
-      notifySuccess("Category added successfully");
-      setCategoryName("");
-      triggerAction();
+      // await addNewCategory({ name: categoryName }).unwrap();
+      // notifySuccess("Category added successfully");
+      // setCategoryName("");
+      // triggerAction();
+      toast.promise(addNewCategory({ name: categoryName }).unwrap(), {
+        loading: "Adding Category",
+        success: () => {
+          setCategoryName("");
+          triggerAction();
+          return "Category added Successfully";
+        },
+        error: () => "Not able to add category,Please try again.",
+      });
     } catch (e) {
       notifyFailure("Category with this type already exists");
     }
@@ -55,13 +61,28 @@ function CategoriesModal({
 
   async function editCategoryHandler() {
     try {
-      await updateCategory({
-        categoryId: categoryData?.categoryId,
-        name: categoryName,
-      }).unwrap();
-      notifySuccess("Updated Category successfully");
-      setCategoryName("");
-      triggerAction();
+      // await updateCategory({
+      //   categoryId: categoryData?.categoryId,
+      //   name: categoryName,
+      // }).unwrap();
+      // notifySuccess("Updated Category successfully");
+      // setCategoryName("");
+      // triggerAction();
+      toast.promise(
+        updateCategory({
+          categoryId: categoryData?.categoryId,
+          name: categoryName,
+        }).unwrap(),
+        {
+          loading: "Updating Category",
+          success: () => {
+            setCategoryName("");
+            triggerAction();
+            return "Category updated Successfully";
+          },
+          error: () => "Not able to update category,Please try again.",
+        }
+      );
     } catch (e) {
       notifyFailure("There was problem updating category, Please try again");
     }
