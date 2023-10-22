@@ -1,1 +1,1 @@
-export const BaseUrl = "http://192.168.56.1:3003";
+export const BaseUrl = "https://depreciation-backend.onrender.com";

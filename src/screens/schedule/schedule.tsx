@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import ComponentWithHeader from "../../common/componentWithHeader";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -123,7 +123,8 @@ function Schedule() {
         )}
         {depDataIt && depDataIt.length == 0 && !showNullErrorMessage && (
           <div className="text-red-500 text-sm tracking-wider">
-            There are no products in till this year.Please add a product{" "}
+            There are no products in till March of selected year.Please add a
+            product{" "}
             <NavLink
               to={"/addProducts"}
               className="border-b-2 border-blue-500 text-blue-500 "
