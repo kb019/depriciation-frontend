@@ -17,7 +17,7 @@ import {
   ApiProductTypeInfo,
   ProductTypeEditInfo,
 } from "../../models/productTypeInfo";
-import { notifyFailure, notifySuccess } from "../../common/notify";
+import { notifyFailure, } from "../../common/notify";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 const buttonCss = {

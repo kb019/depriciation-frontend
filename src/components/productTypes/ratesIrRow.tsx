@@ -4,7 +4,7 @@ import { StyledTableCell } from "../../screens/productTypes/productTypes";
 import { DepItRowType } from "../../screens/productTypes/ratesIt";
 import { Button, TextField, styled } from "@mui/material";
 import { useUpdateDepriciationItRateMutation } from "../../redux/api/depreciationItApiSlice";
-import { notifyFailure, notifySuccess } from "../../common/notify";
+import { notifyFailure } from "../../common/notify";
 import toast from "react-hot-toast";
 
 export const StyledInput = styled(TextField)(({}) => ({
