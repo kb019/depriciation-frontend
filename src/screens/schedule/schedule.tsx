@@ -123,8 +123,9 @@ function Schedule() {
         )}
         {depDataIt && depDataIt.length == 0 && !showNullErrorMessage && (
           <div className="text-red-500 text-sm tracking-wider">
-            There are no products in till March of selected year.Please add a
-            product{" "}
+            There are no purchased products(Depreciation is calculated from
+            purchased date,not invoice date) till March of selected year.Please
+            add a product{" "}
             <NavLink
               to={"/addProducts"}
               className="border-b-2 border-blue-500 text-blue-500 "
