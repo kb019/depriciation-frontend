@@ -57,7 +57,7 @@ function Header() {
         </div>
         <div className="flex-1 text-center">
           <p className="font-medium md:text-lg sm:text-base text-xs text-white">
-            {companyName?.toUpperCase()}
+            {companyName}
           </p>
         </div>
       </div>

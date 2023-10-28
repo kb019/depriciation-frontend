@@ -1,9 +1,4 @@
-import {
-  Box,
- 
-  LinearProgress,
-  TextField,
-} from "@mui/material";
+import { Box, LinearProgress, TextField } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -73,7 +68,7 @@ function ForgotPassword({
       <div className="p-5  h-max">
         <div className=" flex flex-col gap-4 ">
           <h1 className="font-bold text-gray-700 md:text-4xl  text-2xl text-center mb-4 border-b-2">
-            DEPRECIATOR
+            Depreciator for Fixed Assets
           </h1>
           <h2 className="font-bold text-gray-500 md:text-2xl text-xl">
             {" "}
@@ -147,7 +142,7 @@ function ForgotPassword({
             className="text-[#8887F6] cursor-pointer ml-2"
             onClick={showForgotPassword}
           >
-            Log In
+            Login
           </a>
         </p>
       </div>

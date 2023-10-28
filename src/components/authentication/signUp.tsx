@@ -1,8 +1,4 @@
-import {
-  Box,
-  LinearProgress,
-  TextField,
-} from "@mui/material";
+import { Box, LinearProgress, TextField } from "@mui/material";
 import BusinessIcon from "@mui/icons-material/Business";
 import EmailIcon from "@mui/icons-material/Email";
 import HomeIcon from "@mui/icons-material/Home";
@@ -73,11 +69,11 @@ function SignUp({ changePage }: { changePage: () => void }) {
       <div className="p-5  h-max">
         <div className=" flex flex-col gap-4 ">
           <h1 className="font-bold text-gray-700 md:text-4xl  text-2xl text-center mb-4 border-b-2">
-            DEPRECIATOR
+            Depreciator for Fixed Assets
           </h1>
           <h2 className="font-bold text-gray-500 md:text-2xl text-xl">
             {" "}
-            Sign Up
+            Sign-Up
           </h2>
           <Box
             sx={{
@@ -90,7 +86,7 @@ function SignUp({ changePage }: { changePage: () => void }) {
             <BusinessIcon sx={{ color: "#B8B8DA", mr: 1, my: 0.5 }} />
             <TextField
               id="input-with-sx"
-              label="Company Name"
+              label="Name"
               name="companyName"
               variant="standard"
               onChange={formik.handleChange}
@@ -194,7 +190,7 @@ function SignUp({ changePage }: { changePage: () => void }) {
         <p className="mt-7 font-semibold text-sm text-[#7373A4]">
           Exsiting User?{" "}
           <a className="text-[#8887F6] cursor-pointer" onClick={changePage}>
-            Log in
+            Login
           </a>
         </p>
       </div>

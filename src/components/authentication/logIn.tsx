@@ -1,8 +1,4 @@
-import {
-  Box,
-  LinearProgress,
-  TextField,
-} from "@mui/material";
+import { Box, LinearProgress, TextField } from "@mui/material";
 import { useState } from "react";
 import EmailIcon from "@mui/icons-material/Email";
 import * as Yup from "yup";
@@ -22,7 +18,13 @@ const validationSchema = Yup.object().shape({
 
   password: Yup.string().trim().required("Password is Required"),
 });
-function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showForgotPassword:()=>void }) {
+function LogIn({
+  changePage,
+  showForgotPassword,
+}: {
+  changePage: () => void;
+  showForgotPassword: () => void;
+}) {
   const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -42,7 +44,7 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
           loading: "Loggin In User",
           success: () => {
             formik.resetForm();
-            return "Log In Successful";
+            return "Login Successful";
           },
           error: (e) => {
             return typeof e == "string"
@@ -64,11 +66,11 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
       <div className="p-5  h-max">
         <div className=" flex flex-col gap-4 ">
           <h1 className="font-bold text-gray-700 md:text-4xl  text-2xl text-center mb-4 border-b-2">
-            DEPRECIATOR
+            Depreciator for Fixed Assets
           </h1>
           <h2 className="font-bold text-gray-500 md:text-2xl text-xl">
             {" "}
-            Log In
+            Login
           </h2>
 
           <Box
@@ -105,7 +107,12 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
             helperText={formik.touched.password ? formik.errors.password! : ""}
           />
         </div>
-        <p className="text-xs mt-5 ml-auto max-w-max text-[#8887F6] border-b cursor-pointer" onClick={showForgotPassword}>Forgot Password</p>
+        <p
+          className="text-xs mt-5 ml-auto max-w-max text-[#8887F6] border-b cursor-pointer"
+          onClick={showForgotPassword}
+        >
+          Forgot Password
+        </p>
         <button
           className="font-semibold bg-[#6C63FF] p-2 mt-10 rounded-2xl text-white shadow-lg text-sm px-7 hover:bg-[#8b85fc]"
           onClick={() => {
@@ -119,7 +126,7 @@ function LogIn({ changePage,showForgotPassword }: { changePage: () => void,showF
         <p className="mt-7 font-semibold text-sm text-[#7373A4]">
           New User?{" "}
           <a className="text-[#8887F6] cursor-pointer" onClick={changePage}>
-            Sign up
+            Sign-up
           </a>
         </p>
       </div>
