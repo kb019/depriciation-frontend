@@ -1,0 +1,25 @@
+name: depreciation-app-frontend
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: ./docker-files/Dockerfile
+      target: final
+    env_file: "./docker-files/.env"
+    profiles: ["frontend-prod"]
+    ports:
+      - 5173:4173
+
+  frontendev:
+    build:
+      context: .
+      dockerfile: ./docker-files/Dockerfile
+      target: client-dev
+    env_file: "./docker-files/.env"
+    profiles: ["frontend-dev"]
+    ports:
+      - 5173:4174
+    volumes:
+      - ./src:/app/src
+
