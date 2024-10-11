@@ -1,19 +1,20 @@
 pipeline {
     agent any 
     stages {
-        stage('Build') { 
+        stage('Checkout') {
             steps {
-                 sh 'echo build' 
+                checkout scm
             }
         }
-        stage('Test') { 
+        stage('Terraform Init') {
             steps {
-                 sh 'echo Test'
+                sh 'ls -a'
+                sh 'terraform init'
             }
         }
-        stage('Deploy') { 
+        stage('Terraform Apply') {
             steps {
-                sh 'echo deploy'
+                // sh 'terraform apply -auto-approve'
             }
         }
     }
