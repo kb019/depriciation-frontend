@@ -1,5 +1,9 @@
 pipeline {
-    agent any 
+    agent any
+    environment {
+    AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-access-key')
+    AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -8,8 +12,13 @@ pipeline {
         }
         stage('Terraform Init') {
             steps {
-                sh 'ls -a'
-                sh 'terraform init'
+                // sh 'node --version'
+                // sh 'ls -a'
+                // // sh 'chmod -R 777 /var/'
+                sh 'chmod 777 ./setup_script.sh'
+                // sh 'apt-get install sudo'
+                sh "echo sending password"
+                sh 'echo Y | ./setup_script.sh'
             }
         }
         // stage('Terraform Apply') {
