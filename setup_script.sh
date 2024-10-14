@@ -37,10 +37,6 @@ cd /var/jenkins_home/workspace
 cd depreciation_pipeline_frontend
 # ls -a
 
-#The best practice is not expose my credentials but since i am learning devops,i dont mind anybody accessing the keys.
-#These keys will be removed in future
-# export AWS_ACCESS_KEY_ID=credentials('jenkins-aws-access-key')
-# export AWS_SECRET_ACCESS_KEY=divo1TZ91ufxCKHvcnM83yjH/UObZiYTRfrzYIQ3
 terraform init -input=false
 echo "terraform apply"
 terraform apply -input=false -auto-approve
