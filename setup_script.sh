@@ -40,12 +40,15 @@ if [ "$isTerraformInstalled" = "false" ]; then
         sudo apt-get install terraform
 fi
 
-sudo apt install software-properties-common
-sudo add-apt-repository --yes --update ppa:ansible/ansible
-sudo apt install ansible
-echo "before ansible verison"
-ansible --version
-echo "after ansible version"
+if [ "$ansiblePackage" = "false" ]; then 
+        echo "installing ansible"
+        sudo apt install software-properties-common
+        sudo add-apt-repository --yes --update ppa:ansible/ansible
+        sudo apt-get install ansible
+        echo "before ansible verison"
+        ansible --version
+        echo "after ansible version"
+fi
 
 cd /var/jenkins_home/workspace
 cd depreciation_pipeline_frontend
@@ -54,3 +57,4 @@ cd depreciation_pipeline_frontend
 terraform init -input=false
 echo "terraform apply"
 terraform apply -input=false -auto-approve
+terraform output -raw instance_ip_addr

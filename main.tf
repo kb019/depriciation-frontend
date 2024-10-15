@@ -11,7 +11,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = "us-west-2"
+  region  = "us-east-2"
 }
 
 resource "aws_security_group"  "jenkins_security"{
@@ -54,9 +54,15 @@ resource "aws_security_group"  "jenkins_security"{
 resource "aws_instance" "app_server" {
   ami           = "ami-04dd23e62ed049936"
   instance_type = "t2.micro"
+  key_name = "jenkins_aws_key_pair"
   vpc_security_group_ids = [aws_security_group.jenkins_security.id]
 
   tags = {
     Name = "JenkinsSeverSetup"
   }
 }
+
+output "instance_ip_addr" {
+  value = aws_instance.app_server.private_ip
+}
+
