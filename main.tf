@@ -17,7 +17,7 @@ provider "aws" {
 resource "aws_security_group"  "jenkins_security"{
   name="jenkins-user-security-group"
   description ="This is the security group for jenkins user"
-  vpc_id="vpc-00e154fa6fec6eb81"
+  vpc_id="vpc-0a59cf3cf7d43f653"
   tags={
     Name="security-group"
   }
@@ -52,7 +52,7 @@ resource "aws_security_group"  "jenkins_security"{
 } 
 
 resource "aws_instance" "app_server" {
-  ami           = "ami-04dd23e62ed049936"
+  ami           = "ami-0ea3c35c5c3284d82"
   instance_type = "t2.micro"
   key_name = "jenkins_aws_key_pair"
   vpc_security_group_ids = [aws_security_group.jenkins_security.id]
@@ -63,6 +63,10 @@ resource "aws_instance" "app_server" {
 }
 
 output "instance_ip_addr" {
-  value = aws_instance.app_server.private_ip
+  value = aws_instance.app_server.public_ip
+}
+
+output "ec2_instance_user" {
+  value=aws_instance.app_server.user_data
 }
 

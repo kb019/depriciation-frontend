@@ -58,3 +58,4 @@ terraform init -input=false
 echo "terraform apply"
 terraform apply -input=false -auto-approve
 terraform output -raw instance_ip_addr
+terraform output -raw ec2_instance_user
