@@ -9,7 +9,13 @@ cd ~/
 isTerraformInstalled="false"
 terraformPackage=$(apt list --installed | grep -i "terraform");
 
+isAnsibleInstalled="false"
+ansiblePackage=$(apt list --installed | grep -i "ansible");
+
+
 echo "$terraformPackage"
+echo "$ansiblePackage"
+
 if [ -n "$terraformPackage" ]; then
     isTerraformInstalled="true";
     echo "terraform is installed";
@@ -37,7 +43,10 @@ fi
 sudo apt install software-properties-common
 sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible
+echo "before ansible verison"
 ansible --version
+echo "after ansible version"
+
 cd /var/jenkins_home/workspace
 cd depreciation_pipeline_frontend
 # ls -a
