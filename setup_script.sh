@@ -33,6 +33,11 @@ if [ "$isTerraformInstalled" = "false" ]; then
         sudo apt update
         sudo apt-get install terraform
 fi
+
+sudo apt install software-properties-common
+sudo add-apt-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible
+ansible --version
 cd /var/jenkins_home/workspace
 cd depreciation_pipeline_frontend
 # ls -a
