@@ -52,9 +52,30 @@ fi
 
 cd /var/jenkins_home/workspace
 cd depreciation_pipeline_frontend
-# ls -a
+
 
 terraform init -input=false
 echo "terraform apply"
 terraform apply -input=false -auto-approve
-terraform output -raw instance_ip_addr
+terraform output -raw instance_ip_addr > inventory.ini
+
+echo -e "\n"
+isSshPresent="false"
+sshFolder=$(ls -a | grep -i ".ssh");
+
+if [ -n "$sshFolder" ]; then 
+   isSshPresent="true"
+fi
+
+echo "$isSshPresent"
+echo "$sshFolder"
+if [ "$isSshPresent" = "false" ]; then
+   echo "setting up ssh keys"
+   mkdir .ssh
+   echo "y" | ssh-keygen -q -t rsa -N '' -f .ssh/id_rsa
+fi
+
+sudo chmod -R 770 /etc
+echo "StrictHostKeyChecking off" >> /etc/ssh/ssh_config
+ls -a .ssh
+cat /etc/ssh/ssh_config
