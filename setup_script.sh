@@ -57,11 +57,34 @@ cd depreciation_pipeline_frontend
 terraform init -input=false
 echo "terraform apply"
 terraform apply -input=false -auto-approve
-terraform output -raw instance_ip_addr > inventory.ini
+key=$(terraform output -raw private_key) 
+keyPairId=$(terraform output -raw key_pair_id)
+ec2InstanceIp=$(terraform output -raw instance_ip_addr);
+
+runSshCopyId="true"
+
+if [ -n "$keyPairId" ]; then
+  echo "$key" > jenkins-key-pair.pem
+  runSshCopyId="false"
+fi
+
+if [ -n "$ec2InstanceIp" ]; then
+   echo "ubuntu@$ec2InstanceIp" > inventory.ini
+fi
+
+
+echo "$keyPairId"
+echo "$ec2InstanceIp"
+echo "ubuntu@$ec2InstanceIp"
+
+cat inventory.ini
+cat jenkins-key-pair.pem
 
 echo -e "\n"
 isSshPresent="false"
 sshFolder=$(ls -a | grep -i ".ssh");
+
+ls -a 
 
 if [ -n "$sshFolder" ]; then 
    isSshPresent="true"
@@ -73,9 +96,9 @@ if [ "$isSshPresent" = "false" ]; then
    echo "setting up ssh keys"
    mkdir .ssh
    echo "y" | ssh-keygen -q -t rsa -N '' -f .ssh/id_rsa
+   sudo chmod -R 777 /etc
+   echo "StrictHostKeyChecking off" >> /etc/ssh/ssh_config
 fi
 
-sudo chmod -R 770 /etc
-echo "StrictHostKeyChecking off" >> /etc/ssh/ssh_config
-ls -a .ssh
+# ls -als -a .ssh
 cat /etc/ssh/ssh_config

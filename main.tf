@@ -14,8 +14,18 @@ provider "aws" {
   region  = "us-east-2"
 }
 
+resource "tls_private_key" "private_key" {
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "generated_key" {
+  key_name   = "aws-jenkins-key-pair"
+  public_key = tls_private_key.private_key.public_key_openssh
+}
+
 resource "aws_security_group"  "jenkins_security"{
-  name="jenkins-user-security-group"
+  name="jenkins-aws-user-security-group"
   description ="This is the security group for jenkins user"
   vpc_id="vpc-0a59cf3cf7d43f653"
   tags={
@@ -30,14 +40,7 @@ resource "aws_security_group"  "jenkins_security"{
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # ingress {
-  #   from_port   = -1
-  #   to_port     = -1
-  #   protocol    = "icmp"
-  #   cidr_blocks = ["0.0.0.0/0"]
-  # }
-
-   ingress {
+ ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -54,7 +57,7 @@ resource "aws_security_group"  "jenkins_security"{
 resource "aws_instance" "app_server" {
   ami           = "ami-0ea3c35c5c3284d82"
   instance_type = "t2.micro"
-  key_name = "jenkins_aws_key_pair"
+  key_name = aws_key_pair.generated_key.key_name
   vpc_security_group_ids = [aws_security_group.jenkins_security.id]
 
   tags = {
@@ -62,11 +65,5 @@ resource "aws_instance" "app_server" {
   }
 }
 
-output "instance_ip_addr" {
-  value = aws_instance.app_server.public_ip
-}
 
-output "ec2_instance_user" {
-  value=aws_instance.app_server.user_data
-}
 
