@@ -50,55 +50,101 @@ if [ "$ansiblePackage" = "false" ]; then
         echo "after ansible version"
 fi
 
-cd /var/jenkins_home/workspace
-cd depreciation_pipeline_frontend
+#create folder if not exsists for security groups
 
-terraform apply -destroy -input=false -auto-approve
-terraform init -input=false
-echo "terraform apply"
-terraform apply -input=false -auto-approve
-key=$(terraform output -raw private_key) 
-keyPairId=$(terraform output -raw key_pair_id)
-ec2InstanceIp=$(terraform output -raw instance_ip_addr);
-
-runSshCopyId="true"
-
-if [ -n "$keyPairId" ]; then
-  echo "$key" > jenkins-key-pair.pem
-  runSshCopyId="false"
+mkdir -p terraform/terraform-security-groups/lists
+mkdir -p terraform/terraform-key-pairs/lists
+ls -a
+cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/*.tf terraform 
+ls -a terraform
+pwd
+ls -a terraform/terraform-key-pairs/lists
+#check if "aws-jenkins-key-pair-exsists"
+# cd terraform/terraform-security-groups
+keyPairExists="false"
+jenkinsKeyPair=$(ls -a terraform/terraform-key-pairs/lists | grep -i "aws-jenkins-key-pair")
+echo "$jenkinsKeyPair"
+if [ -n "$jenkinsKeyPair" ]; then
+   echo "aws-jenkins-key-pair already exsits" 
+   keyPairExists="true"
 fi
 
-if [ -n "$ec2InstanceIp" ]; then
-   echo "ubuntu@$ec2InstanceIp" > inventory.ini
+if [ "$keyPairExists" = "false" ]; then
+   cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/create-resources/create-key-pair.tf terraform
+else
+   cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/existing-resources/get-key-pair.tf terraform
 fi
 
+ls -a
 
-echo "$keyPairId"
-echo "$ec2InstanceIp"
-echo "ubuntu@$ec2InstanceIp"
+#check if "jenkins-aws-user-security-group already exsists"
+securityGroupExsists="false"
+securityGroup=$(ls -a terraform/terraform-security-groups/lists | grep -i "jenkins-aws-user-security-group")
 
-cat inventory.ini
-cat jenkins-key-pair.pem
-
-echo -e "\n"
-isSshPresent="false"
-sshFolder=$(ls -a | grep -i ".ssh");
-
-ls -a 
-
-if [ -n "$sshFolder" ]; then 
-   isSshPresent="true"
+if [ -n "$securityGroup" ]; then
+   echo "jenkins-aws-user-security-group exsits" 
+   securityGroupExsists="true"
 fi
 
-echo "$isSshPresent"
-echo "$sshFolder"
-if [ "$isSshPresent" = "false" ]; then
-   echo "setting up ssh keys"
-   mkdir .ssh
-   echo "y" | ssh-keygen -q -t rsa -N '' -f .ssh/id_rsa
-   sudo chmod -R 777 /etc
-   echo "StrictHostKeyChecking off" >> /etc/ssh/ssh_config
+if [ "$securityGroupExsists" = "false" ]; then
+   cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/create-resources/create-security-group.tf terraform
+else
+   cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/existing-resources/get-security-group.tf terraform
 fi
 
-# ls -als -a .ssh
-cat /etc/ssh/ssh_config
+ls -a terraform
+
+
+
+# cd /var/jenkins_home/workspace
+# cd depreciation_pipeline_frontend
+
+# terraform apply -destroy -input=false -auto-approve
+# terraform init -input=false
+# echo "terraform apply"
+# terraform apply -input=false -auto-approve
+# key=$(terraform output -raw private_key) 
+# keyPairId=$(terraform output -raw key_pair_id)
+# ec2InstanceIp=$(terraform output -raw instance_ip_addr);
+
+# runSshCopyId="true"
+
+# if [ -n "$keyPairId" ]; then
+#   echo "$key" > jenkins-key-pair.pem
+#   runSshCopyId="false"
+# fi
+
+# if [ -n "$ec2InstanceIp" ]; then
+#    echo "ubuntu@$ec2InstanceIp" > inventory.ini
+# fi
+
+
+# echo "$keyPairId"
+# echo "$ec2InstanceIp"
+# echo "ubuntu@$ec2InstanceIp"
+
+# cat inventory.ini
+# cat jenkins-key-pair.pem
+
+# echo -e "\n"
+# isSshPresent="false"
+# sshFolder=$(ls -a | grep -i ".ssh");
+
+# ls -a 
+
+# if [ -n "$sshFolder" ]; then 
+#    isSshPresent="true"
+# fi
+
+# echo "$isSshPresent"
+# echo "$sshFolder"
+# if [ "$isSshPresent" = "false" ]; then
+#    echo "setting up ssh keys"
+#    mkdir .ssh
+#    echo "y" | ssh-keygen -q -t rsa -N '' -f .ssh/id_rsa
+#    sudo chmod -R 777 /etc
+#    # echo "StrictHostKeyChecking off" >> /etc/ssh/ssh_config
+# fi
+
+# # ls -als -a .ssh
+# cat /etc/ssh/ssh_config

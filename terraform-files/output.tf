@@ -11,3 +11,6 @@ output "key_pair_id" {
   value = aws_key_pair.generated_key.id
 }
 
+output "security-group-id"{
+  value = aws_security_group.jenkins_security.id
+}
