@@ -53,7 +53,10 @@ fi
 cd /var/jenkins_home/workspace
 cd depreciation_pipeline_frontend
 
-
+rm .terraform
+rm terraform.lock.hcl
+rm terraform.tfstate
+rm terraform.tfstate.backup
 terraform init -input=false
 echo "terraform apply"
 terraform apply -input=false -auto-approve
