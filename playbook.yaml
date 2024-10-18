@@ -26,7 +26,7 @@
       mode: '0644'
 
   - name: Copy node modules
-    ansible.builtin.copy:
+    ansible.posix.synchronize:
         src: /var/jenkins_home/workspace/depreciation_pipeline_frontend/node_modules
         dest: /var/www/html 
         force: true  
