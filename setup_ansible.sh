@@ -15,3 +15,6 @@ fnm use --install-if-missing 20
 node -v # should print `v20.18.0`
 # verifies the right npm version is in the environment
 npm -v #
+
+npm install --force
+npm run build
