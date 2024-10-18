@@ -6,7 +6,11 @@ chmod 700 private-key.pem
 ip=$(awk '{ print $1 }' inventory.ini)
 
 echo "ip is,$ip"
+
 if [ -n "$ip" ]; then 
     ssh-copy-id -f "-o IdentityFile private-key.pem" $ip
-fi        
+fi 
+
 ls -a
+
+ansible-playbook  playbook.yaml -i inventory.ini

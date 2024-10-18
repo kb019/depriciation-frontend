@@ -18,12 +18,19 @@
         update_cache: yes
         state: latest
 
-  - name: Copy file with owner and permissions
+  - name: Copy build folder
     ansible.builtin.copy:
-      src: /home/kb019/index.html
+      src: /var/jenkins_home/workspace/depreciation_pipeline_frontend/dist/
       dest: /var/www/html/
       force: true
       mode: '0644'
+
+  - name: Copy node modules
+    ansible.builtin.copy:
+        src: /var/jenkins_home/workspace/depreciation_pipeline_frontend/node_modules
+        dest: /var/www/html 
+        force: true  
+        mode: '0644'
       # owner: ubuntu
       # group: ubuntu
     #   remote_src: yes
