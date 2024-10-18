@@ -72,8 +72,9 @@ echo "$privateKey"
 cd /var/jenkins_home/workspace/depreciation_pipeline_frontend
 mkdir -p .ssh
 
-echo "$keyPair" > /var/jenkins_home/workspace/depreciation_pipeline_frontend/.ssh/id_rsa.pub
-echo "$privateKey" > /var/jenkins_home/workspace/depreciation_pipeline_frontend/private-key.pem
+echo "$keyPair" > .ssh/id_rsa.pub
+echo "$privateKey" > private-key.pem
+echo "ubuntu@$ec2InstanceIp" > inventory.ini
 
 
 #create folder if not exsists for security groups

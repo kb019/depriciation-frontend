@@ -1,0 +1,32 @@
+- name: My first play
+  hosts: all
+  become: yes
+
+  tasks:
+ 
+
+  - name: Ping my hosts
+    ansible.builtin.ping:
+
+  - name: Print message
+    ansible.builtin.debug:
+      msg: Hello world
+
+  -  name: install apache2
+     apt:
+        name: apache2
+        update_cache: yes
+        state: latest
+
+  - name: Copy file with owner and permissions
+    ansible.builtin.copy:
+      src: /home/kb019/index.html
+      dest: /var/www/html/
+      force: true
+      mode: '0644'
+      # owner: ubuntu
+      # group: ubuntu
+    #   remote_src: yes
+    # become: true 
+    # become_user: root 
+    #   # directory_mode: '700'     

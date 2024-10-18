@@ -15,16 +15,22 @@ pipeline {
                 // sh 'node --version'
                 // sh 'ls -a'
                 // // sh 'chmod -R 777 /var/'
-                sh 'chmod 777 ./setup_script_tf.sh'
+                sh 'chmod -R 777 ./scripts/setup_script_tf.sh'
                 // sh 'apt-get install sudo'
                 sh "echo sending password"
-                sh 'echo Y | ./setup_script_tf.sh'
+                sh 'echo Y | ./scripts/setup_script_tf.sh'
             }
         }
-        stage('Install node'){
+        stage('Install node and build application'){
             steps{
-                sh 'chmod 777 ./setup_ansible.sh'
-                sh './setup_ansible.sh'
+                sh 'chmod -R 777 ./scripts/setup_node.sh'
+                sh './scripts/setup_node.sh'
+            }
+        }
+        stage("deploy the application using ansible"){
+            steps{
+                 sh 'chmod -R 777 ./scripts/deploy.sh'
+                 sh './scripts/deploy.sh'
             }
         }
         // stage('Terraform Apply') {
