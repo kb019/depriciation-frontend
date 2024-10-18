@@ -50,49 +50,75 @@ if [ "$ansiblePackage" = "false" ]; then
         echo "after ansible version"
 fi
 
+mkdir -p terraform
+cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/*.tf terraform
+ls -a terraform
+cd terraform
+
+terraform init
+terraform init -input=false
+echo "terraform apply"
+terraform apply -input=false -auto-approve
+
+# key=$(terraform output -raw private_key) 
+keyPair=$(terraform output -raw public_key)
+ec2InstanceIp=$(terraform output -raw instance_ip_addr);
+privateKey=$(terraform output -raw private_key)
+
+echo "$keyPair"
+echo "$ec2InstanceIp"
+echo "$privateKey"
+
+cd /var/jenkins_home/workspace/depreciation_pipeline_frontend
+mkdir -p .ssh
+
+echo "$keyPair" > /var/jenkins_home/workspace/depreciation_pipeline_frontend/.ssh/id_rsa.pub
+echo "$privateKey" > /var/jenkins_home/workspace/depreciation_pipeline_frontend/private-key.pem
+
+
 #create folder if not exsists for security groups
 
-mkdir -p terraform/terraform-security-groups/lists
-mkdir -p terraform/terraform-key-pairs/lists
-ls -a
-cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/*.tf terraform 
-ls -a terraform
-pwd
-ls -a terraform/terraform-key-pairs/lists
-#check if "aws-jenkins-key-pair-exsists"
-# cd terraform/terraform-security-groups
-keyPairExists="false"
-jenkinsKeyPair=$(ls -a terraform/terraform-key-pairs/lists | grep -i "aws-jenkins-key-pair")
-echo "$jenkinsKeyPair"
-if [ -n "$jenkinsKeyPair" ]; then
-   echo "aws-jenkins-key-pair already exsits" 
-   keyPairExists="true"
-fi
+# mkdir -p terraform/terraform-security-groups/lists
+# mkdir -p terraform/terraform-key-pairs/lists
+# ls -a
+# cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/*.tf terraform 
+# ls -a terraform
+# pwd
+# ls -a terraform/terraform-key-pairs/lists
+# #check if "aws-jenkins-key-pair-exsists"
+# # cd terraform/terraform-security-groups
+# keyPairExists="false"
+# jenkinsKeyPair=$(ls -a terraform/terraform-key-pairs/lists | grep -i "aws-jenkins-key-pair")
+# echo "$jenkinsKeyPair"
+# if [ -n "$jenkinsKeyPair" ]; then
+#    echo "aws-jenkins-key-pair already exsits" 
+#    keyPairExists="true"
+# fi
 
-if [ "$keyPairExists" = "false" ]; then
-   cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/create-resources/create-key-pair.tf terraform
-else
-   cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/existing-resources/get-key-pair.tf terraform
-fi
+# if [ "$keyPairExists" = "false" ]; then
+#    cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/create-resources/create-key-pair.tf terraform
+# else
+#    cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/existing-resources/get-key-pair.tf terraform
+# fi
 
-ls -a
+# ls -a
 
 #check if "jenkins-aws-user-security-group already exsists"
-securityGroupExsists="false"
-securityGroup=$(ls -a terraform/terraform-security-groups/lists | grep -i "jenkins-aws-user-security-group")
+# securityGroupExsists="false"
+# securityGroup=$(ls -a terraform/terraform-security-groups/lists | grep -i "jenkins-aws-user-security-group")
 
-if [ -n "$securityGroup" ]; then
-   echo "jenkins-aws-user-security-group exsits" 
-   securityGroupExsists="true"
-fi
+# if [ -n "$securityGroup" ]; then
+#    echo "jenkins-aws-user-security-group exsits" 
+#    securityGroupExsists="true"
+# fi
 
-if [ "$securityGroupExsists" = "false" ]; then
-   cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/create-resources/create-security-group.tf terraform
-else
-   cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/existing-resources/get-security-group.tf terraform
-fi
+# if [ "$securityGroupExsists" = "false" ]; then
+#    cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/create-resources/create-security-group.tf terraform
+# else
+#    cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/existing-resources/get-security-group.tf terraform
+# fi
 
-ls -a terraform
+# ls -a terraform
 
 
 

@@ -7,8 +7,8 @@ output "instance_ip_addr" {
   value = aws_instance.app_server.public_ip
 }
 
-output "key_pair_id" {
-  value = aws_key_pair.generated_key.id
+output "public_key" {
+  value = aws_key_pair.generated_key.public_key
 }
 
 output "security-group-id"{
