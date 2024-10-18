@@ -2,6 +2,9 @@
 cat .ssh/id_rsa.pub
 cat private-key.pem
 
+nodePackage=$(dpkg -s node);
+
+echo "$nodePackage"
 
 curl -fsSL https://fnm.vercel.app/install | bash
 # activate fnm
