@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sudo chmod -R 777 /etc
+sudo chmod -R 777 /etc/ssh
 echo "StrictHostKeyChecking off" >> /etc/ssh/ssh_config
 chmod 700 private-key.pem
 ip=$(awk '{ print $1 }' inventory.ini)
@@ -13,4 +13,6 @@ fi
 
 ls -a
 
+chmod 775 playbook.yaml
+# ansible -v
 ansible-playbook  playbook.yaml -i inventory.ini
