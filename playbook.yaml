@@ -1,4 +1,4 @@
-- name: My first play
+- name: depreciation-front-end-playbook
   hosts: all
   become: yes
 
@@ -25,15 +25,4 @@
       force: true
       mode: '0644'
 
-  - name: Copy node modules
-    ansible.posix.synchronize:
-        src: /var/jenkins_home/workspace/depreciation_pipeline_frontend/node_modules
-        dest: /var/www/html 
-        force: true  
-        mode: '0644'
-      # owner: ubuntu
-      # group: ubuntu
-    #   remote_src: yes
-    # become: true 
-    # become_user: root 
-    #   # directory_mode: '700'     
+  

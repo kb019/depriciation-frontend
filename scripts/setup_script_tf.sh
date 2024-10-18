@@ -12,10 +12,6 @@ terraformPackage=$(apt list --installed | grep -i "terraform");
 isAnsibleInstalled="false"
 ansiblePackage=$(apt list --installed | grep -i "ansible");
 
-
-echo "$terraformPackage"
-echo "$ansiblePackage"
-
 if [ -n "$terraformPackage" ]; then
     isTerraformInstalled="true";
     echo "terraform is installed";
@@ -51,12 +47,10 @@ fi
 
 mkdir -p terraform
 cp /var/jenkins_home/workspace/depreciation_pipeline_frontend/terraform-files/*.tf terraform
-ls -a terraform
 cd terraform
 
 terraform init
 terraform init -input=false
-echo "terraform apply"
 terraform apply -input=false -auto-approve
 
 keyPair=$(terraform output -raw public_key)
