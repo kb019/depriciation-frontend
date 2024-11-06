@@ -24,3 +24,9 @@ COPY --from=base-build /app/dist /app/dist
 COPY --from=base-build /app/vite.config.ts /app/
 COPY --from=base-build /app/*.json /app/
 CMD ["npm","run","preview"]
+
+FROM nginx:latest as nginx-build
+COPY --from=base-build /app/dist /usr/share/nginx/html
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

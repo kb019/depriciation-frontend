@@ -5,11 +5,14 @@ services:
     build:
       context: .
       dockerfile: ./docker-files/Dockerfile
-      target: final
-    env_file: "./docker-files/.env"
+      target: nginx-build
+    # env_file: "./docker-files/.env"
     profiles: ["frontend-prod"]
+    networks:
+      - depreciation-app_front-tier
     ports:
-      - 5173:4173
+      - 8080:80
+    
 
   frontendev:
     build:
@@ -18,8 +21,15 @@ services:
       target: client-dev
     env_file: "./docker-files/.env"
     profiles: ["frontend-dev"]
+    networks:
+      - depreciation-app_front-tier
     ports:
       - 5173:4174
     volumes:
       - ./src:/app/src
+
+networks:
+  depreciation-app_front-tier:
+    external: true
+  
 
